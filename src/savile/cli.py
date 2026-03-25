@@ -21,8 +21,26 @@ def init(source: str = typer.Option(None, help="Git URI to logic vault")):
             typer.echo(f"Error: {str(e)}", err=True)
     else:
         typer.echo("Initializing new local logic vault...")
-        registry.scaffold_local_vault(vault_path)
-        typer.echo("Local vault scaffolded successfully.")
+        try:
+            registry.scaffold_local_vault(vault_path)
+            manager.init_local(vault_path)
+            typer.echo("Local vault scaffolded and initialized successfully.")
+        except Exception as e:
+            typer.echo(f"Error: {str(e)}", err=True)
+
+@app.command()
+def install_hook():
+    """Install the pre-push Git hook to enforce evaluate before push."""
+    vault_path = Path(os.getcwd())
+    try:
+        if not (vault_path / ".git").exists():
+            typer.echo("Current directory is not a Git repository. Cannot install hook.", err=True)
+            raise typer.Exit(code=1)
+            
+        manager.install_pre_push_hook(vault_path)
+        typer.echo("Pre-push hook installed successfully.")
+    except Exception as e:
+        typer.echo(f"Error: {str(e)}", err=True)
 
 @app.command()
 def sync():
@@ -38,10 +56,9 @@ def sync():
         typer.echo(f"Error: {str(e)}", err=True)
 
 @app.command()
-def serve():
+def serve(vault: Path = typer.Option(Path(os.getcwd()), "--vault", "-v", help="Path to the logic vault")):
     """Start the MCP server to expose the logic vault to connected tools."""
-    vault_path = Path(os.getcwd())
-    anyio.run(mcp_server.run_stdio_server, vault_path)
+    anyio.run(mcp_server.run_stdio_server, vault)
 
 @app.command()
 def evaluate():

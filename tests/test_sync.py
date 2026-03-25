@@ -22,3 +22,29 @@ def test_manager_sync_vault_local(tmp_path):
     # Check that it's clean (no untracked files)
     assert not repo.is_dirty()
     assert not repo.untracked_files
+
+def test_init_local_installs_hook(tmp_path):
+    vault_dir = tmp_path / "test-init-local"
+    vault_dir.mkdir()
+    
+    manager.init_local(vault_dir)
+    
+    hook_path = vault_dir / ".git" / "hooks" / "pre-push"
+    assert hook_path.exists()
+    assert os.access(hook_path, os.X_OK)
+    
+    # Read the hook to verify content
+    with open(hook_path, "r") as f:
+        content = f.read()
+    assert "savile evaluate" in content
+
+def test_install_pre_push_hook(tmp_path):
+    vault_dir = tmp_path / "test-install-hook"
+    vault_dir.mkdir()
+    Repo.init(str(vault_dir))
+    
+    manager.install_pre_push_hook(vault_dir)
+    
+    hook_path = vault_dir / ".git" / "hooks" / "pre-push"
+    assert hook_path.exists()
+    assert os.access(hook_path, os.X_OK)

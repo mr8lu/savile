@@ -56,5 +56,26 @@ my-logic-vault/
 2. **Error Handling:** Expose clean, structured stderr outputs. If a sync fails due to merge conflicts, the exception should guide the user on how to resolve it via standard Git workflows.
 3. **No Database:** Never fall into the trap of using SQLite or local persistent metadata stores outside of raw YAML/Markdown. The filesystem *is* the database.
 
+## 5. Logic Module Metadata Schema (Integrated)
+
+To support remote installation and automated command generation, every module in the vault MUST include YAML frontmatter.
+
+### 5.1 Schema Specification
+```yaml
+---
+name: "module-name"           # Canonical name for CLI commands
+version: "1.0.0"              # Semantic versioning for syncing
+category: "persona"           # 'persona' or 'framework'
+description: "Human readable"  # Used for Gemini CLI .toml metadata
+dependencies:                 # Optional: list of other module names
+  - "required-persona-name"
+---
+```
+
+### 5.2 Validation Rules (The Crucible)
+1. **Physical/Logical Match**: The `category` field in the metadata must match the file's subdirectory (e.g., category 'persona' must be in `/personas`).
+2. **Naming**: The `name` field in the metadata should be used as the filename (minus `.md`) to prevent resolution conflicts.
+3. **Dependency Resolution**: During `savile add`, the system must warn if dependencies listed in the metadata are missing from the local vault.
+
 ---
 *Signed, Winston (System Architect)*
