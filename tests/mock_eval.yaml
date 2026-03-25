@@ -1,0 +1,6 @@
+name: Check System Realist
+target_model: gemini-2.0-pro-exp
+assert_logic:
+  - type: constraint_check
+    threshold: 0.95
+    prompt: "Given the architecture context, perform a review."
