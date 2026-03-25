@@ -29,3 +29,11 @@ Thumbs.db
 _bmad-output/
 .savile/
 *.log
+
+# Agentic Tools (Gemini, BMAD, etc.)
+.agent/
+.gemini/
+.bmad/
+implementation-artifacts/
+.knowledge/
+
