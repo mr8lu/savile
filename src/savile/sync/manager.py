@@ -11,10 +11,26 @@ def install_pre_push_hook(vault_path: Path):
         hooks_dir.mkdir(parents=True, exist_ok=True)
     
     pre_push_path = hooks_dir / "pre-push"
+    # Create a script that tries multiple ways to find and run savile
     hook_script = (
         "#!/bin/bash\n\n"
         "echo 'Running SAVILE Crucible evaluations...'\n"
-        "savile evaluate\n"
+        "\n"
+        "# Find the savile command or its python module equivalent\n"
+        "if command -v savile &> /dev/null; then\n"
+        "    SAVILE_CMD=\"savile\"\n"
+        "elif [ -f \".venv/bin/savile\" ]; then\n"
+        "    SAVILE_CMD=\".venv/bin/savile\"\n"
+        "elif [ -f \"../.venv/bin/savile\" ]; then\n"
+        "    SAVILE_CMD=\"../.venv/bin/savile\"\n"
+        "elif command -v python3 &> /dev/null && python3 -m savile.cli --help &> /dev/null; then\n"
+        "    SAVILE_CMD=\"python3 -m savile.cli\"\n"
+        "else\n"
+        "    echo \"Error: 'savile' command not found. Please install it or ensure it is in your PATH.\"\n"
+        "    exit 1\n"
+        "fi\n"
+        "\n"
+        "$SAVILE_CMD evaluate\n"
         "if [ $? -ne 0 ]; then\n"
         "    echo 'Crucible evaluations failed. Push rejected.'\n"
         "    exit 1\n"
