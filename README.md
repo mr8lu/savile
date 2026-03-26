@@ -1,79 +1,120 @@
-# SAVILE (System for Agentic Versioning, Intelligence, and Logical Evaluation)
+# SAVILE: The Git-Native Logic Bridge for AI Agents
 
-**SAVILE** is an agnostic, local-first framework rooted in the Model Context Protocol (MCP). It establishes a high-fidelity protocol for storing, versioning, syncing, and evaluating AI agent skills, written strictly in Python.
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+[![Model Context Protocol](https://img.shields.io/badge/MCP-Standard-green.svg)](https://modelcontextprotocol.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## The Core Philosophy
+**SAVILE** (System for Agentic Versioning, Intelligence, and Logical Evaluation) is a high-fidelity, local-first protocol for storing, versioning, syncing, and evaluating AI agent skills via the **Model Context Protocol (MCP)**.
 
-*   **Anti-performative software:** No web UI, no cloud lock-in. A bare-metal architecture designed to outlive transient SaaS abstractions.
-*   **Deterministic Logic Distribution:** Using Python—the native runtime of the AI infrastructure layer—to strip away web-centric bloat and provide a deterministic framework for system feedback.
-*   **Git-native State:** Intelligence must not be tethered to a single host machine. Git is the engine for distributed, version-controlled state.
-
-## Core Mechanics
-
-SAVILE operates as a local Python daemon, bridging version-controlled text files and IDE agent runners (such as Antigravity, Cursor, and Claude Code). It enforces a strict separation of concerns between prompt logic, evaluation, and IDE execution.
-
-### The Registry Core
-A standardized directory structure that defines the **Logic Vault**:
-- `/personas`: System-level constraints and operational parameters.
-- `/frameworks`: Actionable logic chains and PRD structures.
-- `/evals`: YAML-based assertions for matrix evaluation.
-
-### The State Manager
-A Git-native sync engine that allows you to mount logic vaults from local paths (`file://`) or remote repositories (`git+ssh://` or `git+https://`).
-
-### The MCP Bridge
-A lightweight Python CLI (`savile`) utilizing the MCP server SDK to expose the loaded vault to any active IDE.
-
-### The Crucible (Eval)
-A sub-process evaluation loop. A skill is only exposed to the MCP endpoint if it mathematically passes its predefined logical thresholds in `/evals`.
+Written strictly in Python, SAVILE bridges the gap between your version-controlled logic (Git) and your AI execution environments (Antigravity, Cursor, Claude Code).
 
 ---
 
-## Technical Specifications
+## 🧐 Why SAVILE?
 
-- **Runtime:** Python 3.11+ (leveraging `asyncio` for high-performance streaming).
-- **Dependencies:** `mcp`, `typer`, `pyyaml`, `GitPython`, `pytest`.
-- **Data Residency:** 100% Local execution. Perfectly suited for strict enterprise environments.
+Modern AI development is plagued by opaque UI abstractions and "prompt drift." SAVILE treats your agent's "brain"—its personas, frameworks, and evaluations—as first-class code artifacts.
 
-## Getting Started
+*   **Anti-Performative Software**: No web UI, no cloud lock-in. 100% local residency for logic and execution.
+*   **Git-Native State**: Your intelligence isn't tethered to a single machine. Sync your logic vaults across teams using fundamental Git primitives.
+*   **Deterministic Evaluation**: The **Crucible** ensures your logic actually works before you push it. If an assertion fails, the commit is rejected.
 
-### Installation
+---
 
+## 🏗️ System Architecture
+
+SAVILE acts as a deterministic "Logic Router" that brings versioned clarity to the AI infrastructure layer.
+
+```mermaid
+graph TD
+    subgraph "Logic Vault (Git)"
+        V_P[personas/*.md]
+        V_F[frameworks/*.md]
+        V_E[evals/*.yaml]
+    end
+
+    subgraph "SAVILE Daemon"
+        SYNC[State Manager: GitPython]
+        MCP[MCP Bridge: Prompts & Tools]
+        CRU[The Crucible: Eval Runner]
+    end
+
+    subgraph "Agent Clients"
+        AG[Antigravity / Cursor]
+        GCLI[Gemini CLI]
+    end
+
+    V_P --> SYNC
+    V_F --> SYNC
+    SYNC --> MCP
+    MCP -- "MCP Prompts" --> AG
+    MCP -- "Installation Tools" --> GCLI
+    CRU -- "pre-push hook" --> V_P
+```
+
+---
+
+## 🚀 Quick Start
+
+### 1. Installation
 ```bash
-# In the project directory
+# Clone and install locally
+git clone git@github.com:mr8lu/savile.git
+cd savile
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 ```
 
-### Basic Commands
+### 2. Initialize a Vault
+Scaffold a new local vault or clone an existing one from a remote origin.
+```bash
+# Initialize a brand new local vault
+savile init
 
-1. **Initialize a Logic Vault:**
-   ```bash
-   savile init --source git+ssh://github.com/user/logic-vault.git
-   ```
-   This clones the repository and structures the local cache.
+# OR Initialize from a remote Git repository
+savile init --source git+ssh://github.com/user/my-logic-vault.git
+```
 
-2. **Run the MCP Bridge:**
-   ```bash
-   savile serve
-   ```
-   The daemon binds to the local MCP port, providing your IDE with synchronized, versioned logic.
+### 3. Serve to your IDE
+Start the MCP server to broadcast your logic as dynamic slash-commands (Prompts).
+```bash
+savile serve
+```
 
-3. **Evaluate Your Logic:**
-   ```bash
-   savile evaluate
-   ```
-   Runs the evaluation matrix against your logic changes.
+### 4. Enforce Quality
+Install the pre-push Git hook to ensure your logic passes **The Crucible** evaluations before syncing.
+```bash
+savile install-hook
+```
 
 ---
 
-## Development Milestones
+## 🛠️ Core Components
 
-- **v0.1.0 (The Infrastructure):** Current state. Core CLI, Git sync engine, and basic MCP bridge implementation.
-- **v0.2.0 (The Crucible):** Full integration of the evaluation matrix into the `savile evaluate` command.
-- **v0.3.0 (The Protocol):** Open-source registry for sharing deterministic logic modules.
+### The Registry Core
+A standardized directory structure for your intelligence. Every persona and framework is a Markdown file with mandatory **YAML Frontmatter** for metadata tracking.
 
-## LICENSE
+### The State Manager
+Powered by `GitPython`, handling bidirectional synchronization between your local environment and remote logic origins.
+
+### The MCP Bridge
+Exposes your vault as **MCP Prompts** (for dynamic slash-command integration) and **Tools** (for physical file installation into `.agent/` or `.gemini/` directories).
+
+### The Crucible
+A validation loop that mathematically grades your logic against predefined thresholds in `/evals`.
+
+---
+
+## 🗺️ Roadmap
+
+- **v0.1.0 (Infrastructure)**: ✅ Registry Core, Git sync, and basic MCP bridge.
+- **v0.2.0 (The Crucible)**: ✅ Git hook integration, MCP Prompts, and Gemini CLI command generation.
+- **v0.3.0 (The Protocol)**: 🚀 Remote module installation (`savile add`) and deterministic version pinning.
+
+---
+
+## 📄 License
 
 MIT License. See [LICENSE](LICENSE) for details.
+
+*Built with precision for the sovereign developer.*
