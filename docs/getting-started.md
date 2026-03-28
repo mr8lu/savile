@@ -8,14 +8,23 @@ Welcome to **SAVILE**! This guide will help you set up your local logic vault an
 
 SAVILE's built-in personas (like the Architect, Product Manager, or Developer) and workflows rely on the **BMAD Method** ([bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)) as their core multi-agent orchestrated framework.
 
+### Option A: Automate (Recommended)
+You can automate the installation and linking by running our setup script:
+```bash
+./scripts/setup-bmad.sh
+```
+
+---
+
+### Option B: Manual Install
 Before using SAVILE, you need a local BMad installation.
 
 1.  Choose a directory on your machine for your primary BMad project workspace.
-2.  Install the framework:
+2.  Install the framework in that directory:
     ```bash
     npx bmad-method install
     ```
-3.  This will create a `.bmad-core/` directory containing the base agent identities and tasks. SAVILE will link to this directory during setup.
+3.  This creates a `.bmad-core/` directory containing the base agent identities and tasks. SAVILE will link to this directory during setup.
 
 ---
 
