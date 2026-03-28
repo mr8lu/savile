@@ -1,29 +1,42 @@
-# SAVILE: The Git-Native Logic Bridge for AI Agents
+# SAVILE: Git-Native Prompt Versioning & MCP Server for AI Agents
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/)
-[![Model Context Protocol](https://img.shields.io/badge/MCP-Standard-green.svg)](https://modelcontextprotocol.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/ "Python 3.11+ Version Support")
+[![Model Context Protocol](https://img.shields.io/badge/MCP-Standard-green.svg)](https://modelcontextprotocol.io/ "Model Context Protocol Standard Compliance")
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE "MIT License")
 
-**SAVILE** (System for Agentic Versioning, Intelligence, and Logical Evaluation) is a high-fidelity, local-first protocol for storing, versioning, syncing, and evaluating AI agent skills via the **Model Context Protocol (MCP)**.
+**SAVILE** (System for Agentic Versioning, Intelligence, and Logical Evaluation) is a high-fidelity, local-first **MCP server** and protocol for storing, versioning, syncing, and evaluating **AI agent prompts and skills** via the **Model Context Protocol (MCP)**.
 
-Written strictly in Python, SAVILE bridges the gap between your version-controlled logic (Git) and your AI execution environments (Antigravity, Cursor, Claude Code).
+Built as a Git-native logic bridge, SAVILE ensures reproducibility and version control for your agentic workflows, connecting your version-controlled logic directly to AI execution environments like **Antigravity**, **Cursor**, and **Claude Code**.
 
 ---
 
 ## 🧐 Why SAVILE?
 
-Modern AI development is plagued by opaque UI abstractions and "prompt drift." SAVILE treats your agent's "brain"—its personas, frameworks, and evaluations—as first-class code artifacts.
+Modern AI development is plagued by opaque UI abstractions and "prompt drift." SAVILE treats your agent's "brain"—its **personas**, **frameworks**, and **evaluations**—as first-class code artifacts. By providing a **Git-based prompt management** system, SAVILE enables:
 
 *   **Anti-Performative Software**: No web UI, no cloud lock-in. 100% local residency for logic and execution.
-*   **Git-Native State**: Your intelligence isn't tethered to a single machine. Sync your logic vaults across teams using fundamental Git primitives.
-*   **Deterministic Evaluation**: The **Crucible** ensures your logic actually works before you push it. If an assertion fails, the commit is rejected.
+*   **Git-Native State**: Your intelligence isn't tethered to a single machine. Sync your logic vaults across teams using fundamental Git primitives for **collaborative AI development**.
+*   **Deterministic Evaluation**: The **Crucible** ensures your logic actually works before you push it. If an assertion fails, the commit is rejected, ensuring **prompt reliability**.
+
+---
+
+## ✨ Key Features
+
+*   **MCP Server (Python)**: Seamlessly broadcast your logic vault as dynamic MCP Prompts and Tools.
+*   **Git-Native Logic Storage**: Use Git for versioning and syncing your agent's personas and frameworks.
+*   **Local-First Architecture**: Keep your prompts and logic secure on your local machine.
+*   **Automated Evaluation (The Crucible)**: Mathematical grading of your logic against predefined thresholds.
+*   **Sovereign Development**: Build AI agent infrastructure without vendor lock-in.
 
 ---
 
 ## 🏗️ System Architecture
 
+> **Deep Dive**: For a comprehensive look at SAVILE's implementation, methodology, and design concepts, read our [Technical Explanation](docs/explanation.md).
+
 SAVILE acts as a deterministic "Logic Router" that brings versioned clarity to the AI infrastructure layer.
 
+**Logic Router & MCP Infrastructure Overview**
 ```mermaid
 graph TD
     subgraph "Logic Vault (Git)"
@@ -109,16 +122,16 @@ savile install-hook
 
 ## 🛠️ Core Components
 
-### The Registry Core
+### The [Registry Core](docs/architecture.md#the-registry-core)
 A standardized directory structure for your intelligence. Every persona and framework is a Markdown file with mandatory **YAML Frontmatter** for metadata tracking.
 
-### The State Manager
+### The [State Manager](docs/architecture.md#the-state-manager)
 Powered by `GitPython`, handling bidirectional synchronization between your local environment and remote logic origins.
 
-### The MCP Bridge
+### The [MCP Bridge](docs/architecture.md#the-mcp-bridge)
 Exposes your vault as **MCP Prompts** (for dynamic slash-command integration) and **Tools** (for physical file installation into `.agent/` or `.gemini/` directories).
 
-### The Crucible
+### The [Crucible](docs/architecture.md#the-crucible)
 A validation loop that mathematically grades your logic against predefined thresholds in `/evals`.
 
 ---
