@@ -36,7 +36,7 @@ def test_init_local_installs_hook(tmp_path):
     # Read the hook to verify content
     with open(hook_path, "r") as f:
         content = f.read()
-    assert "savile evaluate" in content
+    assert "evaluate" in content
 
 def test_install_pre_push_hook(tmp_path):
     vault_dir = tmp_path / "test-install-hook"

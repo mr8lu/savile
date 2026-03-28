@@ -74,15 +74,16 @@ def init(source: str = typer.Option(None, help="Git URI to logic vault")):
 def install_hook():
     """Install the pre-push Git hook to enforce evaluate before push."""
     vault_path = Path(os.getcwd())
+    if not (vault_path / ".git").exists():
+        typer.echo("Current directory is not a Git repository. Cannot install hook.", err=True)
+        raise typer.Exit(code=1)
+        
     try:
-        if not (vault_path / ".git").exists():
-            typer.echo("Current directory is not a Git repository. Cannot install hook.", err=True)
-            raise typer.Exit(code=1)
-            
         manager.install_pre_push_hook(vault_path)
         typer.echo("Pre-push hook installed successfully.")
     except Exception as e:
         typer.echo(f"Error: {str(e)}", err=True)
+        raise typer.Exit(code=1)
 
 @app.command()
 def sync():
