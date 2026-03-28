@@ -56,6 +56,9 @@ graph TD
 ## 🚀 Quick Start
 
 ### 0. Pre-requisites
+
+> **Note:** SAVILE is currently tested and supported only on **macOS** and **Linux** platforms. Windows is not officially supported.
+
 SAVILE's built-in personas and workflows rely on the **BMAD Method** ([bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)) as its underlying multi-agent orchestrated framework.
 
 You can automate this installation and linkage by running:
