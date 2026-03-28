@@ -22,8 +22,13 @@ async def list_prompts_handler(vault_path: Path) -> list[Prompt]:
     return prompts
 
 async def get_prompt_handler(vault_path: Path, name: str, arguments: dict | None) -> GetPromptResult:
+    categories = ["personas", "frameworks"]
+    
+    if isinstance(arguments, dict) and arguments.get("category") in categories:
+        categories = [arguments["category"]]
+
     # Try to find the file in personas then frameworks
-    for category in ["personas", "frameworks"]:
+    for category in categories:
         cat_path = vault_path / category
         if cat_path.exists():
             for f in cat_path.iterdir():
@@ -69,6 +74,7 @@ async def list_tools_handler() -> list[Tool]:
                     "category": {"type": "string", "description": "Source category: 'personas' or 'frameworks'"},
                     "name": {"type": "string", "description": "The exact filename of the module (e.g., 'pm.md')"},
                     "target_type": {"type": "string", "description": "Target directory type: 'workflow' or 'skill'"},
+                    "project_path": {"type": "string", "description": "Optional explicit path to the project directory. Defaults to the CWD of the server if omitted."},
                 },
                 "required": ["category", "name", "target_type"]
             }
@@ -76,6 +82,12 @@ async def list_tools_handler() -> list[Tool]:
     ]
 
 async def call_tool_handler(vault_path: Path, name: str, arguments: dict) -> list[TextContent]:
+    if arguments is None or not isinstance(arguments, dict):
+        # Only list_logic_modules can potentially accept no arguments safely, but MCP schema expects an object
+        if name != "list_logic_modules" or arguments is not None:
+            return [TextContent(type="text", text="Error: arguments must be a valid dictionary.")]
+        arguments = {}
+        
     if name == "list_logic_modules":
         results = []
         for category in ["personas", "frameworks"]:
@@ -108,6 +120,7 @@ async def call_tool_handler(vault_path: Path, name: str, arguments: dict) -> lis
         category = arguments.get("category", "")
         module_name = arguments.get("name", "")
         target_type = arguments.get("target_type", "")
+        project_path_str = arguments.get("project_path")
 
         if category not in ["personas", "frameworks"]:
             return [TextContent(type="text", text="Error: Category must be 'personas' or 'frameworks'")]
@@ -139,25 +152,32 @@ async def call_tool_handler(vault_path: Path, name: str, arguments: dict) -> lis
             except ImportError:
                 pass # yaml not installed or parsing error
 
+        base_dir = Path(project_path_str).resolve() if project_path_str else Path.cwd()
+
         # 1. Install to .agent/
-        target_dir = Path.cwd() / ".agent" / f"{target_type}s"
+        target_dir = base_dir / ".agent" / f"{target_type}s"
         target_dir.mkdir(parents=True, exist_ok=True)
         target_file = target_dir / module_name
+        
+        if target_file.exists():
+            return [TextContent(type="text", text=f"Error: Target {module_name} already exists. Refusing to overwrite.")]
+            
         shutil.copy2(source_file, target_file)
 
         # 2. Generate Gemini CLI TOML command
-        gemini_cmd_dir = Path.cwd() / ".gemini" / "commands"
+        gemini_cmd_dir = base_dir / ".gemini" / "commands"
         gemini_cmd_dir.mkdir(parents=True, exist_ok=True)
         stem = Path(module_name).stem
         toml_file = gemini_cmd_dir / f"{stem}.toml"
         
-        toml_content = f'description = "{description}"\nprompt = "/{stem} {{{{args}}}}"\n'
-        with open(toml_file, "w") as f:
-            f.write(toml_content)
+        if not toml_file.exists():
+            toml_content = f'description = "{description}"\nprompt = "/{stem} {{{{args}}}}"\n'
+            with open(toml_file, "w") as f:
+                f.write(toml_content)
 
         msg = (
-            f"Successfully installed {module_name} to {target_file.relative_to(Path.cwd())}\n"
-            f"Created Gemini CLI command at {toml_file.relative_to(Path.cwd())}"
+            f"Successfully installed {module_name} to {target_file.relative_to(base_dir)}\n"
+            f"Created Gemini CLI command at {toml_file.relative_to(base_dir)}"
         )
         return [TextContent(type="text", text=msg)]
         
