@@ -55,6 +55,15 @@ graph TD
 
 ## 🚀 Quick Start
 
+### 0. Pre-requisites
+SAVILE's built-in personas and workflows rely on the **BMAD Method** ([bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)) as its underlying multi-agent orchestrated framework.
+
+You will need a local BMad installation to serve as the core intelligence engine:
+```bash
+# In your main development workspace or a dedicated directory
+npx bmad-method install
+```
+
 ### 1. Installation
 ```bash
 # Clone and install locally
