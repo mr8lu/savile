@@ -6,6 +6,8 @@ Welcome to **SAVILE**! This guide will help you set up your local logic vault an
 
 ## 🚦 Phase 0: The Prerequisite (BMAD-METHOD)
 
+> **Note:** SAVILE is currently tested and supported only on **macOS** and **Linux** platforms. Windows is not officially supported.
+
 SAVILE's built-in personas (like the Architect, Product Manager, or Developer) and workflows rely on the **BMAD Method** ([bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)) as their core multi-agent orchestrated framework.
 
 ### Option A: Automate (Recommended)
