@@ -45,6 +45,7 @@ savile/
 **Target Logic Vault Schema (loaded by SAVILE):**
 ```text
 my-logic-vault/
+├── .bmad-core/           # -> symlink to local BMAD-METHOD framework installation
 ├── personas/             # e.g., systems_realist.md
 ├── frameworks/           # e.g., code_review_checklist.md
 ├── evals/                # test_assertions.yaml

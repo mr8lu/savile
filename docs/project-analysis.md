@@ -59,13 +59,16 @@ The Model Context Protocol (MCP) implementation that exposes the vault to the wo
 ### 3.4 The Crucible (The Gatekeeper)
 A validation runner that enforces both structural integrity (metadata checks) and logical density (LLM-graded assertions).
 
-## 4. Implementation Status (v0.2.0)
-As of March 25, 2026, SAVILE has successfully achieved:
+## 4. Implementation Status (v0.2.1)
+As of March 28, 2026, SAVILE has successfully achieved:
 - [x] Full Git-native sync engine.
 - [x] MCP Prompt & Tool implementation.
 - [x] Automated Gemini CLI command generation.
 - [x] Built-in vault with 9 BMad core agents.
 - [x] Pre-push evaluation hooks.
+- [x] Automated BMAD pre-requisite linking and initialization scripting.
+- [x] Adversarial security hardening for the MCP Server.
+- [x] E2E CLI test suite and robust exception handling.
 
 ## 5. Next Horizon: v0.3.0 The Protocol
 The next phase focuses on the "Network" effect:
