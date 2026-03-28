@@ -51,12 +51,16 @@ async def test_vulnerability_symlink_path_traversal(mock_vault, tmp_path):
 
 @pytest.mark.asyncio
 async def test_vulnerability_implicit_cwd_pollution(mock_vault, tmp_path):
-    """V7: Implicit CWD Dependency"""
+    """V7: Fixed CWD Dependency by providing project_path"""
     persona_file = mock_vault / "personas" / "pollution_test.md"
     persona_file.write_text("---\ndescription: Test\n---\nContent")
     
     random_dir = tmp_path / "random_dir"
     random_dir.mkdir()
+    
+    explicit_target = tmp_path / "explicit_target"
+    explicit_target.mkdir()
+    
     original_cwd = os.getcwd()
     os.chdir(random_dir)
     
@@ -64,14 +68,14 @@ async def test_vulnerability_implicit_cwd_pollution(mock_vault, tmp_path):
         results = await call_tool_handler(mock_vault, "install_logic_module", {
             "category": "personas",
             "name": "pollution_test.md",
-            "target_type": "workflow"
+            "target_type": "workflow",
+            "project_path": str(explicit_target)
         })
         
-        # The tool should install the file relative to the vault root, NOT the current working directory
-        # If it uses Path.cwd(), it will pollute random_dir.
-        target_file = mock_vault / ".agent" / "workflows" / "pollution_test.md"
-        assert target_file.exists(), "Installation target should be relative to the vault_path, not CWD"
-        assert not (random_dir / ".agent").exists(), "Vulnerability: Tool pollutes arbitrary current working directories instead of using vault context."
+        # It should install the file to the explicit_target, NOT the current working directory
+        target_file = explicit_target / ".agent" / "workflows" / "pollution_test.md"
+        assert target_file.exists(), "Installation target should respect project_path argument"
+        assert not (random_dir / ".agent").exists(), "Vulnerability: Tool pollutes CWD despite explicit project_path"
     finally:
         os.chdir(original_cwd)
 
