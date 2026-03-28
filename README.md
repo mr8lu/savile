@@ -75,13 +75,16 @@ pip install -e .
 ```
 
 ### 2. Initialize a Vault
-Scaffold a new local vault or clone an existing one from a remote origin.
+Scaffold a new local vault or clone an existing one from a remote origin. During initialization, SAVILE will interactively prompt you to link your local BMad installation (from Step 0).
 ```bash
 # Initialize a brand new local vault
 savile init
 
 # OR Initialize from a remote Git repository
 savile init --source git+ssh://github.com/user/my-logic-vault.git
+
+# If you skipped the prompt during init, you can configure it later:
+savile setup
 ```
 
 ### 3. Serve to your IDE
