@@ -8,6 +8,44 @@ from savile.mcp import server as mcp_server
 
 app = typer.Typer(help="SAVILE: System for Agentic Versioning, Intelligence, and Logical Evaluation")
 
+def run_setup(vault_path: Path):
+    """Run the interactive setup for pre-requisites like BMAD."""
+    typer.echo("\n--- SAVILE Pre-requisites Setup ---")
+    typer.echo("SAVILE's built-in personas rely on the BMAD Method framework.")
+    
+    bmad_link = vault_path / ".bmad-core"
+    if bmad_link.exists() or bmad_link.is_symlink():
+        typer.echo("✅ .bmad-core link already exists.")
+        return
+
+    typer.echo("BMAD-method not linked. You need a local BMad installation (created via `npx bmad-method install`).")
+    bmad_path = typer.prompt("Enter the absolute or relative path to your BMad project directory (or leave blank to skip)", default="")
+    
+    if not bmad_path:
+        typer.echo("Skipping BMAD setup. You can run 'savile setup' later to configure it.")
+        return
+        
+    bmad_dir = Path(bmad_path).expanduser().resolve()
+    core_path = bmad_dir / ".bmad-core"
+    
+    if not core_path.exists():
+        typer.echo(f"⚠️  Warning: .bmad-core not found in {bmad_dir}.", err=True)
+        typer.echo("Please ensure you run 'npx bmad-method install' in that directory to initialize the framework.", err=True)
+    
+    try:
+        os.symlink(core_path, bmad_link)
+        typer.echo(f"✅ Successfully linked .bmad-core to {core_path}")
+    except Exception as e:
+        typer.echo(f"❌ Failed to create symlink: {e}", err=True)
+
+
+@app.command()
+def setup():
+    """Configure pre-requisites (like BMAD-method) for the logic vault."""
+    vault_path = Path(os.getcwd())
+    run_setup(vault_path)
+
+
 @app.command()
 def init(source: str = typer.Option(None, help="Git URI to logic vault")):
     """Initialize a local logic vault from a remote Git repository."""
@@ -19,6 +57,7 @@ def init(source: str = typer.Option(None, help="Git URI to logic vault")):
             typer.echo("Remote vault cloned successfully.")
         except Exception as e:
             typer.echo(f"Error: {str(e)}", err=True)
+            raise typer.Exit(code=1)
     else:
         typer.echo("Initializing new local logic vault...")
         try:
@@ -27,6 +66,9 @@ def init(source: str = typer.Option(None, help="Git URI to logic vault")):
             typer.echo("Local vault scaffolded and initialized successfully.")
         except Exception as e:
             typer.echo(f"Error: {str(e)}", err=True)
+            raise typer.Exit(code=1)
+            
+    run_setup(vault_path)
 
 @app.command()
 def install_hook():
