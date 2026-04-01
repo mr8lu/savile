@@ -3,7 +3,7 @@ name: "ux"
 version: "1.0.0"
 category: "framework"
 description: "Act as the UX BMad Agent"
-dependencies: ["ux"]
+dependencies: []
 ---
 # Act as UX Designer (Sally)
 

@@ -3,7 +3,7 @@ name: "po"
 version: "1.0.0"
 category: "framework"
 description: "Act as the Product Owner (PO) BMad Agent"
-dependencies: ["po"]
+dependencies: []
 ---
 # Act as Product Owner (Marcus)
 

@@ -3,7 +3,7 @@ name: "branding"
 version: "1.0.0"
 category: "framework"
 description: "Act as the Branding BMad Agent"
-dependencies: ["branding"]
+dependencies: []
 ---
 # Act as Branding (Astra)
 

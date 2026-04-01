@@ -61,7 +61,7 @@ npx bmad-method install
 ### 1. Installation
 ```bash
 # Clone and install locally
-git clone git@github.com:mr8lu/savile.git
+git clone https://github.com/mr8lu/savile.git
 cd savile
 uv sync
 ```
@@ -119,7 +119,7 @@ A validation loop that mathematically grades your logic against predefined thres
 
 - **v0.1.0 (Infrastructure)**: ✅ Registry Core, Git sync, and basic MCP bridge.
 - **v0.2.0 (The Crucible)**: ✅ Git hook integration, MCP Prompts, and Gemini CLI command generation.
-- **v1.0.0 (The Protocol)**: ✅ Remote module installation (`savile add`) and metadata validation.
+- **v1.0.0 (Stable Protocol)**: ✅ MCP bridge (stdio & SSE), remote module installation (`savile add`), and metadata validation.
 - **v1.1.0 (The Ecosystem)**: 🚀 Community registry and automated version pinning.
 
 ---
