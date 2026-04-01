@@ -33,7 +33,8 @@ As the System Architect, my focus is on stability, developer productivity, and p
 
 ```text
 savile/
-├── pyproject.toml        # Poetry or uv managed dependencies
+├── pyproject.toml        # uv managed dependencies
+├── uv.lock               # Deterministic dependency lockfile
 ├── src/savile/
 │   ├── cli.py            # Typer logic
 │   ├── sync.py           # GitPython logic
