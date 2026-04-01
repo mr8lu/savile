@@ -145,9 +145,8 @@ A validation loop that mathematically grades your logic against predefined thres
 
 ## 🗺️ Roadmap
 
-- **v0.1.0 (Infrastructure)**: ✅ Registry Core, Git sync, and basic MCP bridge.
-- **v0.2.0 (The Crucible)**: ✅ Git hook integration, MCP Prompts, and Gemini CLI command generation.
-- **v0.3.0 (The Protocol)**: 🚀 Remote module installation (`savile add`) and deterministic version pinning.
+- **v1.0.0 (Stable Release)**: ✅ Registry Core, Git sync, MCP bridge (stdio & SSE), The Crucible (Git hook integration), and Gemini CLI command generation.
+- **Next Horizon**: 🚀 Remote module installation (`savile add`) and deterministic version pinning.
 
 ---
 

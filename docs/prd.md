@@ -66,15 +66,14 @@ Logic without system feedback is just idealism.
 
 ## 5. Development Milestones
 
-### v0.1.0: The Infrastructure
-* Standardize the directory schema (`personas`, `frameworks`, `evals`).
-* Integrate `GitPython` for local/remote repository loading.
-* Wrap the Python `mcp` filesystem server in the `typer` CLI.
+### v1.0.0: The Stable Core
+* Standardized the directory schema (`personas`, `frameworks`, `evals`).
+* Integrated `GitPython` for local/remote repository loading.
+* Wrapped the Python `mcp` filesystem server in the `typer` CLI.
+* Integrated the evaluation matrix directly into the `savile evaluate` command.
+* Enforced pre-push Git hooks to guarantee logic integrity before syncing to a remote origin.
+* Added Server-Sent Events (SSE) support for the MCP bridge.
 
-### v0.2.0: The Crucible
-* Integrate the evaluation matrix directly into the `savile evaluate` command.
-* Enforce pre-push Git hooks to guarantee logic integrity before syncing to a remote origin.
-
-### v0.3.0: The Protocol
+### Next Horizon: The Protocol
 * Establish the open-source registry for sharing deterministic logic modules.
 * Enable remote module installation (e.g., `savile add https://github.com/org/system-architecture-frameworks.git`).
