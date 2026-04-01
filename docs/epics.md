@@ -1,5 +1,5 @@
 ---
-stepsCompleted: ["v0.1.0-completion", "v0.2.0-completion"]
+stepsCompleted: ["v1.0.0-completion"]
 inputDocuments: ["docs/prd.md"]
 ---
 

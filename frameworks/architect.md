@@ -3,7 +3,7 @@ name: "architect"
 version: "1.0.0"
 category: "framework"
 description: "Act as the Architect BMad Agent"
-dependencies: ["architect"]
+dependencies: []
 ---
 # Act as Architect
 
