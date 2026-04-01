@@ -216,7 +216,8 @@ async def run_stdio_server(vault_path: Path):
 async def run_sse_server(vault_path: Path, port: int = 8000):
     from mcp.server.sse import SseServerTransport
     from starlette.applications import Starlette
-    from starlette.routing import Route
+    from starlette.routing import Route, Mount
+    from starlette.responses import Response
     import uvicorn
 
     server = create_mcp_server(vault_path)
@@ -229,15 +230,13 @@ async def run_sse_server(vault_path: Path, port: int = 8000):
             await server.run(
                 streams[0], streams[1], server.create_initialization_options()
             )
-
-    async def handle_messages(request):
-        await sse.handle_post_message(request.scope, request.receive, request._send)
+        return Response()
 
     starlette_app = Starlette(
         debug=True,
         routes=[
             Route("/sse", endpoint=handle_sse),
-            Route("/messages", endpoint=handle_messages, methods=["POST"]),
+            Mount("/messages", app=sse.handle_post_message),
         ],
     )
 
