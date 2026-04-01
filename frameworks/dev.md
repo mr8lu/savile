@@ -3,7 +3,7 @@ name: "dev"
 version: "1.0.0"
 category: "framework"
 description: "Act as the Dev BMad Agent"
-dependencies: ["dev"]
+dependencies: []
 ---
 # Act as Dev
 
