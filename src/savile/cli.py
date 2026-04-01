@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import typer
 import anyio
-from savile.core import registry
+from savile.core import registry, protocol
 from savile.sync import manager
 from savile.mcp import server as mcp_server
 
@@ -69,6 +69,27 @@ def init(source: str = typer.Option(None, help="Git URI to logic vault")):
             raise typer.Exit(code=1)
             
     run_setup(vault_path)
+
+@app.command()
+def add(
+    source: str = typer.Argument(..., help="Git URI to logic module repository"),
+    alias: str = typer.Option(None, "--alias", "-a", help="Alias for the logic module filename")
+):
+    """Pull logic modules from a remote repository into the local vault."""
+    vault_path = Path(os.getcwd())
+    typer.echo(f"Adding logic modules from {source}...")
+    try:
+        modules = protocol.add_remote_module(vault_path, source, alias)
+        if not modules:
+            typer.echo("No valid modules found in the source repository.", err=True)
+            raise typer.Exit(code=1)
+        
+        for m in modules:
+            typer.echo(f"✅ Added module: {m}")
+        typer.echo("Successfully added all logic modules.")
+    except Exception as e:
+        typer.echo(f"Error: {str(e)}", err=True)
+        raise typer.Exit(code=1)
 
 @app.command()
 def install_hook():

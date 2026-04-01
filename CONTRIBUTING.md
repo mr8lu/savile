@@ -8,7 +8,7 @@ Thank you for your interest in contributing to the SAVILE framework! We welcome 
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-org/savile.git
+    git clone https://github.com/mr8lu/savile.git
     cd savile
     ```
 2.  **Initialize the Environment:**
