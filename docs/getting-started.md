@@ -132,6 +132,6 @@ Before you share your logic with your team, you should ensure it actually works.
 Now that you're set up, you can:
 *   **Sync**: Run `uv run savile sync` to push your local changes and pull from your remote vault.
 *   **Install**: Use the **`install_logic_module`** MCP tool to physically copy logic into a project's `.agent/workflows/` folder.
-*   **Contribute**: Help us build the next phase of the protocol in **v0.3.0**!
+*   **Contribute**: Help us build the next phase of the protocol, improving remote module installation and version pinning!
 
 *Happy building, sovereign developer!*
