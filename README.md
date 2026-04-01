@@ -24,6 +24,7 @@ Modern AI development is plagued by opaque UI abstractions and "prompt drift." S
 
 *   **MCP Server (Python)**: Seamlessly broadcast your logic vault as dynamic MCP Prompts and Tools.
 *   **Git-Native Logic Storage**: Use Git for versioning and syncing your agent's personas and frameworks.
+*   **Upstream Automation**: Utilize built-in scripts to sync changes from upstream intelligence frameworks (like BMAD-METHOD) directly into your local vault via GitHub Actions.
 *   **Local-First Architecture**: Keep your prompts and logic secure on your local machine.
 *   **Automated Evaluation (The Crucible)**: Mathematical grading of your logic against predefined thresholds.
 *   **Sovereign Development**: Build AI agent infrastructure without vendor lock-in.
