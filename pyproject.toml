@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "savile"
-version = "0.1.0"
+version = "1.0.0"
 description = "System for Agentic Versioning, Intelligence, and Logical Evaluation"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -18,8 +18,14 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
-    "pytest-asyncio>=0.21.0"
+    "pytest-asyncio>=0.21.0",
+    "mkdocs-material>=9.5.0"
 ]
 
 [project.scripts]
 savile = "savile.cli:app"
+
+[dependency-groups]
+dev = [
+    "mkdocs>=1.6.1",
+]

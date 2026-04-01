@@ -2,7 +2,7 @@
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/ "Python 3.11+ Version Support")
 [![Model Context Protocol](https://img.shields.io/badge/MCP-Standard-green.svg)](https://modelcontextprotocol.io/ "Model Context Protocol Standard Compliance")
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE "MIT License")
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/mr8lu/savile/blob/main/LICENSE "MIT License")
 
 **SAVILE** (System for Agentic Versioning, Intelligence, and Logical Evaluation) is a high-fidelity, local-first **MCP server** and protocol for storing, versioning, syncing, and evaluating **AI agent prompts and skills** via the **Model Context Protocol (MCP)**.
 
@@ -35,34 +35,6 @@ Modern AI development is plagued by opaque UI abstractions and "prompt drift." S
 > **Deep Dive**: For a comprehensive look at SAVILE's implementation, methodology, and design concepts, read our [Technical Explanation](docs/explanation.md).
 
 SAVILE acts as a deterministic "Logic Router" that brings versioned clarity to the AI infrastructure layer.
-
-**Logic Router & MCP Infrastructure Overview**
-```mermaid
-graph TD
-    subgraph "Logic Vault (Git)"
-        V_P[personas/*.md]
-        V_F[frameworks/*.md]
-        V_E[evals/*.yaml]
-    end
-
-    subgraph "SAVILE Daemon"
-        SYNC[State Manager: GitPython]
-        MCP[MCP Bridge: Prompts & Tools]
-        CRU[The Crucible: Eval Runner]
-    end
-
-    subgraph "Agent Clients"
-        AG[Antigravity / Cursor]
-        GCLI[Gemini CLI]
-    end
-
-    V_P --> SYNC
-    V_F --> SYNC
-    SYNC --> MCP
-    MCP -- "MCP Prompts" --> AG
-    MCP -- "Installation Tools" --> GCLI
-    CRU -- "pre-push hook" --> V_P
-```
 
 ---
 
@@ -113,13 +85,13 @@ SAVILE is an MCP-compatible server. Use the provided runner script to connect to
 ./scripts/run-mcp.sh -h
 ```
 
-Supported out-of-the-box:
-*   **Warp AI**: Add a new MCP server with the command path.
-*   **Antigravity / Cursor**: Point your MCP settings to the `run-mcp.sh` script.
-*   **Claude Desktop**: Add a new `stdio` entry to your JSON config.
-*   **Gemini CLI**: Automatically populates `.gemini/commands/` when using the `install_logic_module` tool.
+### 4. Pull Remote Modules
+Add deterministic logic from external sources.
+```bash
+uv run savile add git+ssh://github.com/user/remote-logic.git
+```
 
-### 4. Enforce Quality
+### 5. Enforce Quality
 Install the pre-push Git hook to ensure your logic passes **The Crucible** evaluations before syncing.
 ```bash
 uv run savile install-hook
@@ -129,16 +101,16 @@ uv run savile install-hook
 
 ## 🛠️ Core Components
 
-### The [Registry Core](docs/architecture.md#the-registry-core)
+### The [Registry Core](docs/architecture.md#3-directory-structure)
 A standardized directory structure for your intelligence. Every persona and framework is a Markdown file with mandatory **YAML Frontmatter** for metadata tracking.
 
-### The [State Manager](docs/architecture.md#the-state-manager)
+### The [State Manager](docs/architecture.md#22-the-state-manager-gitpython)
 Powered by `GitPython`, handling bidirectional synchronization between your local environment and remote logic origins.
 
-### The [MCP Bridge](docs/architecture.md#the-mcp-bridge)
+### The [MCP Bridge](docs/architecture.md#23-the-mcp-bridge-mcp-sdk)
 Exposes your vault as **MCP Prompts** (for dynamic slash-command integration) and **Tools** (for physical file installation into `.agent/` or `.gemini/` directories).
 
-### The [Crucible](docs/architecture.md#the-crucible)
+### The [Crucible](docs/architecture.md#24-the-crucible-pyyaml-subprocess-pytest)
 A validation loop that mathematically grades your logic against predefined thresholds in `/evals`.
 
 ---
@@ -147,7 +119,8 @@ A validation loop that mathematically grades your logic against predefined thres
 
 - **v0.1.0 (Infrastructure)**: ✅ Registry Core, Git sync, and basic MCP bridge.
 - **v0.2.0 (The Crucible)**: ✅ Git hook integration, MCP Prompts, and Gemini CLI command generation.
-- **v0.3.0 (The Protocol)**: 🚀 Remote module installation (`savile add`) and deterministic version pinning.
+- **v1.0.0 (The Protocol)**: ✅ Remote module installation (`savile add`) and metadata validation.
+- **v1.1.0 (The Ecosystem)**: 🚀 Community registry and automated version pinning.
 
 ---
 
