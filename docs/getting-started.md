@@ -39,17 +39,13 @@ SAVILE is a local Python daemon. First, let's get it installed on your machine.
 git clone git@github.com:mr8lu/savile.git
 cd savile
 
-# Create and activate a virtual environment
-python3 -m venv .venv
-source .venv/bin/activate
-
-# Install the dependencies and the CLI
-pip install -e .
+# Sync the virtual environment and install the CLI using uv
+uv sync
 ```
 
 Verify the installation by running:
 ```bash
-savile --help
+uv run savile --help
 ```
 
 ---

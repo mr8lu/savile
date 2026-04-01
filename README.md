@@ -91,9 +91,7 @@ npx bmad-method install
 # Clone and install locally
 git clone git@github.com:mr8lu/savile.git
 cd savile
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e .
+uv sync
 ```
 
 ### 2. Initialize a Vault
