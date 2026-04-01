@@ -24,6 +24,7 @@ Modern AI development is plagued by opaque UI abstractions and "prompt drift." S
 
 *   **MCP Server (Python)**: Seamlessly broadcast your logic vault as dynamic MCP Prompts and Tools.
 *   **Git-Native Logic Storage**: Use Git for versioning and syncing your agent's personas and frameworks.
+*   **Upstream Automation**: Utilize built-in scripts to sync changes from upstream intelligence frameworks (like BMAD-METHOD) directly into your local vault via GitHub Actions.
 *   **Local-First Architecture**: Keep your prompts and logic secure on your local machine.
 *   **Automated Evaluation (The Crucible)**: Mathematical grading of your logic against predefined thresholds.
 *   **Sovereign Development**: Build AI agent infrastructure without vendor lock-in.
@@ -145,9 +146,8 @@ A validation loop that mathematically grades your logic against predefined thres
 
 ## 🗺️ Roadmap
 
-- **v0.1.0 (Infrastructure)**: ✅ Registry Core, Git sync, and basic MCP bridge.
-- **v0.2.0 (The Crucible)**: ✅ Git hook integration, MCP Prompts, and Gemini CLI command generation.
-- **v0.3.0 (The Protocol)**: 🚀 Remote module installation (`savile add`) and deterministic version pinning.
+- **v1.0.0 (Stable Release)**: ✅ Registry Core, Git sync, MCP bridge (stdio & SSE), The Crucible (Git hook integration), and Gemini CLI command generation.
+- **Next Horizon**: 🚀 Remote module installation (`savile add`) and deterministic version pinning.
 
 ---
 

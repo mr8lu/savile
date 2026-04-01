@@ -3,7 +3,7 @@ name: "cis"
 version: "1.0.0"
 category: "framework"
 description: "Act as the Innovation Strategist BMad Agent"
-dependencies: ["cis"]
+dependencies: []
 ---
 # Act as Innovation Strategist (Creative Intelligence Suite)
 
