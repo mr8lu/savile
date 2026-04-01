@@ -2,7 +2,7 @@
 name: "qa"
 version: "1.0.0"
 category: "persona"
-description: "QA engineer for test automation and coverage."
+description: "QA engineer for test automation and coverage. Use when the user asks to talk to Quinn or requests the QA engineer."
 dependencies: []
 ---
 
