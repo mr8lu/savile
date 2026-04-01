@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # SAVILE: MCP Server Run Script
-# Purpose: Starts the SAVILE MCP server over stdio for AI agents (like Claude Desktop, OpenClaw, Cursor)
+# Purpose: Starts the SAVILE MCP server over stdio for AI agents (like Claude Desktop, OpenClaw, Cursor, Warp, Antigravity)
 
 set -e
 
@@ -28,23 +28,37 @@ Arguments:
 To use SAVILE with an MCP-compatible agent or IDE, configure it as a 
 'stdio' server using the absolute path to this script.
 
-[ Claude Desktop ]
-Add the following to your claude_desktop_config.json:
+[ Claude Desktop / Antigravity ]
+Add the following to your configuration file:
 
 {
   "mcpServers": {
-    "savile-logic-vault": {
+    "savile": {
       "command": "$SCRIPT_DIR/run-mcp.sh",
       "args": ["$PROJECT_ROOT"]
     }
   }
 }
 
+[ Warp ]
+In Warp AI, enable MCP and add a new server:
+- Name: savile
+- Command: $SCRIPT_DIR/run-mcp.sh "$PROJECT_ROOT"
+
 [ Cursor / Windsurf / OpenClaw ]
 Add a new MCP server in the settings:
 - Name: savile
 - Type: command (or stdio)
 - Command: $SCRIPT_DIR/run-mcp.sh "$PROJECT_ROOT"
+
+[ Gemini CLI ]
+SAVILE integrates with Gemini CLI via the 'install_logic_module' tool. 
+When an agent uses this tool to install a persona, it automatically 
+generates a .toml command in your .gemini/commands/ directory.
+
+To use the vault directly in Gemini CLI without installing:
+1. Ensure this server is running in another terminal.
+2. Use Gemini CLI's 'mcp' integration if configured globally.
 
 EOF
     exit 0
