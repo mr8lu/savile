@@ -69,6 +69,7 @@ As of April 1, 2026, SAVILE has successfully achieved its v1.0.0 Stable Protocol
 - [x] Automated BMAD pre-requisite linking and initialization scripting.
 - [x] Adversarial security hardening for the MCP Server.
 - [x] E2E CLI test suite and robust exception handling.
+- [x] Warp AI SSE support.
 - [x] **Stable Protocol (`savile add`)**: Pulling remote logic modules into local vaults.
 - [x] **Metadata Schema**: Winston's v1.0.0 YAML frontmatter validation.
 - [x] **Documentation Hub**: MkDocs Material site with automated GitHub Pages deployment.

@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Remote Modules:** Introduced `savile add` command for pulling deterministic logic from remote repositories.
 - **Documentation Site:** Launched the official documentation site with integrated SEO and GitHub Pages deployment.
 - **GitHub Actions:** Automated documentation deployment via CI/CD.
+- **BMAD Upstream Sync:** Added `scripts/sync_bmad_to_vault.py` to automate the synchronization of the latest BMAD-METHOD upstream personas and frameworks into the local Savile vault (ready for GitHub Actions integration).
+- **Expanded Personas:** Synced the latest core BMAD-METHOD identities into the `v1.0.0` baseline and introduced the `tech-writer` persona.
+- **SSE Server Mode:** Fully integrated `starlette` and `uvicorn` to support Server-Sent Events (SSE) via `savile serve --sse --port 8000`, enabling seamless integration with Warp AI.
+- **MCP Runner Script:** Added `scripts/run-mcp.sh` to reliably orchestrate the server and dynamically generate configuration JSON/blocks for Claude Desktop, Cursor, Antigravity, and Warp AI directly via the `-h` flag.
+- **Gemini CLI Support:** Documented and verified how the `install_logic_module` tool automatically scaffolds local `.gemini/commands/` for instant slash-command integration.
+
+### Changed
+- **Documentation:** Modernized all project roadmaps, epics, PRDs, and analysis docs to accurately reflect the `v1.0.0` stable release capabilities.
+- **Package Manager:** Completely migrated the project from `pip`/`setuptools` to `uv` and `hatchling` for ultra-fast, deterministic dependency resolution.
 
 ### Fixed
 - **Documentation Links:** Resolved broken cross-references and anchor links in technical specifications.

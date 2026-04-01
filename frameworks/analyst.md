@@ -3,7 +3,7 @@ name: "analyst"
 version: "1.0.0"
 category: "framework"
 description: "Act as the Analyst BMad Agent"
-dependencies: ["analyst"]
+dependencies: []
 ---
 # Act as Analyst (Mary)
 
