@@ -59,8 +59,8 @@ The Model Context Protocol (MCP) implementation that exposes the vault to the wo
 ### 3.4 The Crucible (The Gatekeeper)
 A validation runner that enforces both structural integrity (metadata checks) and logical density (LLM-graded assertions).
 
-## 4. Implementation Status (v0.2.1)
-As of March 28, 2026, SAVILE has successfully achieved:
+## 4. Implementation Status (v1.0.0)
+As of April 1, 2026, SAVILE has successfully achieved its v1.0.0 Stable Protocol release:
 - [x] Full Git-native sync engine.
 - [x] MCP Prompt & Tool implementation.
 - [x] Automated Gemini CLI command generation.
@@ -69,9 +69,12 @@ As of March 28, 2026, SAVILE has successfully achieved:
 - [x] Automated BMAD pre-requisite linking and initialization scripting.
 - [x] Adversarial security hardening for the MCP Server.
 - [x] E2E CLI test suite and robust exception handling.
+- [x] **Stable Protocol (`savile add`)**: Pulling remote logic modules into local vaults.
+- [x] **Metadata Schema**: Winston's v1.0.0 YAML frontmatter validation.
+- [x] **Documentation Hub**: MkDocs Material site with automated GitHub Pages deployment.
 
-## 5. Next Horizon: v0.3.0 The Protocol
-The next phase focuses on the "Network" effect:
-*   **`savile add`**: Pulling remote modules from any repository.
+## 5. Next Horizon: v1.1.0 The Ecosystem
+The next phase focuses on expanding the network effect and community tooling:
 *   **`savile.lock`**: Deterministic version pinning for team collaboration.
-*   **Schema Enforcement**: Deep validation of the new metadata standards.
+*   **Community Registry**: A centralized or federated index of open-source logic modules.
+*   **Advanced Conflict Resolution**: Smarter merging and aliasing when pulling remote modules with overlapping names.
