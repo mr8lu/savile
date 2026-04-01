@@ -18,8 +18,14 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
-    "pytest-asyncio>=0.21.0"
+    "pytest-asyncio>=0.21.0",
+    "mkdocs-material>=9.5.0"
 ]
 
 [project.scripts]
 savile = "savile.cli:app"
+
+[dependency-groups]
+dev = [
+    "mkdocs>=1.6.1",
+]
