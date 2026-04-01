@@ -99,9 +99,17 @@ def sync():
         typer.echo(f"Error: {str(e)}", err=True)
 
 @app.command()
-def serve(vault: Path = typer.Option(Path(os.getcwd()), "--vault", "-v", help="Path to the logic vault")):
+def serve(
+    vault: Path = typer.Option(Path(os.getcwd()), "--vault", "-v", help="Path to the logic vault"),
+    sse: bool = typer.Option(False, "--sse", help="Run the server over HTTP SSE instead of stdio"),
+    port: int = typer.Option(8000, "--port", "-p", help="Port to run the SSE server on (if --sse is used)")
+):
     """Start the MCP server to expose the logic vault to connected tools."""
-    anyio.run(mcp_server.run_stdio_server, vault)
+    if sse:
+        typer.echo(f"Starting MCP server over SSE at http://127.0.0.1:{port}/sse", err=True)
+        anyio.run(mcp_server.run_sse_server, vault, port)
+    else:
+        anyio.run(mcp_server.run_stdio_server, vault)
 
 @app.command()
 def evaluate():

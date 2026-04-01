@@ -17,11 +17,13 @@ Starts the SAVILE MCP server over stdio, seamlessly managing the Python
 virtual environment via uv.
 
 Usage: 
-  $(basename "$0") [VAULT_PATH]
+  $(basename "$0") [VAULT_PATH] [--sse] [--port PORT]
 
 Arguments:
   VAULT_PATH    Optional. Path to the SAVILE Logic Vault. Defaults to:
                 $PROJECT_ROOT
+  --sse         Run the server over HTTP SSE (Required for Warp)
+  --port PORT   Port to run the SSE server on (Default: 8000)
 
 --- Configuration Guide for AI Agents ---
 
@@ -43,7 +45,11 @@ Add the following to your configuration file:
 [ Warp ]
 In Warp AI, enable MCP and add a new server:
 - Name: savile
-- Command: $SCRIPT_DIR/run-mcp.sh "$PROJECT_ROOT"
+- Type: SSE (Server-Sent Events)
+- Server URL: http://127.0.0.1:8000/sse
+
+* Note: To use Warp, you must start this script with the --sse flag:
+  $SCRIPT_DIR/run-mcp.sh "$PROJECT_ROOT" --sse
 
 [ Cursor / Windsurf / OpenClaw ]
 Add a new MCP server in the settings:
@@ -64,12 +70,16 @@ EOF
     exit 0
 fi
 
-# Default to the project root if no vault path is provided
-VAULT_PATH="${1:-$PROJECT_ROOT}"
-
 # Log to stderr so it doesn't interfere with the MCP stdio JSON-RPC stream
->&2 echo "Starting SAVILE MCP server for vault: $VAULT_PATH"
+>&2 echo "Starting SAVILE MCP server..."
+
+# Extract vault path if provided as first arg, otherwise default to PROJECT_ROOT
+VAULT_PATH="$PROJECT_ROOT"
+if [[ -n "$1" && ! "$1" == -* ]]; then
+  VAULT_PATH="$1"
+  shift # Remove the path from args so we can pass the rest of the flags
+fi
 
 # Execute the MCP server directly using uv run.
 # uv automatically manages the .venv detection and environment activation.
-exec uv run savile serve --vault "$VAULT_PATH"
+exec uv run savile serve --vault "$VAULT_PATH" "$@"
