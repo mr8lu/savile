@@ -43,10 +43,13 @@ Add the following to your configuration file:
 }
 
 [ Warp ]
-In Warp AI, enable MCP and add a new server:
-- Name: savile
-- Type: SSE (Server-Sent Events)
-- Server URL: http://127.0.0.1:8000/sse
+In Warp AI, enable MCP and add a new server using this JSON config:
+
+{
+  "savile": {
+    "serverUrl": "http://127.0.0.1:8000/sse"
+  }
+}
 
 * Note: To use Warp, you must start this script with the --sse flag:
   $SCRIPT_DIR/run-mcp.sh "$PROJECT_ROOT" --sse
