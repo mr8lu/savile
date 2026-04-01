@@ -57,13 +57,13 @@ A **Logic Vault** is just a directory (backed by Git) that stores your personas,
 ### Option A: Start Fresh
 Initialize a brand new local vault with the required folder structure:
 ```bash
-savile init
+uv run savile init
 ```
 
 ### Option B: Sync from Remote
 Already have your prompts in a Git repository? Clone them instantly:
 ```bash
-savile init --source git+ssh://github.com/user/my-logic-vault.git
+uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
 ```
 
 ---
@@ -118,11 +118,11 @@ Before you share your logic with your team, you should ensure it actually works.
 
 1.  **Install the Git Hook**: This ensures your logic passes evaluations before you are allowed to `git push`.
     ```bash
-    savile install-hook
+    uv run savile install-hook
     ```
 2.  **Run Evaluation**:
     ```bash
-    savile evaluate
+    uv run savile evaluate
     ```
 
 ---
@@ -130,7 +130,7 @@ Before you share your logic with your team, you should ensure it actually works.
 ## 🚀 Next Steps
 
 Now that you're set up, you can:
-*   **Sync**: Run `savile sync` to push your local changes and pull from your remote vault.
+*   **Sync**: Run `uv run savile sync` to push your local changes and pull from your remote vault.
 *   **Install**: Use the **`install_logic_module`** MCP tool to physically copy logic into a project's `.agent/workflows/` folder.
 *   **Contribute**: Help us build the next phase of the protocol in **v0.3.0**!
 

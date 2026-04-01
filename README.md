@@ -94,14 +94,16 @@ cd savile
 uv sync
 ```
 
+> **Tip:** After `uv sync`, you must prefix commands with `uv run` (e.g., `uv run savile --help`). Alternatively, you can activate the environment with `source .venv/bin/activate` or install it globally with `uv tool install .`.
+
 ### 2. Initialize a Vault
 Scaffold a new local vault or clone an existing one from a remote origin.
 ```bash
 # Initialize a brand new local vault
-savile init
+uv run savile init
 
 # OR Initialize from a remote Git repository
-savile init --source git+ssh://github.com/user/my-logic-vault.git
+uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
 ```
 
 ### 3. Connect to Your Tools (MCP)
@@ -120,7 +122,7 @@ Supported out-of-the-box:
 ### 4. Enforce Quality
 Install the pre-push Git hook to ensure your logic passes **The Crucible** evaluations before syncing.
 ```bash
-savile install-hook
+uv run savile install-hook
 ```
 
 ---
