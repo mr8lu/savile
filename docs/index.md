@@ -1,10 +1,14 @@
+---
+title: SAVILE - Git-Native Prompt Versioning & MCP Server for AI Agents
+description: SAVILE is a high-fidelity, local-first MCP server and protocol for storing, versioning, syncing, and evaluating AI agent prompts and skills.
+---
 # SAVILE: Git-Native Prompt Versioning & MCP Server for AI Agents
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/ "Python 3.11+ Version Support")
 [![Model Context Protocol](https://img.shields.io/badge/MCP-Standard-green.svg)](https://modelcontextprotocol.io/ "Model Context Protocol Standard Compliance")
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/mr8lu/savile/blob/main/LICENSE "MIT License")
 
-**SAVILE** (System for Agentic Versioning, Intelligence, and Logical Evaluation) is a high-fidelity, local-first **MCP server** and protocol for storing, versioning, syncing, and evaluating **AI agent prompts and skills** via the **Model Context Protocol (MCP)**.
+**SAVILE** (System for Agentic Versioning, Intelligence, and Logical Evaluation) provides robust **Git-Native Prompt Versioning** and functions as a secure **MCP Server for AI Agents**. It is a high-fidelity, local-first protocol for storing, versioning, syncing, and evaluating your AI agent prompts and skills via the **Model Context Protocol (MCP)**.
 
 Built as a Git-native logic bridge, SAVILE ensures reproducibility and version control for your agentic workflows, connecting your version-controlled logic directly to AI execution environments like **Antigravity**, **Cursor**, and **Claude Code**.
 
