@@ -104,11 +104,18 @@ savile init
 savile init --source git+ssh://github.com/user/my-logic-vault.git
 ```
 
-### 3. Serve to your IDE
-Start the MCP server to broadcast your logic as dynamic slash-commands (Prompts).
+### 3. Connect to Your Tools (MCP)
+SAVILE is an MCP-compatible server. Use the provided runner script to connect to your preferred AI environment:
+
 ```bash
-savile serve
+./scripts/run-mcp.sh -h
 ```
+
+Supported out-of-the-box:
+*   **Warp AI**: Add a new MCP server with the command path.
+*   **Antigravity / Cursor**: Point your MCP settings to the `run-mcp.sh` script.
+*   **Claude Desktop**: Add a new `stdio` entry to your JSON config.
+*   **Gemini CLI**: Automatically populates `.gemini/commands/` when using the `install_logic_module` tool.
 
 ### 4. Enforce Quality
 Install the pre-push Git hook to ensure your logic passes **The Crucible** evaluations before syncing.

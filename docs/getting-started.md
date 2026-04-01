@@ -68,22 +68,31 @@ savile init --source git+ssh://github.com/user/my-logic-vault.git
 
 ---
 
-## 🔌 Step 3: Connect to Your IDE
+## 🔌 Step 3: Connect to Your Tools (MCP)
 
-SAVILE uses the **Model Context Protocol (MCP)** to communicate with your tools. When you run the `serve` command, it starts an MCP server.
+SAVILE uses the **Model Context Protocol (MCP)** to communicate with your tools. Use the provided runner script to get the exact configuration for your environment:
 
 ```bash
-savile serve
+./scripts/run-mcp.sh -h
 ```
 
-### In Your IDE (e.g., Antigravity or Cursor):
-1.  **Configure MCP**: Point your IDE's MCP configuration to the SAVILE `stdio` endpoint.
-2.  **Use Slash-Commands**: Because SAVILE broadcasts your vault as **MCP Prompts**, you can simply type `/` in your IDE chat to see your personas (like `/architect` or `/pm`) instantly appear!
+### In Your Tool (e.g., Warp, Antigravity, or Cursor):
+1.  **Enable MCP**: Turn on MCP support in your tool's settings.
+2.  **Add Server**: Use the absolute path to `scripts/run-mcp.sh` as the command.
+3.  **Use Slash-Commands**: Once connected, you can type `/` in your chat interface to see your vault personas (like `/architect` or `/pm`) instantly appear!
 
 ---
 
-## 🧠 Step 4: Your First Persona
+## 🧠 Step 4: Your First Persona (Gemini CLI Support)
 
+When you are in **Gemini CLI** (this terminal), SAVILE can automatically generate local commands for you:
+
+1. Use the **`install_logic_module`** tool from the SAVILE MCP server.
+2. It will physically copy the persona and generate a `.toml` file in `.gemini/commands/`.
+3. You can then use the persona as a regular command, like `savile /architect "my message"`.
+
+Let's create a custom "Persona" for your vault first:
+...
 Let's create a custom "Persona" for your vault. A persona is a Markdown file with mandatory **YAML Frontmatter** metadata.
 
 1. Create a file at `personas/realist.md`:
