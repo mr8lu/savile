@@ -3,7 +3,7 @@ name: "pm"
 version: "1.0.0"
 category: "framework"
 description: "Act as the Pm BMad Agent"
-dependencies: ["pm"]
+dependencies: []
 ---
 # Act as Pm
 

@@ -3,7 +3,7 @@ name: "qa"
 version: "1.0.0"
 category: "framework"
 description: "Act as the Qa BMad Agent"
-dependencies: ["qa"]
+dependencies: []
 ---
 # Act as Qa
 
