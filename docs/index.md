@@ -32,9 +32,37 @@ Modern AI development is plagued by opaque UI abstractions and "prompt drift." S
 
 ## 🏗️ System Architecture
 
-> **Deep Dive**: For a comprehensive look at SAVILE's implementation, methodology, and design concepts, read our [Technical Explanation](docs/explanation.md).
+> **Deep Dive**: For a comprehensive look at SAVILE's implementation, methodology, and design concepts, read our [Technical Explanation](explanation.md).
 
 SAVILE acts as a deterministic "Logic Router" that brings versioned clarity to the AI infrastructure layer.
+
+**Logic Router & MCP Infrastructure Overview**
+```mermaid
+graph TD
+    subgraph "Logic Vault (Git)"
+        V_P[personas/*.md]
+        V_F[frameworks/*.md]
+        V_E[evals/*.yaml]
+    end
+
+    subgraph "SAVILE Daemon"
+        SYNC[State Manager: GitPython]
+        MCP[MCP Bridge: Prompts & Tools]
+        CRU[The Crucible: Eval Runner]
+    end
+
+    subgraph "Agent Clients"
+        AG[Antigravity / Cursor]
+        GCLI[Gemini CLI]
+    end
+
+    V_P --> SYNC
+    V_F --> SYNC
+    SYNC --> MCP
+    MCP -- "MCP Prompts" --> AG
+    MCP -- "Installation Tools" --> GCLI
+    CRU -- "pre-push hook" --> V_P
+```
 
 ---
 
@@ -101,16 +129,16 @@ uv run savile install-hook
 
 ## 🛠️ Core Components
 
-### The [Registry Core](docs/architecture.md#3-directory-structure)
+### The [Registry Core](architecture.md#3-directory-structure)
 A standardized directory structure for your intelligence. Every persona and framework is a Markdown file with mandatory **YAML Frontmatter** for metadata tracking.
 
-### The [State Manager](docs/architecture.md#22-the-state-manager-gitpython)
+### The [State Manager](architecture.md#22-the-state-manager-gitpython)
 Powered by `GitPython`, handling bidirectional synchronization between your local environment and remote logic origins.
 
-### The [MCP Bridge](docs/architecture.md#23-the-mcp-bridge-mcp-sdk)
+### The [MCP Bridge](architecture.md#23-the-mcp-bridge-mcp-sdk)
 Exposes your vault as **MCP Prompts** (for dynamic slash-command integration) and **Tools** (for physical file installation into `.agent/` or `.gemini/` directories).
 
-### The [Crucible](docs/architecture.md#24-the-crucible-pyyaml-subprocess-pytest)
+### The [Crucible](architecture.md#24-the-crucible-pyyaml-subprocess-pytest)
 A validation loop that mathematically grades your logic against predefined thresholds in `/evals`.
 
 ---
