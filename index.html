@@ -1074,9 +1074,11 @@ You will need a local BMad installation to serve as the core intelligence engine
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>uv<span class="w"> </span>run<span class="w"> </span>savile<span class="w"> </span>init<span class="w"> </span>--source<span class="w"> </span>git+ssh://github.com/user/my-logic-vault.git
 </code></pre></div></p>
 <h3 id="3-connect-to-your-tools-mcp">3. Connect to Your Tools (MCP)</h3>
-<p>SAVILE is an MCP-compatible server. Use the provided runner script to connect to your preferred AI environment:</p>
+<p>SAVILE is an MCP-compatible server. It can be run over standard I/O (stdio) for tools like Claude Desktop and Cursor, or over Server-Sent Events (SSE) for tools like Warp AI.</p>
+<p>To see the exact configuration snippets for your preferred AI environment, run the helper script:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./scripts/run-mcp.sh<span class="w"> </span>-h
 </code></pre></div>
+<p><em>For detailed instructions on configuring Claude Desktop, Cursor, and Warp, see our <a href="getting-started/#step-3-connect-to-your-tools-mcp">Getting Started Guide</a>.</em></p>
 <h3 id="4-pull-remote-modules">4. Pull Remote Modules</h3>
 <p>Add deterministic logic from external sources.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>uv<span class="w"> </span>run<span class="w"> </span>savile<span class="w"> </span>add<span class="w"> </span>git+ssh://github.com/user/remote-logic.git
