@@ -556,10 +556,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#in-your-tool-eg-warp-antigravity-or-cursor" class="md-nav__link">
+  <a href="#configuration-guide-for-ai-agents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        In Your Tool (e.g., Warp, Antigravity, or Cursor):
+        Configuration Guide for AI Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-your-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Your Vault
       
     </span>
   </a>
@@ -821,10 +832,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#in-your-tool-eg-warp-antigravity-or-cursor" class="md-nav__link">
+  <a href="#configuration-guide-for-ai-agents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        In Your Tool (e.g., Warp, Antigravity, or Cursor):
+        Configuration Guide for AI Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-your-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Your Vault
       
     </span>
   </a>
@@ -937,15 +959,45 @@
 </code></pre></div></p>
 <hr />
 <h2 id="step-3-connect-to-your-tools-mcp">🔌 Step 3: Connect to Your Tools (MCP)</h2>
-<p>SAVILE uses the <strong>Model Context Protocol (MCP)</strong> to communicate with your tools. Use the provided runner script to get the exact configuration for your environment:</p>
+<p>SAVILE uses the <strong>Model Context Protocol (MCP)</strong> to communicate with your tools. You can run the server via standard input/output (stdio) or via Server-Sent Events (SSE) depending on what your agent supports.</p>
+<p>You can view the help guide anytime by running:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>./scripts/run-mcp.sh<span class="w"> </span>-h
+</code></pre></div></p>
+<h3 id="configuration-guide-for-ai-agents">Configuration Guide for AI Agents</h3>
+<p>To use SAVILE with an MCP-compatible agent or IDE, you need to provide the absolute path to your SAVILE installation. </p>
+<p><strong>[ Claude Desktop / Antigravity ]</strong>
+Add the following to your MCP configuration file (usually located at <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> on Mac):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">&quot;savile&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/absolute/path/to/savile/scripts/run-mcp.sh&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;/absolute/path/to/savile&quot;</span><span class="p">]</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="p">}</span>
 </code></pre></div>
-<h3 id="in-your-tool-eg-warp-antigravity-or-cursor">In Your Tool (e.g., Warp, Antigravity, or Cursor):</h3>
+<p><strong>[ Cursor / Windsurf / OpenClaw ]</strong>
+Add a new MCP server in the IDE settings:
+- <strong>Name</strong>: <code>savile</code>
+- <strong>Type</strong>: <code>command</code> (or <code>stdio</code>)
+- <strong>Command</strong>: <code>/absolute/path/to/savile/scripts/run-mcp.sh /absolute/path/to/savile</code></p>
+<p><strong>[ Warp AI ]</strong>
+Warp requires the server to run over HTTP SSE. </p>
 <ol>
-<li><strong>Enable MCP</strong>: Turn on MCP support in your tool's settings.</li>
-<li><strong>Add Server</strong>: Use the absolute path to <code>scripts/run-mcp.sh</code> as the command.</li>
-<li><strong>Use Slash-Commands</strong>: Once connected, you can type <code>/</code> in your chat interface to see your vault personas (like <code>/architect</code> or <code>/pm</code>) instantly appear!</li>
+<li>Start the server in your terminal:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>./scripts/run-mcp.sh<span class="w"> </span>/absolute/path/to/savile<span class="w"> </span>--sse
+</code></pre></div></li>
+<li>In Warp AI settings, enable MCP and add a new server using this JSON config:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;savile&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">&quot;serverUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://127.0.0.1:8000/sse&quot;</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">}</span>
+</code></pre></div></li>
 </ol>
+<h3 id="using-your-vault">Using Your Vault</h3>
+<p>Once connected, your personas and frameworks will be available as <strong>MCP Prompts</strong>. 
+You can type <code>/</code> in your chat interface to see your vault personas (like <code>/architect</code> or <code>/pm</code>) instantly appear!</p>
 <hr />
 <h2 id="step-4-your-first-persona-gemini-cli-support">🧠 Step 4: Your First Persona (Gemini CLI Support)</h2>
 <p>When you are in <strong>Gemini CLI</strong> (this terminal), SAVILE can automatically generate local commands for you:</p>
@@ -960,15 +1012,15 @@ Let's create a custom "Persona" for your vault. A persona is a Markdown file wit
 <ol>
 <li>
 <p>Create a file at <code>personas/realist.md</code>:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nn">---</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;realist&quot;</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;persona&quot;</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">pragmatic</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">skeptical</span><span class="nv"> </span><span class="s">persona.&quot;</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nn">---</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># Realist Persona</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="l l-Scalar l-Scalar-Plain">You are a pragmatic, skeptical senior architect. You cut through the fluff and look for technical debt and hidden risks in every architecture.</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nn">---</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;realist&quot;</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.0.0&quot;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nt">category</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;persona&quot;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">pragmatic</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">skeptical</span><span class="nv"> </span><span class="s">persona.&quot;</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nn">---</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># Realist Persona</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="l l-Scalar l-Scalar-Plain">You are a pragmatic, skeptical senior architect. You cut through the fluff and look for technical debt and hidden risks in every architecture.</span>
 </code></pre></div></p>
 </li>
 <li>
@@ -980,10 +1032,10 @@ Let's create a custom "Persona" for your vault. A persona is a Markdown file wit
 <p>Before you share your logic with your team, you should ensure it actually works. The <strong>Crucible</strong> is SAVILE's automated evaluation gate.</p>
 <ol>
 <li><strong>Install the Git Hook</strong>: This ensures your logic passes evaluations before you are allowed to <code>git push</code>.
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>uv<span class="w"> </span>run<span class="w"> </span>savile<span class="w"> </span>install-hook
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>uv<span class="w"> </span>run<span class="w"> </span>savile<span class="w"> </span>install-hook
 </code></pre></div></li>
 <li><strong>Run Evaluation</strong>:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>uv<span class="w"> </span>run<span class="w"> </span>savile<span class="w"> </span>evaluate
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>uv<span class="w"> </span>run<span class="w"> </span>savile<span class="w"> </span>evaluate
 </code></pre></div></li>
 </ol>
 <hr />
