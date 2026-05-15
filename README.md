@@ -26,6 +26,8 @@ Modern AI development is plagued by opaque UI abstractions and "prompt drift." S
 *   **Git-Native Logic Storage**: Use Git for versioning and syncing your agent's personas and frameworks.
 *   **Local-First Architecture**: Keep your prompts and logic secure on your local machine.
 *   **Automated Evaluation (The Crucible)**: Mathematical grading of your logic against predefined thresholds.
+*   **Symphony Control Plane**: Centralized, local-first task board enabling asynchronous, multi-agent orchestration (inspired by OpenAI Symphony).
+*   **Dynamic Sub-Agents**: Personas are automatically exposed as discrete MCP Tools (e.g., `agent_architect`), forcing the host AI to seamlessly assume the required identity.
 *   **Sovereign Development**: Build AI agent infrastructure without vendor lock-in.
 
 ---
@@ -79,11 +81,15 @@ uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
 ```
 
 ### 3. Connect to Your Tools (MCP)
-SAVILE is an MCP-compatible server. Use the provided runner script to connect to your preferred AI environment:
+SAVILE is an MCP-compatible server. It can be run over standard I/O (stdio) for tools like Claude Desktop and Cursor, or over Server-Sent Events (SSE) for tools like Warp AI.
+
+To see the exact configuration snippets for your preferred AI environment, run the helper script:
 
 ```bash
 ./scripts/run-mcp.sh -h
 ```
+
+*For detailed instructions on configuring Claude Desktop, Cursor, and Warp, see our [Getting Started Guide](docs/getting-started.md#step-3-connect-to-your-tools-mcp).*
 
 ### 4. Pull Remote Modules
 Add deterministic logic from external sources.
