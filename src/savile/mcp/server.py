@@ -1,9 +1,26 @@
 import os
+import json
 import shutil
+import uuid
 from pathlib import Path
 from mcp.server import Server
 from mcp.types import Tool, TextContent, Prompt, GetPromptResult, PromptMessage
 import mcp.server.stdio
+
+def get_state_file(vault_path: Path) -> Path:
+    state_file = vault_path / ".savile_board.json"
+    if not state_file.exists():
+        with open(state_file, "w") as f:
+            json.dump({"tasks": [], "project_context": "Initialize your project context here."}, f)
+    return state_file
+
+def read_state(vault_path: Path) -> dict:
+    with open(get_state_file(vault_path), "r") as f:
+        return json.load(f)
+
+def write_state(vault_path: Path, state: dict):
+    with open(get_state_file(vault_path), "w") as f:
+        json.dump(state, f, indent=2)
 
 async def list_prompts_handler(vault_path: Path) -> list[Prompt]:
     prompts = []
@@ -46,8 +63,8 @@ async def get_prompt_handler(vault_path: Path, name: str, arguments: dict | None
                     )
     raise ValueError(f"Prompt not found: {name}")
 
-async def list_tools_handler() -> list[Tool]:
-    return [
+async def list_tools_handler(vault_path: Path) -> list[Tool]:
+    tools = [
         Tool(
             name="list_logic_modules",
             description="List available personas and frameworks in the SAVILE vault.",
@@ -80,6 +97,82 @@ async def list_tools_handler() -> list[Tool]:
             }
         )
     ]
+
+    # Dynamically expose each persona as an agent Tool
+    personas_path = vault_path / "personas"
+    if personas_path.exists():
+        for f in personas_path.iterdir():
+            if f.is_file() and not f.name.startswith("."):
+                name = f.stem
+                description = f"Delegate a task to the {name} persona agent."
+                
+                # Attempt to extract frontmatter description
+                try:
+                    with open(f, "r") as file_handle:
+                        content = file_handle.read()
+                    if content.startswith("---"):
+                        import yaml
+                        parts = content.split("---", 2)
+                        if len(parts) >= 3:
+                            meta = yaml.safe_load(parts[1])
+                            if isinstance(meta, dict) and "description" in meta:
+                                description = meta["description"]
+                except Exception:
+                    pass
+
+                tools.append(
+                    Tool(
+                        name=f"agent_{name}",
+                        description=f"{description} Use this tool to summon the {name} agent for a specific task.",
+                        inputSchema={
+                            "type": "object",
+                            "properties": {
+                                "task": {
+                                    "type": "string",
+                                    "description": f"The specific task or query you want the {name} agent to accomplish."
+                                }
+                            },
+                            "required": ["task"]
+                        }
+                    )
+                )
+
+    # --- Symphony Control Plane Tools ---
+    tools.extend([
+        Tool(
+            name="board_get_tasks",
+            description="Control Plane: Retrieve all active tasks from the local SAVILE board. Use this to understand the current project state, who is doing what, and what needs to be picked up.",
+            inputSchema={"type": "object", "properties": {}}
+        ),
+        Tool(
+            name="board_add_task",
+            description="Control Plane: Add a new task to the global board.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string", "description": "Short title of the task"},
+                    "description": {"type": "string", "description": "Detailed description, criteria, and context."},
+                    "assignee_persona": {"type": "string", "description": "The persona (e.g. 'dev', 'architect') this should be routed to."}
+                },
+                "required": ["title", "description", "assignee_persona"]
+            }
+        ),
+        Tool(
+            name="board_update_task",
+            description="Control Plane: Update the status or notes of an existing task. Statuses: 'todo', 'in_progress', 'review', 'done'.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "task_id": {"type": "string"},
+                    "status": {"type": "string", "description": "Must be one of: 'todo', 'in_progress', 'review', 'done'"},
+                    "notes": {"type": "string", "description": "Append any findings, commit hashes, or handoff notes."}
+                },
+                "required": ["task_id", "status"]
+            }
+        )
+    ])
+
+    return tools
 
 async def call_tool_handler(vault_path: Path, name: str, arguments: dict) -> list[TextContent]:
     if arguments is None or not isinstance(arguments, dict):
@@ -180,6 +273,73 @@ async def call_tool_handler(vault_path: Path, name: str, arguments: dict) -> lis
             f"Created Gemini CLI command at {toml_file.relative_to(base_dir)}"
         )
         return [TextContent(type="text", text=msg)]
+
+    elif name.startswith("agent_"):
+        persona_name = name[6:] # Strip "agent_"
+        task = arguments.get("task", "")
+        if not task:
+            return [TextContent(type="text", text="Error: You must provide a 'task' argument for this agent.")]
+
+        target = (vault_path / "personas" / f"{persona_name}.md").resolve()
+        
+        if not target.exists() or not target.is_file():
+            return [TextContent(type="text", text=f"Error: Agent persona '{persona_name}' not found.")]
+        
+        with open(target, "r") as f:
+            content = f.read()
+            
+        formatted_response = (
+            f"<activated_agent_persona name=\"{persona_name}\">\n"
+            f"{content}\n"
+            f"</activated_agent_persona>\n\n"
+            f"<agent_task>\n"
+            f"{task}\n"
+            f"</agent_task>\n\n"
+            f"INSTRUCTIONS TO HOST AI: You must now strictly adopt the persona defined above "
+            f"and execute the <agent_task> completely. Do not break character."
+        )
+        return [TextContent(type="text", text=formatted_response)]
+
+    # --- Symphony Control Plane Handlers ---
+    elif name == "board_get_tasks":
+        state = read_state(vault_path)
+        return [TextContent(type="text", text=json.dumps(state, indent=2))]
+
+    elif name == "board_add_task":
+        state = read_state(vault_path)
+        task_id = str(uuid.uuid4())[:8]
+        new_task = {
+            "id": task_id,
+            "title": arguments.get("title"),
+            "description": arguments.get("description"),
+            "assignee_persona": arguments.get("assignee_persona"),
+            "status": "todo",
+            "notes": ""
+        }
+        state["tasks"].append(new_task)
+        write_state(vault_path, state)
+        return [TextContent(type="text", text=f"Task added successfully. ID: {task_id}")]
+
+    elif name == "board_update_task":
+        state = read_state(vault_path)
+        task_id = arguments.get("task_id")
+        status = arguments.get("status")
+        notes = arguments.get("notes", "")
+        
+        found = False
+        for t in state["tasks"]:
+            if t["id"] == task_id:
+                t["status"] = status
+                if notes:
+                    t["notes"] += f"\n- {notes}"
+                found = True
+                break
+                
+        if not found:
+            return [TextContent(type="text", text=f"Error: Task {task_id} not found.")]
+            
+        write_state(vault_path, state)
+        return [TextContent(type="text", text=f"Task {task_id} updated to {status}.")]
         
     raise ValueError(f"Unknown tool: {name}")
 
@@ -196,7 +356,7 @@ def create_mcp_server(vault_path: Path) -> Server:
 
     @server.list_tools()
     async def handle_list_tools() -> list[Tool]:
-        return await list_tools_handler()
+        return await list_tools_handler(vault_path)
 
     @server.call_tool()
     async def handle_call_tool(name: str, arguments: dict) -> list[TextContent]:

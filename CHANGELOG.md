@@ -5,6 +5,17 @@ All notable changes to the SAVILE project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-05-14
+
+### Added
+- **Symphony Control Plane**: Implemented local-first task board orchestration via `.savile_board.json`. Added `board_get_tasks`, `board_add_task`, and `board_update_task` MCP tools to enable cross-IDE, asynchronous multi-agent coordination.
+- **Dynamic Sub-Agents**: Refactored the MCP server to dynamically generate discrete tools (e.g., `agent_architect`, `agent_dev`) for every persona, wrapping tasks in strict persona instructions.
+
+### Changed
+- **De-anthropomorphized Personas**: Stripped all human names (Winston, Sally, Pete, Quinn, Paige) from the `personas/` and `frameworks/` logic modules to ensure purpose-driven, role-based sub-agent identities.
+- **Agent Principles**: Updated core personas (PM, Dev, Architect, PO) to natively leverage the new Symphony Board tools for asynchronous task management.
+- **Documentation**: Updated `README.md` and MCP startup guides for connecting to Antigravity, Cursor, and Warp via SSE vs stdio.
+
 ## [1.0.0] - 2026-04-01
 
 ### Added
