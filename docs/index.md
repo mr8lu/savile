@@ -113,11 +113,15 @@ uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
 ```
 
 ### 3. Connect to Your Tools (MCP)
-SAVILE is an MCP-compatible server. Use the provided runner script to connect to your preferred AI environment:
+SAVILE is an MCP-compatible server. It can be run over standard I/O (stdio) for tools like Claude Desktop and Cursor, or over Server-Sent Events (SSE) for tools like Warp AI.
+
+To see the exact configuration snippets for your preferred AI environment, run the helper script:
 
 ```bash
 ./scripts/run-mcp.sh -h
 ```
+
+*For detailed instructions on configuring Claude Desktop, Cursor, and Warp, see our [Getting Started Guide](getting-started.md#step-3-connect-to-your-tools-mcp).*
 
 ### 4. Pull Remote Modules
 Add deterministic logic from external sources.
