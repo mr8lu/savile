@@ -70,16 +70,57 @@ uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
 
 ## 🔌 Step 3: Connect to Your Tools (MCP)
 
-SAVILE uses the **Model Context Protocol (MCP)** to communicate with your tools. Use the provided runner script to get the exact configuration for your environment:
+SAVILE uses the **Model Context Protocol (MCP)** to communicate with your tools. You can run the server via standard input/output (stdio) or via Server-Sent Events (SSE) depending on what your agent supports.
 
+You can view the help guide anytime by running:
 ```bash
 ./scripts/run-mcp.sh -h
 ```
 
-### In Your Tool (e.g., Warp, Antigravity, or Cursor):
-1.  **Enable MCP**: Turn on MCP support in your tool's settings.
-2.  **Add Server**: Use the absolute path to `scripts/run-mcp.sh` as the command.
-3.  **Use Slash-Commands**: Once connected, you can type `/` in your chat interface to see your vault personas (like `/architect` or `/pm`) instantly appear!
+### Configuration Guide for AI Agents
+
+To use SAVILE with an MCP-compatible agent or IDE, you need to provide the absolute path to your SAVILE installation. 
+
+**[ Claude Desktop / Antigravity ]**
+Add the following to your MCP configuration file (usually located at `~/Library/Application Support/Claude/claude_desktop_config.json` on Mac):
+
+```json
+{
+  "mcpServers": {
+    "savile": {
+      "command": "/absolute/path/to/savile/scripts/run-mcp.sh",
+      "args": ["/absolute/path/to/savile"]
+    }
+  }
+}
+```
+
+**[ Cursor / Windsurf / OpenClaw ]**
+Add a new MCP server in the IDE settings:
+- **Name**: `savile`
+- **Type**: `command` (or `stdio`)
+- **Command**: `/absolute/path/to/savile/scripts/run-mcp.sh /absolute/path/to/savile`
+
+**[ Warp AI ]**
+Warp requires the server to run over HTTP SSE. 
+
+1. Start the server in your terminal:
+   ```bash
+   ./scripts/run-mcp.sh /absolute/path/to/savile --sse
+   ```
+2. In Warp AI settings, enable MCP and add a new server using this JSON config:
+   ```json
+   {
+     "savile": {
+       "serverUrl": "http://127.0.0.1:8000/sse"
+     }
+   }
+   ```
+
+### Using Your Vault
+
+Once connected, your personas and frameworks will be available as **MCP Prompts**. 
+You can type `/` in your chat interface to see your vault personas (like `/architect` or `/pm`) instantly appear!
 
 ---
 
