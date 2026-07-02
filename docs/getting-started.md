@@ -26,7 +26,7 @@ Before using SAVILE, you need a local BMad installation.
     ```bash
     npx bmad-method install
     ```
-3.  This creates a `.bmad-core/` directory containing the base agent identities and tasks. SAVILE will link to this directory during setup.
+3.  This creates a `.bmad-core/` directory containing the base agent identities and tasks. *Remember the path to this directory*, as SAVILE will ask for it during initialization (Step 2). SAVILE will link to this directory during setup.
 
 ---
 
@@ -54,6 +54,8 @@ uv run savile --help
 
 A **Logic Vault** is just a directory (backed by Git) that stores your personas, frameworks, and evaluation matrices. You can start fresh or sync from an existing repository.
 
+During initialization, SAVILE will interactively prompt you for the path to your BMAD installation (from Phase 0). It will create a local symbolic link to connect your vault to the BMAD core logic.
+
 ### Option A: Start Fresh
 Initialize a brand new local vault with the required folder structure:
 ```bash
@@ -64,6 +66,12 @@ uv run savile init
 Already have your prompts in a Git repository? Clone them instantly:
 ```bash
 uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
+```
+
+### Need to re-configure later?
+If you skipped the prompt or moved your BMAD installation, simply run:
+```bash
+savile setup
 ```
 
 ---
