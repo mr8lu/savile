@@ -1,0 +1,13 @@
+{
+  "tasks": [
+    {
+      "id": "d5c5b02d",
+      "title": "Set up database",
+      "description": "Initialize postgres schema",
+      "assignee_persona": "architect",
+      "status": "todo",
+      "notes": ""
+    }
+  ],
+  "project_context": "Initialize your project context here."
+}
