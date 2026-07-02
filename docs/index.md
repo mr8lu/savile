@@ -1,5 +1,5 @@
 ---
-title: SAVILE - Git-Native Prompt Versioning & MCP Server for AI Agents
+title: SAVILE - Git-Native Prompt Versioning & MCP Server for AI Agents & Agentic Tools
 description: SAVILE is a high-fidelity, local-first MCP server and protocol for storing, versioning, syncing, and evaluating AI agent prompts and skills.
 ---
 # SAVILE: Git-Native Prompt Versioning & MCP Server for AI Agents
