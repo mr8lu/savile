@@ -23,9 +23,17 @@ def test_sse_endpoint_exists(mock_vault):
     """Test that the SSE and messages endpoints are correctly set up and reachable."""
     from starlette.responses import Response
     from starlette.routing import Mount
+    from unittest.mock import AsyncMock, MagicMock
 
     server = create_mcp_server(mock_vault)
+    server.run = AsyncMock()  # Mock server.run to return immediately and prevent hangs
     sse = SseServerTransport("/messages")
+    
+    # Mock connect_sse to return immediately without blocking
+    mock_connect = MagicMock()
+    mock_connect.__aenter__ = AsyncMock(return_value=(AsyncMock(), AsyncMock()))
+    mock_connect.__aexit__ = AsyncMock()
+    sse.connect_sse = MagicMock(return_value=mock_connect)
 
     async def handle_sse(request):
         async with sse.connect_sse(
