@@ -71,13 +71,16 @@ uv sync
 > **Tip:** After `uv sync`, you must prefix commands with `uv run` (e.g., `uv run savile --help`). Alternatively, you can activate the environment with `source .venv/bin/activate` or install it globally with `uv tool install .`.
 
 ### 2. Initialize a Vault
-Scaffold a new local vault or clone an existing one from a remote origin.
+Scaffold a new local vault or clone an existing one from a remote origin. During initialization, SAVILE will interactively prompt you to link your local BMad installation (from Step 0).
 ```bash
 # Initialize a brand new local vault
 uv run savile init
 
 # OR Initialize from a remote Git repository
 uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
+
+# If you skipped the prompt during init, you can configure it later:
+uv run savile setup
 ```
 
 ### 3. Connect to Your Tools (MCP)
