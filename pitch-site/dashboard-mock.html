@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERCER 2.0 Enterprise Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        appleDark: '#000000',
+                        appleSurface: '#121212',
+                        appleElevated: '#1e1e1e',
+                        accent: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-appleDark text-zinc-300 font-sans h-screen w-screen overflow-hidden flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-appleSurface border-r border-zinc-800 flex flex-col">
+        <div class="h-20 flex items-center px-6 border-b border-zinc-800">
+            <h1 class="text-xl font-bold tracking-widest text-white flex items-center">
+                <span class="w-6 h-6 rounded bg-accent mr-3 shadow-[0_0_15px_rgba(16,185,129,0.5)]"></span>
+                MERCER
+            </h1>
+        </div>
+        <nav class="flex-1 py-6 px-4 space-y-2">
+            <a href="#" class="flex items-center px-4 py-3 bg-zinc-900/50 text-accent font-medium rounded-xl border border-accent/20">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                Logic Vault
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-xl transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                The Crucible
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-xl transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                FinOps & Ranking
+            </a>
+            <a href="#" class="flex items-center px-4 py-3 text-zinc-400 hover:text-white hover:bg-zinc-800/50 rounded-xl transition-colors">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                IAM Gateway
+            </a>
+        </nav>
+        <div class="p-6 border-t border-zinc-800">
+            <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-white font-medium text-sm">IA</div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-white">IAM Admin</p>
+                    <p class="text-xs text-zinc-500">Enterprise Access</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 bg-appleDark overflow-y-auto">
+        <!-- Header -->
+        <header class="h-20 flex items-center justify-between px-10 border-b border-zinc-800 bg-appleDark/80 backdrop-blur-md sticky top-0 z-10">
+            <div>
+                <h2 class="text-2xl font-bold text-white">Global Logic Vault</h2>
+                <p class="text-sm text-zinc-500">Managing 1,204 Sovereign Prompts & Personas</p>
+            </div>
+            <div class="flex space-x-4">
+                <button class="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-medium rounded-lg transition">Sync Git Backend</button>
+                <button class="px-5 py-2 bg-accent hover:bg-emerald-400 text-black text-sm font-bold rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.3)] transition">Create Logic Module</button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="p-10 space-y-8">
+            
+            <!-- Metrics Row -->
+            <div class="grid grid-cols-4 gap-6">
+                <div class="bg-appleSurface border border-zinc-800 p-6 rounded-2xl">
+                    <p class="text-sm text-zinc-500 font-medium mb-1">Total Active Personas</p>
+                    <p class="text-3xl font-bold text-white">248</p>
+                    <p class="text-xs text-accent mt-2 flex items-center"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> 12 added this week</p>
+                </div>
+                <div class="bg-appleSurface border border-zinc-800 p-6 rounded-2xl">
+                    <p class="text-sm text-zinc-500 font-medium mb-1">Crucible Eval Score</p>
+                    <p class="text-3xl font-bold text-white">96.4%</p>
+                    <p class="text-xs text-accent mt-2 flex items-center"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg> Top 10% Enterprise Average</p>
+                </div>
+                <div class="bg-appleSurface border border-zinc-800 p-6 rounded-2xl">
+                    <p class="text-sm text-zinc-500 font-medium mb-1">30-Day FinOps Savings</p>
+                    <p class="text-3xl font-bold text-white">$14.2k</p>
+                    <p class="text-xs text-zinc-400 mt-2">from GPT-4o Prompt Optimization</p>
+                </div>
+                <div class="bg-appleSurface border border-zinc-800 p-6 rounded-2xl">
+                    <p class="text-sm text-zinc-500 font-medium mb-1">MCP Sync Health</p>
+                    <div class="mt-2 flex items-center">
+                        <span class="w-3 h-3 rounded-full bg-accent animate-pulse mr-2"></span>
+                        <p class="text-xl font-bold text-white">Optimal</p>
+                    </div>
+                    <p class="text-xs text-zinc-400 mt-2">Latest commit: 2 mins ago</p>
+                </div>
+            </div>
+
+            <!-- Golden Prompts Leaderboard -->
+            <div>
+                <h3 class="text-xl font-bold text-white mb-4">Golden Prompts Leaderboard</h3>
+                <div class="bg-appleSurface border border-zinc-800 rounded-2xl overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-zinc-900/50 text-xs uppercase tracking-wider text-zinc-500 border-b border-zinc-800">
+                                <th class="p-4 font-medium">Rank</th>
+                                <th class="p-4 font-medium">Module Name</th>
+                                <th class="p-4 font-medium">Category</th>
+                                <th class="p-4 font-medium">Usage (30d)</th>
+                                <th class="p-4 font-medium">Crucible Score</th>
+                                <th class="p-4 font-medium">Est. Cost/Execution</th>
+                                <th class="p-4 font-medium text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800 text-sm">
+                            <tr class="hover:bg-zinc-800/30 transition">
+                                <td class="p-4 font-bold text-accent">#1</td>
+                                <td class="p-4 font-medium text-white">/systems_architect</td>
+                                <td class="p-4"><span class="px-2 py-1 bg-blue-500/10 text-blue-400 rounded text-xs">Persona</span></td>
+                                <td class="p-4 text-white">45,210</td>
+                                <td class="p-4">
+                                    <div class="flex items-center">
+                                        <span class="text-accent font-bold mr-2">99.2</span>
+                                        <div class="w-16 h-1.5 bg-zinc-800 rounded-full"><div class="w-[99%] h-full bg-accent rounded-full"></div></div>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-zinc-400">$0.002</td>
+                                <td class="p-4 text-right">
+                                    <button class="text-zinc-400 hover:text-white transition">View Code &rarr;</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-zinc-800/30 transition">
+                                <td class="p-4 font-bold text-zinc-400">#2</td>
+                                <td class="p-4 font-medium text-white">/code_review_framework</td>
+                                <td class="p-4"><span class="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">Framework</span></td>
+                                <td class="p-4 text-white">38,902</td>
+                                <td class="p-4">
+                                    <div class="flex items-center">
+                                        <span class="text-accent font-bold mr-2">97.8</span>
+                                        <div class="w-16 h-1.5 bg-zinc-800 rounded-full"><div class="w-[97%] h-full bg-accent rounded-full"></div></div>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-zinc-400">$0.004</td>
+                                <td class="p-4 text-right">
+                                    <button class="text-zinc-400 hover:text-white transition">View Code &rarr;</button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-zinc-800/30 transition">
+                                <td class="p-4 font-bold text-zinc-400">#3</td>
+                                <td class="p-4 font-medium text-white">/strategic_analyst</td>
+                                <td class="p-4"><span class="px-2 py-1 bg-blue-500/10 text-blue-400 rounded text-xs">Persona</span></td>
+                                <td class="p-4 text-white">29,150</td>
+                                <td class="p-4">
+                                    <div class="flex items-center">
+                                        <span class="text-accent font-bold mr-2">95.4</span>
+                                        <div class="w-16 h-1.5 bg-zinc-800 rounded-full"><div class="w-[95%] h-full bg-accent rounded-full"></div></div>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-zinc-400">$0.003</td>
+                                <td class="p-4 text-right">
+                                    <button class="text-zinc-400 hover:text-white transition">View Code &rarr;</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

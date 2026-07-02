@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Architecture Diagram</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        appleDark: '#000000',
+                        appleSurface: '#121212',
+                        appleElevated: '#1e1e1e',
+                        accent: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #000000; color: #fff; margin: 0; padding: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh;}
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+        /* Make mermaid svg fill exactly */
+        .mermaid svg { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <div class="glass-card w-[90vw] h-[90vh] flex justify-center items-center">
+        <div class="mermaid text-2xl">
+            graph TD
+            subgraph "Enterprise Governance (Web UI & IAM)"
+                UI[MERCER Web UI]
+                IAM[SSO / IAM Gateway]
+            end
+
+            subgraph "Global Logic Vault (Git Backend)"
+                V_P[personas/*.md]
+                V_F[frameworks/*.md]
+                V_E[evals/*.yaml]
+            end
+
+            subgraph "The Crucible (OpenAI Governance)"
+                GPT4o[GPT-4o Auditor]
+                RANK[Ranking & FinOps]
+            end
+
+            subgraph "Enterprise MCP Gateway"
+                SYNC[State Manager: Git Sync]
+                MCP[Role-Based MCP Bridge]
+            end
+
+            subgraph "Client Ecosystem"
+                IDE[Cursor / Antigravity]
+                CLI[Gemini CLI]
+            end
+
+            UI -->|Commits Logic| V_P
+            UI -->|Commits Logic| V_F
+            IAM -->|Authenticates| MCP
+            V_P -.->|Evaluates| GPT4o
+            V_F -.->|Evaluates| GPT4o
+            GPT4o -->|Scores/Ranks| RANK
+            RANK -->|Approves/Rejects| SYNC
+            SYNC -->|Loads Verified Logic| MCP
+            MCP -->|Authorized Tools & Prompts| IDE
+            MCP -->|Authorized Tools & Prompts| CLI
+        </div>
+    </div>
+    
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#1e1e1e',
+                primaryTextColor: '#ffffff',
+                primaryBorderColor: '#34d399',
+                lineColor: '#52525b',
+                secondaryColor: '#10b981',
+                tertiaryColor: '#000000',
+                background: 'transparent',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '20px'
+            }
+        });
+    </script>
+</body>
+</html>

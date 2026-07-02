@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MERCER Architecture - Light AWS Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 
+         * The background is highly translucent, perfect for capturing as a PNG 
+         * with a transparent background or layering over light presentation slides.
+         */
+        body { 
+            background: rgba(255, 255, 255, 0.4); 
+            color: #1e293b; /* Slate 800 */
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 95vw;
+            height: 95vh;
+        }
+
+        .mermaid svg { 
+            max-width: 100%; 
+            height: auto; 
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        /* Mermaid Subgraph Customization (to mimic AWS bounding boxes) */
+        .cluster rect {
+            fill: rgba(248, 250, 252, 0.5) !important; /* Slate 50 with opacity */
+            stroke: #94a3b8 !important; /* Slate 400 */
+            stroke-width: 1.5px !important;
+            stroke-dasharray: 4 4 !important;
+            rx: 12px !important;
+            ry: 12px !important;
+        }
+        .cluster-label text {
+            font-weight: 600 !important;
+            font-size: 16px !important;
+            fill: #475569 !important; /* Slate 600 */
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-container">
+        <!-- 
+            AWS-Inspired Styling:
+            - Client/UI: Blue
+            - Security/IAM: Red
+            - Storage/DB (Git): Green (Cylinders)
+            - Compute/ML (OpenAI): Orange
+            - Networking/Gateway: Purple (Hexagons/Rectangles)
+        -->
+        <div class="mermaid text-lg">
+            graph TD
+            classDef default fill:#ffffff,stroke:#cbd5e1,stroke-width:2px,color:#0f172a,rx:8px,ry:8px,font-family:Inter;
+            classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a;
+            classDef security fill:#fef2f2,stroke:#ef4444,stroke-width:2px,color:#7f1d1d;
+            classDef storage fill:#f0fdf4,stroke:#22c55e,stroke-width:2px,color:#14532d;
+            classDef ai fill:#fff7ed,stroke:#f97316,stroke-width:2px,color:#7c2d12;
+            classDef gateway fill:#faf5ff,stroke:#a855f7,stroke-width:2px,color:#4c1d95;
+
+            subgraph SG_Gov [Enterprise Governance]
+                UI[MERCER Web UI]:::client
+                IAM{SSO / IAM Gateway}:::security
+            end
+
+            subgraph SG_Vault [Global Logic Vault]
+                V_P[(personas/*.md)]:::storage
+                V_F[(frameworks/*.md)]:::storage
+                V_E[(evals/*.yaml)]:::storage
+            end
+
+            subgraph SG_AI [OpenAI Crucible Governance]
+                GPT4o(GPT-4o Auditor):::ai
+                RANK[[Ranking & FinOps]]:::ai
+            end
+
+            subgraph SG_Gateway [Enterprise MCP Gateway]
+                SYNC{{State Manager: Git Sync}}:::gateway
+                MCP[Role-Based MCP Bridge]:::gateway
+            end
+
+            subgraph SG_Client [Client Ecosystem]
+                IDE[Cursor / Antigravity]:::client
+                CLI>Gemini CLI]:::client
+            end
+
+            UI -->|Commits Logic| V_P
+            UI -->|Commits Logic| V_F
+            IAM -.->|Authenticates| MCP
+            
+            V_P -->|Evaluates| GPT4o
+            V_F -->|Evaluates| GPT4o
+            
+            GPT4o -->|Scores & Ranks| RANK
+            RANK -->|Approves / Rejects| SYNC
+            
+            SYNC -->|Loads Verified Logic| MCP
+            
+            MCP ==>|Authorized Tools| IDE
+            MCP ==>|Authorized Tools| CLI
+        </div>
+    </div>
+    
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'base',
+            themeVariables: {
+                background: 'transparent',
+                primaryTextColor: '#0f172a',
+                lineColor: '#64748b', /* Slate 500 for edges */
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '16px'
+            },
+            flowchart: {
+                curve: 'basis', /* Smooth curving lines like AWS diagrams */
+                nodeSpacing: 60,
+                rankSpacing: 60
+            }
+        });
+    </script>
+</body>
+</html>
