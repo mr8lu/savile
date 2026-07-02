@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERCER 2.0 | Sovereign Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        appleDark: '#000000',
+                        appleSurface: '#121212',
+                        appleElevated: '#1e1e1e',
+                        accent: '#10B981', // Slick Emerald
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Hide scrollbar for slick UI */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .snap-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        .slide {
+            scroll-snap-align: center;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem; /* M3 rounded corners */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-accent {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Navigation dots */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 50;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .dot.active {
+            background-color: #10B981;
+            transform: scale(1.5);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-black">
+
+    <div class="nav-dots" id="navDots">
+        <!-- Dots injected by JS -->
+    </div>
+
+    <main class="snap-container" id="container">
+
+        <!-- Slide 1: Title -->
+        <section class="slide" id="slide-1">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/10 via-black to-black -z-10"></div>
+            <div class="text-center max-w-4xl mx-auto space-y-6">
+                <p class="text-accent tracking-[0.2em] text-sm uppercase font-semibold">DOTSP Hackathon</p>
+                <h1 class="text-7xl md:text-9xl font-extrabold tracking-tight text-gradient">MERCER <span class="text-white">2.0</span></h1>
+                <p class="text-sm md:text-base text-accent tracking-[0.1em] uppercase font-medium mt-2">Managed Enterprise Router for Context, Evaluation, and Roles</p>
+                <p class="text-2xl md:text-4xl font-light text-zinc-400 mt-4">Enterprise PromptOps & IAM Gateway</p>
+                <div class="mt-12">
+                    <p class="text-lg text-zinc-500 font-light">From Dark Matter to <span class="text-white font-medium">Sovereign Intelligence</span>.</p>
+                </div>
+            </div>
+            <div class="absolute bottom-10 animate-bounce text-zinc-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </div>
+        </section>
+
+        <!-- Slide 2: The Problem -->
+        <section class="slide" id="slide-2">
+            <div class="max-w-6xl w-full">
+                <h2 class="text-5xl md:text-6xl font-bold tracking-tight mb-4 text-gradient">The Ghost in the Machine.</h2>
+                <p class="text-xl text-zinc-400 mb-16 font-light">Intelligence Anarchy is the New Technical Debt.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card p-10 hover:border-accent/30 transition-colors duration-500">
+                        <div class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4 text-white">Prompt Drift</h3>
+                        <p class="text-zinc-400 font-light leading-relaxed">Brilliant prompts are lost in chat histories or hardcoded into isolated scripts without version control.</p>
+                    </div>
+                    
+                    <div class="glass-card p-10 hover:border-accent/30 transition-colors duration-500">
+                        <div class="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4 text-white">Blind Spending</h3>
+                        <p class="text-zinc-400 font-light leading-relaxed">No visibility into which organizational prompts are cost-effective or wastefully token-heavy.</p>
+                    </div>
+
+                    <div class="glass-card p-10 hover:border-accent/30 transition-colors duration-500">
+                        <div class="w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-4 text-white">Shadow AI</h3>
+                        <p class="text-zinc-400 font-light leading-relaxed">Unverified logic bypassing InfoSec, creating massive enterprise compliance vulnerabilities.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: The Solution -->
+        <section class="slide" id="slide-3">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black -z-10"></div>
+            <div class="max-w-6xl w-full flex flex-col md:flex-row items-center gap-16">
+                <div class="flex-1 space-y-8">
+                    <h2 class="text-5xl md:text-6xl font-bold tracking-tight text-gradient">The Enterprise Logic Router.</h2>
+                    <p class="text-2xl text-zinc-300 font-light leading-snug">Treating AI "logic" as first-class, version-controlled code artifacts.</p>
+                    <ul class="space-y-6 text-lg text-zinc-400 font-light mt-8">
+                        <li class="flex items-start">
+                            <span class="text-accent mr-4">01</span>
+                            <div><strong class="text-white font-medium">Git Backend:</strong> Sovereign, auditable, regression-tested intelligence.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-4">02</span>
+                            <div><strong class="text-white font-medium">Web UI:</strong> Democratized access for BAs, PMs, and non-technical stakeholders.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-accent mr-4">03</span>
+                            <div><strong class="text-white font-medium">MCP Gateway:</strong> Agnostic integration directly into any IDE (Cursor, Claude Code).</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex-1">
+                    <div class="glass-card p-8 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <pre class="text-sm font-mono text-zinc-300 overflow-hidden"><code class="language-yaml">---
+name: "architect-persona"
+version: "1.2.0"
+approved_by: "iam-admin"
+eval_score: 98.5
+---
+# Architect
+
+You are a senior enterprise architect...</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: OpenAI Integration -->
+        <section class="slide" id="slide-4">
+            <div class="max-w-5xl w-full text-center space-y-12">
+                <h2 class="text-5xl md:text-6xl font-bold tracking-tight">Using <span class="text-gradient-accent">OpenAI</span> to Govern OpenAI.</h2>
+                <p class="text-2xl text-zinc-400 font-light">"The Crucible" uses GPT-4o to mathematically evaluate, gate, and rank our intelligence.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mt-12">
+                    <div class="glass-card p-10">
+                        <h3 class="text-xl font-bold text-white mb-4">CI/CD for Prompts</h3>
+                        <p class="text-zinc-400 font-light leading-relaxed">Before a prompt is pushed to the Global Logic Vault, GPT-4o acts as the Auditor. It grades the prompt against strict safety and accuracy assertions. If it hallucinates or drifts, the commit is rejected.</p>
+                    </div>
+                    <div class="glass-card p-10 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl"></div>
+                        <h3 class="text-xl font-bold text-white mb-4">The Ranking Engine</h3>
+                        <ul class="space-y-4 text-zinc-400 font-light">
+                            <li class="flex items-center"><div class="w-2 h-2 rounded-full bg-accent mr-3"></div> Usage Frequency</li>
+                            <li class="flex items-center"><div class="w-2 h-2 rounded-full bg-accent mr-3"></div> Cost-Effectiveness (FinOps)</li>
+                            <li class="flex items-center"><div class="w-2 h-2 rounded-full bg-accent mr-3"></div> Accuracy & Efficacy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: IAM Gateway -->
+        <section class="slide" id="slide-5">
+            <div class="max-w-6xl w-full flex flex-col md:flex-row-reverse items-center gap-16">
+                <div class="flex-1 space-y-8">
+                    <h2 class="text-5xl md:text-6xl font-bold tracking-tight text-gradient">The Seatbelt for Agentic AI.</h2>
+                    <p class="text-2xl text-zinc-300 font-light leading-snug">An internal Enterprise MCP Server integrated with SSO/IAM.</p>
+                    <p class="text-lg text-zinc-400 font-light leading-relaxed">Agents only see what the human is authorized to see. We provide granular, role-based access control (RBAC) over what the AI can execute on behalf of the user.</p>
+                </div>
+                <div class="flex-1 space-y-6 w-full">
+                    <div class="glass-card p-6 flex items-center border-l-4 border-l-zinc-500">
+                        <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center mr-6">
+                            <span class="text-sm font-bold text-white">L1</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold">Junior Developer</h4>
+                            <p class="text-sm text-zinc-500 mt-1">Access: `/code-review`, Repo-Read Tools</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex items-center border-l-4 border-l-accent">
+                        <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center mr-6">
+                            <span class="text-sm font-bold text-accent">L3</span>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold">Senior Architect</h4>
+                            <p class="text-sm text-zinc-400 mt-1">Access: `/system-design`, AWS-Deployment Tools</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Web UI Dashboard Mockup -->
+        <section class="slide" id="slide-6">
+            <div class="max-w-7xl w-full h-full flex flex-col justify-center items-center relative">
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-accent/20 via-black to-black -z-10"></div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">MERCER Web Portal</h2>
+                <p class="text-xl text-zinc-400 mb-10 font-light">Consumer-grade UI for Enterprise-grade Intelligence.</p>
+                <div class="w-full max-w-[1400px] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(16,185,129,0.2)] border border-zinc-800">
+                    <img src="dashboard-mock.png" alt="MERCER Web Dashboard" class="w-full h-auto object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Technical Architecture (Mermaid) -->
+        <section class="slide" id="slide-7">
+            <div class="max-w-6xl w-full h-full flex flex-col justify-center items-center">
+                <h2 class="text-4xl font-bold mb-8 text-gradient">Enterprise Architecture</h2>
+                <div class="glass-card w-full p-8 flex justify-center items-center overflow-hidden">
+                    <div class="mermaid">
+                        graph TD
+                        subgraph "Enterprise Governance (Web UI & IAM)"
+                            UI[MERCER Web UI]
+                            IAM[SSO / IAM Gateway]
+                        end
+
+                        subgraph "Global Logic Vault (Git Backend)"
+                            V_P[personas/*.md]
+                            V_F[frameworks/*.md]
+                            V_E[evals/*.yaml]
+                        end
+
+                        subgraph "The Crucible (OpenAI Governance)"
+                            GPT4o[GPT-4o Auditor]
+                            RANK[Ranking & FinOps]
+                        end
+
+                        subgraph "Enterprise MCP Gateway"
+                            SYNC[State Manager: Git Sync]
+                            MCP[Role-Based MCP Bridge]
+                        end
+
+                        subgraph "Client Ecosystem"
+                            IDE[Cursor / Antigravity]
+                            CLI[Gemini CLI]
+                        end
+
+                        UI -->|Commits Logic| V_P
+                        UI -->|Commits Logic| V_F
+                        IAM -->|Authenticates| MCP
+                        V_P -.->|Evaluates| GPT4o
+                        V_F -.->|Evaluates| GPT4o
+                        GPT4o -->|Scores/Ranks| RANK
+                        RANK -->|Approves/Rejects| SYNC
+                        SYNC -->|Loads Verified Logic| MCP
+                        MCP -->|Authorized Tools & Prompts| IDE
+                        MCP -->|Authorized Tools & Prompts| CLI
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Conclusion -->
+        <section class="slide" id="slide-8">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/20 via-black to-black -z-10"></div>
+            <div class="text-center max-w-4xl mx-auto space-y-12">
+                <h2 class="text-6xl md:text-8xl font-bold tracking-tighter text-white">Own Your <br><span class="text-gradient-accent">Intelligence.</span></h2>
+                <p class="text-2xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
+                    We version our code with surgical precision. It is time we do the same with our logic.
+                </p>
+                <div class="pt-8">
+                    <div class="inline-block glass-card px-8 py-4 text-white font-semibold tracking-wide border-accent/30 hover:border-accent hover:bg-accent/10 transition-all cursor-pointer">
+                        Start Governing Now
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Mermaid Initialization -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#1e1e1e',
+                primaryTextColor: '#ffffff',
+                primaryBorderColor: '#34d399',
+                lineColor: '#52525b',
+                secondaryColor: '#10b981',
+                tertiaryColor: '#000000',
+                background: 'transparent',
+                fontFamily: 'Inter, sans-serif'
+            }
+        });
+    </script>
+
+    <!-- Scroll tracking for Nav Dots -->
+    <script>
+        const container = document.getElementById('container');
+        const slides = document.querySelectorAll('.slide');
+        const navDotsContainer = document.getElementById('navDots');
+
+        // Create dots
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            
+            dot.addEventListener('click', () => {
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            navDotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        container.addEventListener('scroll', () => {
+            let current = '';
+            slides.forEach((slide, index) => {
+                const slideTop = slide.offsetTop;
+                if (container.scrollTop >= slideTop - 100) {
+                    current = index;
+                }
+            });
+
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            if(dots[current]) {
+                dots[current].classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>ript>
+</body>
+</html>
