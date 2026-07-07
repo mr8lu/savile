@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-07-07
+
+### Security
+- **Dependency Upgrades**: Upgraded all dependencies in `uv.lock` to resolve 27 known vulnerabilities identified by OSV Scanner/Dependabot, including critical packages such as `cryptography`, `gitpython`, `idna`, `pydantic-settings`, `pyjwt`, `pymdown-extensions`, `python-multipart`, `starlette`, and `urllib3`. All unit and integration tests continue to pass successfully.
+
 ## [1.2.0] - 2026-07-07
 
 ### Added
