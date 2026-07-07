@@ -2,28 +2,29 @@ import os
 import re
 import argparse
 
+
 def update_frontmatter(content, category, default_name):
-    match = re.match(r'^---\n(.*?)\n---\n(.*)', content, re.DOTALL)
+    match = re.match(r"^---\n(.*?)\n---\n(.*)", content, re.DOTALL)
     if match:
         frontmatter = match.group(1)
         body = match.group(2)
-        
+
         data = {}
-        for line in frontmatter.split('\n'):
-            if ':' in line:
-                key, val = line.split(':', 1)
+        for line in frontmatter.split("\n"):
+            if ":" in line:
+                key, val = line.split(":", 1)
                 val = val.strip()
                 if val.startswith('"') and val.endswith('"'):
                     val = val[1:-1]
                 elif val.startswith("'") and val.endswith("'"):
                     val = val[1:-1]
                 data[key.strip()] = val
-                
-        version = data.get('version', '1.0.0')
-        desc = data.get('description', '').replace('"', '\\"')
+
+        version = data.get("version", "1.0.0")
+        desc = data.get("description", "").replace('"', '\\"')
     else:
-        version = '1.0.0'
-        desc = ''
+        version = "1.0.0"
+        desc = ""
         body = content
 
     new_frontmatter = f"""---
@@ -36,6 +37,7 @@ dependencies: []
 """
     return new_frontmatter + body
 
+
 def sync_files(source_dir, target_dir):
     personas_map = {
         "_bmad/bmm/1-analysis/bmad-agent-analyst/SKILL.md": "personas/analyst.md",
@@ -47,7 +49,7 @@ def sync_files(source_dir, target_dir):
         ".bmad-core/agents/po.md": "personas/po.md",
         "_bmad/bmm/4-implementation/bmad-agent-qa/SKILL.md": "personas/qa.md",
         "_bmad/bmm/1-analysis/bmad-agent-tech-writer/SKILL.md": "personas/tech-writer.md",
-        "_bmad/bmm/2-plan-workflows/bmad-agent-ux-designer/SKILL.md": "personas/ux.md"
+        "_bmad/bmm/2-plan-workflows/bmad-agent-ux-designer/SKILL.md": "personas/ux.md",
     }
 
     frameworks_map = {
@@ -59,7 +61,7 @@ def sync_files(source_dir, target_dir):
         ".agent/workflows/pm.md": "frameworks/pm.md",
         ".agent/workflows/po.md": "frameworks/po.md",
         ".agent/workflows/qa.md": "frameworks/qa.md",
-        ".agent/workflows/ux.md": "frameworks/ux.md"
+        ".agent/workflows/ux.md": "frameworks/ux.md",
     }
 
     def process_map(mapping, category):
@@ -67,12 +69,12 @@ def sync_files(source_dir, target_dir):
             src = os.path.join(source_dir, src_rel)
             tgt = os.path.join(target_dir, tgt_rel)
             if os.path.exists(src):
-                with open(src, 'r') as f:
+                with open(src, "r") as f:
                     content = f.read()
-                name = os.path.basename(tgt_rel).replace('.md', '')
+                name = os.path.basename(tgt_rel).replace(".md", "")
                 new_content = update_frontmatter(content, category, name)
                 os.makedirs(os.path.dirname(tgt), exist_ok=True)
-                with open(tgt, 'w') as f:
+                with open(tgt, "w") as f:
                     f.write(new_content)
                 print(f"Synced {src_rel} -> {tgt_rel}")
             else:
@@ -82,10 +84,15 @@ def sync_files(source_dir, target_dir):
     process_map(frameworks_map, "framework")
     print("Sync complete.")
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Sync BMad personas and frameworks to Savile vault.")
+    parser = argparse.ArgumentParser(
+        description="Sync BMad personas and frameworks to Savile vault."
+    )
     parser.add_argument("source_bmad_path", help="Path to source bmad directory")
-    parser.add_argument("target_vault_path", help="Path to target savile vault directory")
+    parser.add_argument(
+        "target_vault_path", help="Path to target savile vault directory"
+    )
     args = parser.parse_args()
-    
+
     sync_files(args.source_bmad_path, args.target_vault_path)
