@@ -1,135 +1,86 @@
-# SAVILE: Git-Native Prompt Versioning & MCP Server for AI Agents
+# SAVILE: Single Source of Truth Engine for Agent Prompts & Skills
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/ "Python 3.11+ Version Support")
 [![Model Context Protocol](https://img.shields.io/badge/MCP-Standard-green.svg)](https://modelcontextprotocol.io/ "Model Context Protocol Standard Compliance")
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/mr8lu/savile/blob/main/LICENSE "MIT License")
 
-**SAVILE** (System for Agentic Versioning, Intelligence, and Logical Evaluation) provides robust **Git-Native Prompt Versioning** and functions as a secure **MCP Server for AI Agents**. It is a high-fidelity, local-first protocol for storing, versioning, syncing, and evaluating your AI agent prompts and skills via the **Model Context Protocol (MCP)**.
+**SAVILE** acts as the definitive "Next.js for Agent Prompts." It provides a powerful local-first environment to write, version, and compile AI logic into universally portable formats.
 
-Built as a Git-native logic bridge, SAVILE ensures reproducibility and version control for your agentic workflows, connecting your version-controlled logic directly to AI execution environments like **Antigravity**, **Cursor**, and **Claude Code**.
+It operates as a three-tier architecture that orchestrates your agent logic:
+1. **The Methodology (Method Framework):** The core psychology and workflow definitions behind how your agents think.
+2. **The SSoT Vault (Savile):** A Git-native database where you fork, customize, and version your specific personas, frameworks, and evaluations.
+3. **The Universal Export (Vercel Skills & MCP):** Savile seamlessly compiles your custom logic into portable **Vercel Labs SKILL.md formats** for global distribution via `npx skills add`, or serves them dynamically on `localhost` via the **Model Context Protocol (MCP)**.
 
 ---
 
 ## 🧐 Why SAVILE?
 
-Modern AI development is plagued by opaque UI abstractions and "prompt drift." SAVILE treats your agent's "brain"—its **personas**, **frameworks**, and **evaluations**—as first-class code artifacts. By providing a **Git-based prompt management** system, SAVILE enables:
+Savile exists to end "prompt drift" and vendor lock-in. Instead of configuring instructions directly inside isolated UIs (like Cursor, Claude Desktop, or V0), you maintain them centrally as pure markdown files.
 
-*   **Anti-Performative Software**: No web UI, no cloud lock-in. 100% local residency for logic and execution.
-*   **Git-Native State**: Your intelligence isn't tethered to a single machine. Sync your logic vaults across teams using fundamental Git primitives for **collaborative AI development**.
-*   **Deterministic Evaluation**: The **Crucible** ensures your logic actually works before you push it. If an assertion fails, the commit is rejected, ensuring **prompt reliability**.
-
----
-
-## ✨ Key Features
-
-*   **MCP Server (Python)**: Seamlessly broadcast your logic vault as dynamic MCP Prompts and Tools.
-*   **Git-Native Logic Storage**: Use Git for versioning and syncing your agent's personas and frameworks.
-*   **Local-First Architecture**: Keep your prompts and logic secure on your local machine.
-*   **Automated Evaluation (The Crucible)**: Mathematical grading of your logic against predefined thresholds.
-*   **Symphony Control Plane**: Centralized, local-first task board enabling asynchronous, multi-agent orchestration (inspired by OpenAI Symphony).
-*   **Dynamic Sub-Agents**: Personas are automatically exposed as discrete MCP Tools (e.g., `agent_architect`), forcing the host AI to seamlessly assume the required identity.
-*   **Sovereign Development**: Build AI agent infrastructure without vendor lock-in.
-
----
-
-## 🏗️ System Architecture
-
-> **Deep Dive**: For a comprehensive look at SAVILE's implementation, methodology, and design concepts, read our [Technical Explanation](docs/explanation.md).
-
-SAVILE acts as a deterministic "Logic Router" that brings versioned clarity to the AI infrastructure layer.
+- **Fork, Modify, Serve:** Treat your agent configurations like open-source software. Fork the baseline logic vault, adapt the QA and Dev personas to your company's standards, and deploy.
+- **Universal Portability:** Because Savile exports to the Vercel Labs Skills standard, a customized agent persona can be downloaded into *any* terminal environment instantly.
+- **De-anthropomorphized Scale:** Savile enforces strict, functional naming rules (`ux-designer`, `quality-assurance`), ending the chaotic practice of giving AI agents human names and standardizing your robotic workforce.
 
 ---
 
 ## 🚀 Quick Start
 
-### 0. Pre-requisites
-
-> **Note:** SAVILE is currently tested and supported only on **macOS** and **Linux** platforms. Windows is not officially supported.
-
-SAVILE's built-in personas and workflows rely on the **BMAD Method** ([bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)) as its underlying multi-agent orchestrated framework.
-
-You can automate this installation and linkage by running:
-```bash
-./scripts/setup-bmad.sh
-```
-
-**OR (Manual Install)**
-You will need a local BMad installation to serve as the core intelligence engine:
-```bash
-# In your main development workspace or a dedicated directory
-npx bmad-method install
-```
-
 ### 1. Installation
 ```bash
-# Clone and install locally
 git clone https://github.com/mr8lu/savile.git
 cd savile
 uv sync
 ```
 
-> **Tip:** After `uv sync`, you must prefix commands with `uv run` (e.g., `uv run savile --help`). Alternatively, you can activate the environment with `source .venv/bin/activate` or install it globally with `uv tool install .`.
+### 2. The Universal Lifecycle
 
-### 2. Initialize a Vault
-Scaffold a new local vault or clone an existing one from a remote origin. During initialization, SAVILE will interactively prompt you to link your local BMad installation (from Step 0).
+Savile provides a streamlined lifecycle for managing your agent intelligence.
+
+**`bootstrap`**: Initialize a new SSoT vault or clone an existing one from a remote source. Interactively links your core Method framework.
 ```bash
-# Initialize a brand new local vault
-uv run savile init
-
-# OR Initialize from a remote Git repository
-uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
-
-# If you skipped the prompt during init, you can configure it later:
-uv run savile setup
+uv run savile bootstrap
+# Or clone a team vault
+uv run savile bootstrap --source git+ssh://github.com/user/my-logic-vault.git
 ```
 
-### 3. Connect to Your Tools (MCP)
-SAVILE is an MCP-compatible server. It can be run over standard I/O (stdio) for tools like Claude Desktop and Cursor, or over Server-Sent Events (SSE) for tools like Warp AI.
-
-To see the exact configuration snippets for your preferred AI environment, run the helper script:
-
+**`import`**: Bring logic modules or skills from outside repositories into your local vault.
 ```bash
-./scripts/run-mcp.sh -h
+uv run savile import git+ssh://github.com/user/remote-logic.git
 ```
 
-*For detailed instructions on configuring Claude Desktop, Cursor, and Warp, see our [Getting Started Guide](docs/getting-started.md#step-3-connect-to-your-tools-mcp).*
-
-### 4. Pull Remote Modules
-Add deterministic logic from external sources.
+**`create`**: Scaffold a new functional agent persona. (Savile strictly enforces non-human, functional naming conventions).
 ```bash
-uv run savile add git+ssh://github.com/user/remote-logic.git
+uv run savile create ux-designer --desc "Analyzes wireframes and user flows"
 ```
 
-### 5. Enforce Quality
-Install the pre-push Git hook to ensure your logic passes **The Crucible** evaluations before syncing.
+**`update`**: Refresh existing metadata for a persona or framework in your vault.
 ```bash
-uv run savile install-hook
+uv run savile update ux-designer
+```
+
+**`export`**: Compile your raw `personas/` and `frameworks/` down into the universally portable Vercel Labs Skill format (`SKILL.md`), injecting YAML frontmatter automatically.
+```bash
+# Outputs to dist/skills/
+uv run savile export
+```
+
+**`serve`**: Boot the local MCP server to dynamically stream your logic vault into IDEs like Cursor, Windsurf, or Claude Desktop.
+```bash
+uv run savile serve
 ```
 
 ---
 
-## 🛠️ Core Components
+## 🛠️ Ecosystem Integrations
 
-### The [Registry Core](docs/architecture.md#3-directory-structure)
-A standardized directory structure for your intelligence. Every persona and framework is a Markdown file with mandatory **YAML Frontmatter** for metadata tracking.
+### Vercel Labs Skills
+By running `savile export`, you generate standard `SKILL.md` artifacts. If you commit these to a public GitHub repository (e.g., your fork of Savile) or deploy them via GitHub Pages, developers anywhere can import your customized agent by running:
+```bash
+npx skills add <your-username>/savile --skill ux-designer
+```
 
-### The [State Manager](docs/architecture.md#22-the-state-manager-gitpython)
-Powered by `GitPython`, handling bidirectional synchronization between your local environment and remote logic origins.
-
-### The [MCP Bridge](docs/architecture.md#23-the-mcp-bridge-mcp-sdk)
-Exposes your vault as **MCP Prompts** (for dynamic slash-command integration) and **Tools** (for physical file installation into `.agent/` or `.gemini/` directories).
-
-### The [Crucible](docs/architecture.md#24-the-crucible-pyyaml-subprocess-pytest)
-A validation loop that mathematically grades your logic against predefined thresholds in `/evals`.
-
----
-
-## 🗺️ Roadmap
-
-- **v0.1.0 (Infrastructure)**: ✅ Registry Core, Git sync, and basic MCP bridge.
-- **v0.2.0 (The Crucible)**: ✅ Git hook integration, MCP Prompts, and Gemini CLI command generation.
-- **v1.0.0 (Stable Protocol)**: ✅ MCP bridge (stdio & SSE), remote module installation (`savile add`), and metadata validation.
-- **v1.1.0 (The Ecosystem)**: 🚀 Community registry and automated version pinning.
+### Model Context Protocol (MCP)
+Running `savile serve` exposes your local vault directly to your editor. Changes you make to `personas/ux-designer.md` are instantly available to Claude without requiring a restart.
 
 ---
 

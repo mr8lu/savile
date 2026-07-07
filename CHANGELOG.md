@@ -7,10 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-07
+
 ### Added
 - **Pitch & Business Docs**: Added market analysis, pitch deck outline, problem statement, enterprise concept pivot, hackathon evaluation, the Savile story, and OpenAI governance deepdive.
 - **Pitch Site**: Added pitch site directory `docs/pitch-site/`.
 - **Personas**: Added `copywriting-doctor` persona.
+- **CI/CD**: Added GitHub Actions workflow (`test.yml`) for automated testing on PRs and pushes.
+- **Linting**: Integrated `ruff` for code linting and formatting.
+
+### Changed
+- **AXI Compliance**: Redesigned the CLI output formats to support the token-efficient Token-Oriented Object Notation (TOON) on stdout, enhanced error messages, and built a non-interactive safe setup/initialization flow.
+- **De-anthropomorphization**: Enforced a strict workspace-wide convention in `GEMINI.md` requiring all sub-agents and personas to use functional names (e.g., `ux-designer`, `quality-assurance`) rather than human-like names (e.g., John, David, Quinn).
+- **Refactoring**: Decoupled CLI presentation logic from core business logic by moving `create` and `export` implementation into `src/savile/core/registry.py`.
 
 ## [1.1.0] - 2026-05-14
 

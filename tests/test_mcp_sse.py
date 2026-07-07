@@ -6,18 +6,20 @@ from starlette.routing import Route
 from mcp.server.sse import SseServerTransport
 from savile.mcp.server import create_mcp_server
 
+
 @pytest.fixture
 def mock_vault(tmp_path):
     vault = tmp_path / "vault"
     vault.mkdir()
     (vault / "personas").mkdir()
     (vault / "frameworks").mkdir()
-    
+
     # Create a persona
     persona_file = vault / "personas" / "realist.md"
     persona_file.write_text("You are a realist.")
-    
+
     return vault
+
 
 def test_sse_endpoint_exists(mock_vault):
     """Test that the SSE and messages endpoints are correctly set up and reachable."""
@@ -28,7 +30,7 @@ def test_sse_endpoint_exists(mock_vault):
     server = create_mcp_server(mock_vault)
     server.run = AsyncMock()  # Mock server.run to return immediately and prevent hangs
     sse = SseServerTransport("/messages")
-    
+
     # Mock connect_sse to return immediately without blocking
     mock_connect = MagicMock()
     mock_connect.__aenter__ = AsyncMock(return_value=(AsyncMock(), AsyncMock()))
@@ -53,13 +55,13 @@ def test_sse_endpoint_exists(mock_vault):
     )
 
     client = TestClient(app)
-    
+
     # 1. Test SSE endpoint (GET /sse)
     # Note: TestClient with SSE can be tricky, but we can verify it doesn't 404
     with client.stream("GET", "/sse") as response:
         assert response.status_code == 200
         # We don't need to read the whole stream in a simple unit test
-    
+
     # 2. Test messages endpoint (POST /messages)
     # It should return 400 or something if the body is invalid, but not 404
     response = client.post("/messages", json={})
