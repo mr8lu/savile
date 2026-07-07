@@ -1,0 +1,1132 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="System for Agentic Versioning, Intelligence, and Logical Evaluation">
+      
+      
+      
+        <link rel="canonical" href="https://mr8lu.github.io/savile/v1.5.0/architecture/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Architecture Decision Document (v1.5.0) - SAVILE</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture-decision-document-v150" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SAVILE" class="md-header__button md-logo" aria-label="SAVILE" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SAVILE
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture Decision Document (v1.5.0)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mr8lu/savile" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../explanation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Explanation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project-analysis/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project Analysis
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SAVILE" class="md-nav__button md-logo" aria-label="SAVILE" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SAVILE
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mr8lu/savile" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../explanation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Explanation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#project-context-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Context Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Context Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-constraints-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Constraints &amp; Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-cutting-concerns-identified" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-Cutting Concerns Identified
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#starter-template-evaluation-v150-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starter Template Evaluation (v1.5.0 Infrastructure)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Starter Template Evaluation (v1.5.0 Infrastructure)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-technology-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primary Technology Domain
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#starter-options-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Starter Options Considered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selected-pattern-git-native-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selected Pattern: Git-Native Distribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-architectural-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Architectural Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Architectural Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision-priority-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Priority Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-architecture-the-logic-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Architecture (The Logic Vault)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication &amp; Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-communication-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API &amp; Communication Patterns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure &amp; Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-impact-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Impact Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-patterns-consistency-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Patterns &amp; Consistency Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Patterns &amp; Consistency Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-development-rules-strict-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Development Rules (Strict Enforcement)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-structure-boundaries-v150" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Structure &amp; Boundaries (v1.5.0)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Structure &amp; Boundaries (v1.5.0)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#complete-project-directory-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Project Directory Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-refined-vault-schema-v150" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Refined Vault Schema (v1.5.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architectural-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architectural Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements-to-structure-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements to Structure Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-validation-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Validation Results
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Validation Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#coherence-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coherence Validation ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements-coverage-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements Coverage Validation ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-analysis-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gap Analysis Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-readiness-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Readiness Assessment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-handoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Handoff
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="architecture-decision-document-v150">Architecture Decision Document (v1.5.0)</h1>
+<p><em>This document builds collaboratively through step-by-step discovery. Sections are appended as we work through each architectural decision together.</em></p>
+<h2 id="project-context-analysis">Project Context Analysis</h2>
+<h3 id="requirements-overview">Requirements Overview</h3>
+<p><strong>Functional Requirements:</strong>
+- Implement 'savile add' for remote module installation.
+- Implement 'savile.lock' for deterministic logic versioning across teams.
+- Enhance Schema Validation to enforce the new metadata standards strictly.</p>
+<p><strong>Non-Functional Requirements:</strong>
+- Must remain 100% local-first and execute without cloud latency (except for explicit LLM evaluations in The Crucible).
+- Must resolve dependencies deterministically using 'uv'.
+- Must prevent path traversal and arbitrary file writes during module installation.</p>
+<p><strong>Scale &amp; Complexity:</strong>
+- Primary domain: Python Daemon / MCP Protocol
+- Complexity level: Medium/High
+- Estimated architectural components: 3 (Registry Parser, Lockfile Generator, Remote Sync Engine)</p>
+<h3 id="technical-constraints-dependencies">Technical Constraints &amp; Dependencies</h3>
+<ul>
+<li>Must use 'GitPython' for state management.</li>
+<li>Must use the official 'mcp' Python SDK.</li>
+<li>Relies on 'typer' for CLI routing.</li>
+</ul>
+<h3 id="cross-cutting-concerns-identified">Cross-Cutting Concerns Identified</h3>
+<ul>
+<li><strong>Security Boundaries:</strong> Ensuring 'savile add' cannot pull malicious code or overwrite core system files.</li>
+<li><strong>State Consistency:</strong> Ensuring the 'savile.lock' file accurately reflects the Git state without desyncing during merge conflicts.</li>
+</ul>
+<h2 id="starter-template-evaluation-v150-infrastructure">Starter Template Evaluation (v1.5.0 Infrastructure)</h2>
+<h3 id="primary-technology-domain">Primary Technology Domain</h3>
+<p>CLI Tool / MCP Daemon based on existing SAVILE Python 3.11+ architecture.</p>
+<h3 id="starter-options-considered">Starter Options Considered</h3>
+<ul>
+<li><strong>Standard Git-Native Sync</strong>: Leveraging 'GitPython' for all remote logic fetching.</li>
+<li><strong>HTTP/Registry Sync</strong>: Implementing a custom 'httpx' client for a centralized logic registry.</li>
+</ul>
+<h3 id="selected-pattern-git-native-distribution">Selected Pattern: Git-Native Distribution</h3>
+<p><strong>Rationale for Selection:</strong>
+Aligns with the 'Sovereign Logic' and 'Local-First' philosophy. Git provides versioning, integrity, and transport for free.</p>
+<p><strong>Initialization Command (Internal):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>uv<span class="w"> </span>add<span class="w"> </span>httpx<span class="w"> </span>gitpython
+</code></pre></div></p>
+<p><strong>Architectural Decisions Provided by Starter:</strong></p>
+<p><strong>Language &amp; Runtime:</strong>
+Python 3.11+ with 'asyncio' to maintain high-performance MCP streaming.</p>
+<p><strong>Dependency Management:</strong>
+'uv' with 'pyproject.toml' and 'uv.lock'.</p>
+<p><strong>Lockfile Strategy:</strong>
+Implement 'savile.lock' in <strong>TOML</strong> format to maintain parity with the Python ecosystem and provide human-readable diffs.</p>
+<p><strong>Testing Setup:</strong>
+Continue utilizing 'pytest' for unit/integration tests and 'The Crucible' for prompt logic validation.</p>
+<h2 id="core-architectural-decisions">Core Architectural Decisions</h2>
+<h3 id="decision-priority-analysis">Decision Priority Analysis</h3>
+<p><strong>Critical Decisions (Block Implementation):</strong>
+- <strong>Remote Module Installation Strategy:</strong> Strict 3-Way Merge (Git-Native)
+- <strong>Schema Validation Engine:</strong> Manual PyYAML Parsing</p>
+<p><strong>Important Decisions (Shape Architecture):</strong>
+- <strong>Lockfile Format:</strong> TOML (Savile.lock)
+- <strong>Sync Transport:</strong> Git over SSH/HTTPS (GitPython)</p>
+<p><strong>Deferred Decisions (Post-MVP):</strong>
+- <strong>Namespaced Module Isolation:</strong> Deferred for a future release to keep the initial 'savile add' workflow simple and directly integrated with the root '/personas' and '/frameworks' directories.</p>
+<h3 id="data-architecture-the-logic-vault">Data Architecture (The Logic Vault)</h3>
+<ul>
+<li><strong>Storage Medium:</strong> Local File System (Markdown + YAML Frontmatter)</li>
+<li><strong>State Management:</strong> Git Repository (Bidirectional Sync)</li>
+<li><strong>Validation:</strong> Strict Manual PyYAML parsing to enforce the v1.5.0 Schema (name, version, category, dependencies) upon file read and 'savile add'.</li>
+</ul>
+<h3 id="authentication-security">Authentication &amp; Security</h3>
+<ul>
+<li><strong>Remote Sync Auth:</strong> Delegates entirely to the host's local SSH agent or Git credential helper. SAVILE will not manage or store credentials.</li>
+<li><strong>MCP Security:</strong> Stdio transport relies on local user execution context. Path traversal protections must be strictly enforced during 'savile add' to prevent malicious repositories from escaping the vault directory.</li>
+</ul>
+<h3 id="api-communication-patterns">API &amp; Communication Patterns</h3>
+<ul>
+<li><strong>IDE Integration:</strong> Official Model Context Protocol (MCP) using the Python SDK.</li>
+<li><strong>Transport Layers:</strong> Stdio (default for Cursor/Claude) and SSE (Server-Sent Events via Starlette/Uvicorn for Warp AI).</li>
+<li><strong>Module Discovery:</strong> The MCP Server will parse the vault on startup and broadcast available personas as Prompts, and installation commands as Tools.</li>
+</ul>
+<h3 id="infrastructure-deployment">Infrastructure &amp; Deployment</h3>
+<ul>
+<li><strong>Distribution:</strong> Published to PyPI, installable globally via 'uv tool install .'.</li>
+<li><strong>CI/CD:</strong> GitHub Actions for testing the CLI and Crucible evaluations before release.</li>
+<li><strong>The Crucible (Hooks):</strong> Native Git pre-push hook integration that invokes a local subprocess to run assertions against the 'gemini-2.0-pro-exp' model (or user-configured equivalent).</li>
+</ul>
+<h3 id="decision-impact-analysis">Decision Impact Analysis</h3>
+<p><strong>Implementation Sequence:</strong>
+1. Implement the TOML lockfile parser and generator ('savile.lock').
+2. Build the 'savile add' command leveraging GitPython for a Strict 3-Way Merge of remote repositories into the local working tree.
+3. Integrate the Manual PyYAML schema validation step into the 'savile add' pipeline to reject invalid modules before they are merged.
+4. Update the MCP Server to read dependencies from the validated frontmatter.</p>
+<p><strong>Cross-Component Dependencies:</strong>
+- The 'savile add' command is tightly coupled to the Schema Validation Engine; a repository cannot be merged if its modules fail the strict PyYAML checks.</p>
+<h2 id="implementation-patterns-consistency-rules">Implementation Patterns &amp; Consistency Rules</h2>
+<h3 id="core-development-rules-strict-enforcement">Core Development Rules (Strict Enforcement)</h3>
+<p><strong>1. File Path Resolution:</strong>
+- <strong>MUST</strong> use 'pathlib.Path' exclusively.
+- <strong>FORBIDDEN:</strong> 'os.path.join', hardcoded absolute strings.
+- <strong>Pattern:</strong> 'vault_root = Path.cwd() / "personas"'</p>
+<p><strong>2. Synchronous vs Asynchronous Boundaries:</strong>
+- CLI Entrypoints ('src/savile/cli.py'): <strong>MUST</strong> be synchronous 'def'.
+- MCP Handlers ('src/savile/mcp_server.py'): <strong>MUST</strong> be asynchronous 'async def'.
+- Boundary bridging: Use 'asyncio.run(main_async_function())' only at the topmost CLI command level.</p>
+<p><strong>3. State Modification &amp; Git Operations:</strong>
+- <strong>MUST</strong> use 'GitPython' ('import git') for repository cloning, fetching, and merging during 'savile add'.
+- <strong>FORBIDDEN:</strong> 'subprocess.run(["git", ...])' for state management (subprocess is reserved strictly for evaluation hooks).</p>
+<p><strong>4. Error Handling &amp; User Output:</strong>
+- <strong>MUST</strong> use 'typer.echo' or 'typer.secho(..., fg=typer.colors.RED, err=True)' for output.
+- <strong>FORBIDDEN:</strong> 'print()'.
+- <strong>Pattern:</strong> Catch expected operational errors (e.g., Git merge conflicts, invalid YAML) and raise 'raise typer.Exit(code=1)' instead of allowing raw tracebacks to hit the user.</p>
+<p><strong>5. Schema Validation ('pyyaml'):</strong>
+- <strong>Pattern:</strong> When reading modules, always use 'yaml.safe_load_all()'. The first document is the frontmatter; the remaining string is the body. 
+- <strong>Validation:</strong> Missing required keys ('name', 'version', 'category') must throw a custom 'SchemaValidationError'.</p>
+<h2 id="project-structure-boundaries-v150">Project Structure &amp; Boundaries (v1.5.0)</h2>
+<h3 id="complete-project-directory-structure">Complete Project Directory Structure</h3>
+<p>[As defined in the Python structure above]</p>
+<h3 id="the-refined-vault-schema-v150">The Refined Vault Schema (v1.5.0)</h3>
+<p>To support scale and universal adoption, the flat v1.0.0 vault structure is evolving into a Hierarchical &amp; Namespaced Vault Schema.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>my-logic-vault/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── .savile/              # NEW: Vault-level configuration
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   └── vault.toml        # Metadata about the vault itself
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>├── personas/             # Core local personas
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   └── [category]/       # OPTIONAL: e.g., personas/engineering/dev.md
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>├── frameworks/           # Core local frameworks
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   └── [category]/       # OPTIONAL: e.g., frameworks/agile/scrum.md
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>├── modules/              # NEW: Namespaced external logic (from &#39;savile add&#39;)
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│   └── [org]/            # e.g., modules/bmad-method/
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│       ├── personas/
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│       └── frameworks/
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>├── shared/               # NEW: Reusable fragments &amp; templates
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>│   └── snippets/         # Common logic to be included in multiple personas
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>└── evals/                # The Crucible matrices
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    └── [category]/
+</code></pre></div>
+<h3 id="architectural-boundaries">Architectural Boundaries</h3>
+<p><strong>Sync &amp; Remote Boundaries:</strong>
+- All remote fetching happens in 'src/savile/sync/'.
+- 'GitPython' is the exclusive transport for 'savile add' and 'savile sync'.</p>
+<p><strong>Validation &amp; Schema Boundaries:</strong>
+- 'src/savile/core/schema.py' is the gatekeeper.
+- No module is accepted into the registry if it fails the strict PyYAML validation (name, version, category).</p>
+<p><strong>Lockfile &amp; Resolution Boundaries:</strong>
+- 'savile.lock' (TOML) is managed by 'src/savile/core/resolver.py'.
+- This ensures team-wide deterministic logic syncing.</p>
+<h3 id="requirements-to-structure-mapping">Requirements to Structure Mapping</h3>
+<p><strong>Feature: Remote Module Installation ('savile add')</strong>
+- CLI Logic: 'src/savile/cli.py'
+- Sync Execution: 'src/savile/sync/manager.py'
+- Validation: 'src/savile/core/schema.py'</p>
+<p><strong>Feature: Deterministic Versioning ('savile.lock')</strong>
+- Parser/Generator: 'src/savile/core/resolver.py'
+- Verification: 'src/savile/cli.py' (integrated into 'sync' and 'add' commands).</p>
+<p><strong>Feature: v1.0.0 to v1.5.0 Vault Migration Strategy</strong>
+- The 'savile init' and 'savile sync' commands will detect the presence of '.savile/vault.toml'. 
+- If absent, a transparent, non-destructive migration script ('savile migrate') will scaffold the new directories ('modules/', 'shared/', '.savile/') without altering the existing flat '/personas' or '/frameworks' files.</p>
+<h2 id="architecture-validation-results">Architecture Validation Results</h2>
+<h3 id="coherence-validation">Coherence Validation ✅</h3>
+<p><strong>Decision Compatibility:</strong>
+The use of TOML for 'savile.lock' and YAML for module frontmatter is syntactically coherent. 'GitPython' seamlessly supports the Strict 3-Way merge strategy defined for remote module installation.</p>
+<p><strong>Pattern Consistency:</strong>
+The strict separation of 'async' MCP handlers and synchronous Typer CLI commands ensures the event loop remains unblocked during heavy file I/O or network operations.</p>
+<p><strong>Structure Alignment:</strong>
+The introduction of the 'modules/' namespace in the Vault Schema prevents external code collisions and supports the core "Protocol Hegemony" strategic initiative.</p>
+<h3 id="requirements-coverage-validation">Requirements Coverage Validation ✅</h3>
+<p><strong>Feature Coverage:</strong>
+The 'savile.lock' file provides the requested deterministic logic versioning, and the 'modules/' directory satisfies the need for an organized, scaleable vault.</p>
+<p><strong>Non-Functional Requirements Coverage:</strong>
+The choice of Manual PyYAML parsing ensures the daemon remains lightweight, fulfilling the "zero cloud latency" and "high performance" NFRs.</p>
+<h3 id="gap-analysis-results">Gap Analysis Results</h3>
+<ul>
+<li><strong>Minor:</strong> Git credential management. SAVILE relies on the host OS. The implementation must include user-friendly error boundaries when 'GitPython' encounters authentication failures during 'savile add'.</li>
+</ul>
+<h3 id="architecture-readiness-assessment">Architecture Readiness Assessment</h3>
+<p><strong>Overall Status:</strong> READY FOR IMPLEMENTATION
+<strong>Confidence Level:</strong> High</p>
+<p><strong>Key Strengths:</strong>
+- Zero cloud lock-in.
+- Highly organized, namespaced vault schema.
+- Strict consistency rules for AI agent implementation.</p>
+<h3 id="implementation-handoff">Implementation Handoff</h3>
+<p><strong>AI Agent Guidelines:</strong>
+- Follow all 'pathlib' and synchronous/asynchronous boundary rules strictly.
+- Use 'typer.Exit' for expected errors; no raw tracebacks.
+- Refer to the v1.5.0 Vault Schema when modifying the 'Registry' parser.</p>
+<p><strong>First Implementation Priority:</strong>
+Develop the v1.0.0 to v1.5.0 Vault Migration Script ('savile migrate') to scaffold '.savile/vault.toml' and the 'modules/' directory before building the 'savile add' command.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
