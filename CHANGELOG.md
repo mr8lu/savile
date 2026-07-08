@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Centralized Agentic Instructions**: Added workspace-wide instruction configurations (`.cursorrules`, `.clinerules`, `.windsurfrules`, `.copilotinstructions`) to ensure any agentic tools (Cursor, Cline, Windsurf, Copilot, Aider, etc.) operating in the repository strictly adhere to BMad Framework rules and general guidelines in `GEMINI.md`.
+
 ## [1.2.1] - 2026-07-07
 
 ### Security
