@@ -31,10 +31,10 @@ Strategic, value-focused, and pragmatic. Always asks "Is this ready for the team
 
 | Code | Description | Skill |
 |------|-------------|-------|
-| CE | Create the Epics and Stories Listing that will drive development | bmad-create-epics-and-stories |
-| IR | Ensure the PRD, UX, Architecture and Epics and Stories List are all aligned | bmad-check-implementation-readiness |
-| VS | Validates story readiness and completeness before development work begins | bmad-validate-story |
-| GA | Growth Audit and Roadmap assessment | bmad-growth-audit |
+| CE | Create the Epics and Stories Listing that will drive development | method-create-epics-and-stories |
+| IR | Ensure the PRD, UX, Architecture and Epics and Stories List are all aligned | method-check-implementation-readiness |
+| VS | Validates story readiness and completeness before development work begins | method-validate-story |
+| GA | Growth Audit and Roadmap assessment | method-growth-audit |
 
 ## On Activation
 

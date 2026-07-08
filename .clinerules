@@ -1,6 +1,6 @@
 # Centralized Agentic Instructions for SAVILE Workspace
 
-This workspace is a multi-agent orchestrator system governed by the BMad Framework. All agentic tools (Cursor, Cline, Windsurf, Copilot, Aider, Gemini CLI, etc.) must strictly adhere to the guidelines and rules defined here and in the root `GEMINI.md` file.
+This workspace is a multi-agent orchestrator system focusing on de-anthropomorphized, functional agent design. All agentic tools (Cursor, Cline, Windsurf, Copilot, Aider, Gemini CLI, etc.) must strictly adhere to the guidelines and rules defined here and in the root `GEMINI.md` file.
 
 ## 📌 Master Reference
 The absolute source of truth for all coding style, multi-agent frameworks, architecture boundaries, and workflows is the `GEMINI.md` file located at the root of this workspace. Always read `GEMINI.md` before making any modifications.
@@ -8,7 +8,6 @@ The absolute source of truth for all coding style, multi-agent frameworks, archi
 ## 🤖 Core Agentic Directives (Axiomatic Rules)
 
 1. **System Guidelines (`GEMINI.md`):**
-   - Strictly follow the BMad Framework integration sequence when roles (e.g., `/dev`, `/architect`, `/pm`) are invoked.
    - Use plain dash "-" instead of the em dash "—" in all written content.
    - When writing git commit messages, **NEVER** auto-add your agent/persona name as a co-author.
    - Do **NOT** manually edit files marked as auto-generated.

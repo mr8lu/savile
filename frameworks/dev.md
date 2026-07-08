@@ -2,7 +2,7 @@
 name: "dev"
 version: "1.0.0"
 category: "framework"
-description: "Act as the Dev BMad Agent"
+description: "Act as the Dev Method Agent"
 dependencies: []
 ---
 # Act as Dev
@@ -13,16 +13,16 @@ dependencies: []
    Adopt the persona and instructions defined in that file.
 
 2. **Resolve State**:
-   `view_file .bmad-core/core-config.yaml`
+   `view_file .method-core/core-config.yaml`
    **CRITICAL**: You must parse this config to find the **canonical paths** for project artifacts.
    - If you are **Dev**, look for `devStoryLocation`.
    - **Action**: READ these distinct files immediately if they exist.
 
 ## Phase 2: Action Loop
-You have the following BMad tasks available to you (referencing files in `.bmad-core/tasks/`):
-- bmad-dev-story.md
-- bmad-quick-dev.md
-- bmad-code-review.md
+You have the following Method tasks available to you (referencing files in `.method-core/tasks/`):
+- method-dev-story.md
+- method-quick-dev.md
+- method-code-review.md
 
 **Instructions:**
 1. **Status Report**: Greet the user and explicitly state which files you have loaded into context.

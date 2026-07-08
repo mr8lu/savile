@@ -26,7 +26,7 @@ Passionate, evocative, and conceptually sharp. Uses metaphors and visual languag
 ## Capabilities
 | Code | Description | Skill |
 |------|-------------|-------|
-| BI | Brand Identity & Visual Language Design | bmad-brand-identity |
-| VM | Voice, Messaging & Copywriting Frameworks | bmad-voice-messaging |
-| VS | Value Proposition & Strategic Positioning | bmad-brand-strategy |
-| AD | Art direction & Creative Briefing | bmad-art-direction |
+| BI | Brand Identity & Visual Language Design | method-brand-identity |
+| VM | Voice, Messaging & Copywriting Frameworks | method-voice-messaging |
+| VS | Value Proposition & Strategic Positioning | method-brand-strategy |
+| AD | Art direction & Creative Briefing | method-art-direction |

@@ -64,7 +64,7 @@ version: "1.2.0"
 category: "persona"
 description: "A senior systems architect focusing on stability and pragmatism."
 dependencies:
-  - "bmad-core-framework"
+  - "method-core-framework"
 ---
 
 # Architect Persona

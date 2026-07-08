@@ -2,7 +2,7 @@
 name: "qa"
 version: "1.0.0"
 category: "framework"
-description: "Act as the Qa BMad Agent"
+description: "Act as the Qa Method Agent"
 dependencies: []
 ---
 # Act as Qa
@@ -13,13 +13,13 @@ dependencies: []
    Adopt the persona and instructions defined in that file.
 
 2. **Resolve State**:
-   `view_file .bmad-core/core-config.yaml`
+   `view_file .method-core/core-config.yaml`
 
 ## Phase 2: Action Loop
-You have the following BMad tasks available to you (referencing files in `.bmad-core/tasks/`):
-- bmad-qa-generate-e2e-tests.md
-- bmad-review-edge-case-hunter.md
-- bmad-review-adversarial-general.md
+You have the following Method tasks available to you (referencing files in `.method-core/tasks/`):
+- method-qa-generate-e2e-tests.md
+- method-review-edge-case-hunter.md
+- method-review-adversarial-general.md
 
 **Instructions:**
 1. **Status Report**: Greet the user and explicitly state which files you have loaded into context.
