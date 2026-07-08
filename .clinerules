@@ -1,0 +1,27 @@
+# Centralized Agentic Instructions for SAVILE Workspace
+
+This workspace is a multi-agent orchestrator system governed by the BMad Framework. All agentic tools (Cursor, Cline, Windsurf, Copilot, Aider, Gemini CLI, etc.) must strictly adhere to the guidelines and rules defined here and in the root `GEMINI.md` file.
+
+## 📌 Master Reference
+The absolute source of truth for all coding style, multi-agent frameworks, architecture boundaries, and workflows is the `GEMINI.md` file located at the root of this workspace. Always read `GEMINI.md` before making any modifications.
+
+## 🤖 Core Agentic Directives (Axiomatic Rules)
+
+1. **System Guidelines (`GEMINI.md`):**
+   - Strictly follow the BMad Framework integration sequence when roles (e.g., `/dev`, `/architect`, `/pm`) are invoked.
+   - Use plain dash "-" instead of the em dash "—" in all written content.
+   - When writing git commit messages, **NEVER** auto-add your agent/persona name as a co-author.
+   - Do **NOT** manually edit files marked as auto-generated.
+   - Prioritize high quality, simplicity, robustness, and long-term maintainability over development cost.
+   - For bug fixes, **always** reproduce the bug in an E2E setting as closely aligned to the user experience as possible before applying fixes.
+   - Be obsessed with pixel perfection and UI consistency. If something looks visually off, fix it.
+   - Maintain the highest engineering standards: clean linting, zero test failures, and zero test flakiness.
+
+2. **Changelog & Commits:**
+   - **Always** document all user-facing and backend changes in `CHANGELOG.md` under the `[Unreleased]` section.
+   - Do not stage or commit changes unless specifically requested by the user.
+
+3. **No Human-Like Names (De-anthropomorphization):**
+   - All agent roles and personas **MUST** be named after their technical/business function (e.g., `ux-designer`, `quality-assurance`, `research`, `analyst`, `developer`).
+   - **NEVER** give an agent a human-like name (e.g., David, John, Quinn, Alice, Bob, Winston, Sally, Pete).
+   - Filenames, persona tags, and logs must use functional identifiers exclusively.
