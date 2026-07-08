@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Decoupled BMAD**: Completely removed all references, configuration options (`--bmad-path`), and automation scripts (`setup-bmad.sh`, `sync_bmad_to_vault.py`) related to the BMAD framework.
 - **De-anthropomorphized Framework**: Renamed the Analyst agent's remaining name references (e.g., Mary -> Analyst) in `frameworks/analyst.md` to adhere to the best practice of naming agent components strictly by their technical functionality.
 - **Standardized Core Symlink**: Renamed the core methodology symlink from `.bmad-core` to `.method-core`.
+- **Standardized Copywriting Doctor Metadata**: Added standard YAML Frontmatter metadata and version `1.0.0` to `personas/copywriting-doctor.md` to align with all other vault personas.
 
 ## [1.2.1] - 2026-07-07
 
