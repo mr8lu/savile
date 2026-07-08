@@ -2,7 +2,7 @@
 name: "cis"
 version: "1.0.0"
 category: "framework"
-description: "Act as the Innovation Strategist BMad Agent"
+description: "Act as the Innovation Strategist Method Agent"
 dependencies: []
 ---
 # Act as Innovation Strategist (Creative Intelligence Suite)
@@ -13,16 +13,16 @@ dependencies: []
    Adopt the persona and instructions defined in that file.
 
 2. **Resolve State**:
-   `view_file .bmad-core/core-config.yaml`
+   `view_file .method-core/core-config.yaml`
    **CRITICAL**: You must parse this config to find the **canonical paths** for project artifacts.
    - **Action**: READ your ideation and innovation documents immediately if they exist.
 
 ## Phase 2: Action Loop
-You have the following BMad tasks available to you (referencing files in `.bmad-core/tasks/`):
-- bmad-cis-innovation-strategy.md
-- bmad-cis-design-thinking.md
-- bmad-cis-problem-solving.md
-- bmad-cis-storytelling.md
+You have the following Method tasks available to you (referencing files in `.method-core/tasks/`):
+- method-cis-innovation-strategy.md
+- method-cis-design-thinking.md
+- method-cis-problem-solving.md
+- method-cis-storytelling.md
 
 **Instructions:**
 1. **Status Report**: Greet the user and explicitly state which tools and frameworks (CIS) you have loaded into context.

@@ -18,7 +18,7 @@ echo -e "${BLUE}${BOLD}     SAVILE Environment Standardization & Onboarding${NC}
 echo -e "${BLUE}${BOLD}====================================================${NC}\n"
 
 # 1. Dependency Checks
-echo -e "${BOLD}[1/4] Checking System Prerequisites...${NC}"
+echo -e "${BOLD}[1/3] Checking System Prerequisites...${NC}"
 
 # Check Git
 if command -v git &> /dev/null; then
@@ -69,7 +69,7 @@ else
 fi
 
 # 2. Virtual Environment & Dependencies Setup
-echo -e "\n${BOLD}[2/4] Setting Up Python Virtual Environment...${NC}"
+echo -e "\n${BOLD}[2/3] Setting Up Python Virtual Environment...${NC}"
 if [ ! -d ".venv" ]; then
     echo -e "  - Creating virtual environment using uv..."
     uv venv
@@ -82,27 +82,13 @@ uv sync --all-extras --all-groups
 echo -e "  - ${GREEN}Environment synchronized successfully!${NC}"
 
 # 3. Test Verification
-echo -e "\n${BOLD}[3/4] Verifying System Correctness...${NC}"
+echo -e "\n${BOLD}[3/3] Verifying System Correctness...${NC}"
 echo -e "  - Running the unit/E2E test suite via pytest..."
 if uv run pytest; then
     echo -e "  - Test Suite: ${GREEN}PASSED! (All logical assertions verified)${NC}"
 else
     echo -e "  - Test Suite: ${RED}FAILED!${NC} Please check the logs above."
     exit 1
-fi
-
-# 4. Interactive BMAD Framework Link
-echo -e "\n${BOLD}[4/4] Linking BMAD-METHOD framework...${NC}"
-if [ -L ".bmad-core" ] || [ -d ".bmad-core" ]; then
-    echo -e "  - .bmad-core framework configuration link already detected. ${GREEN}(Standardised)${NC}"
-else
-    echo -e "  - BMAD-METHOD framework was not detected inside the vault."
-    read -p "    Would you like to install and link the BMAD-METHOD framework now? (y/N): " LINK_BMAD
-    if [[ "$LINK_BMAD" =~ ^[Yy]$ ]]; then
-        bash ./scripts/setup-bmad.sh
-    else
-        echo -e "    ${YELLOW}Skipped linking. You can run './scripts/setup-bmad.sh' at any time to link later.${NC}"
-    fi
 fi
 
 # Summary / Next Steps

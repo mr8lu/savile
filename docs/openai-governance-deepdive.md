@@ -51,4 +51,4 @@ By using OpenAI to govern OpenAI, we create a **Sovereign Feedback Loop**. We ar
 **This is the transition from Prompt Engineering to Prompt Operations (PromptOps).**
 
 ---
-*Authored by Victor & Winston (BMad Innovation & Architecture)*
+*Authored by Victor & Winston (Method Innovation & Architecture)*

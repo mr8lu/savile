@@ -24,7 +24,7 @@ def print_error(message: str, help_text: str = None):
 
 def run_setup(vault_path: Path, method_path: str = None):
     """Run the setup for pre-requisites like the Method core framework."""
-    method_link = vault_path / ".bmad-core"
+    method_link = vault_path / ".method-core"
     if method_link.exists() or method_link.is_symlink():
         typer.echo("✅ Method core link already exists.")
         return
@@ -54,7 +54,7 @@ def run_setup(vault_path: Path, method_path: str = None):
         return
 
     method_dir = Path(method_path).expanduser().resolve()
-    core_path = method_dir / ".bmad-core"
+    core_path = method_dir / ".method-core"
 
     if not core_path.exists():
         print_error(
@@ -75,7 +75,6 @@ def setup(
     method_path: str = typer.Option(
         None,
         "--method-path",
-        "--bmad-path",
         help="Absolute or relative path to your Method project directory",
     ),
 ):
@@ -90,7 +89,6 @@ def bootstrap(
     method_path: str = typer.Option(
         None,
         "--method-path",
-        "--bmad-path",
         help="Absolute or relative path to your Method project directory",
     ),
 ):
@@ -122,7 +120,7 @@ def bootstrap(
 def init_alias(
     source: str = typer.Option(None, help="Git URI to logic vault"),
     method_path: str = typer.Option(
-        None, "--method-path", "--bmad-path", help="Path to Method project"
+        None, "--method-path", help="Path to Method project"
     ),
 ):
     bootstrap(source, method_path)

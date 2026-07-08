@@ -1,6 +1,6 @@
 ---
 stepsCompleted: [1, 2, 3, 4, 5, 6, 7, 8]
-inputDocuments: ["docs/prd.md", "docs/architecture.md", "docs/project-analysis.md", "_bmad-output/planning_artifacts/research/market-sovereign-logic-infrastructure-research-2026-03-31.md"]
+inputDocuments: ["docs/prd.md", "docs/architecture.md", "docs/project-analysis.md", "_method-output/planning_artifacts/research/market-sovereign-logic-infrastructure-research-2026-03-31.md"]
 workflowType: 'architecture'
 lastStep: 8
 status: 'complete'
@@ -173,7 +173,7 @@ my-logic-vault/
 ├── frameworks/           # Core local frameworks
 │   └── [category]/       # OPTIONAL: e.g., frameworks/agile/scrum.md
 ├── modules/              # NEW: Namespaced external logic (from 'savile add')
-│   └── [org]/            # e.g., modules/bmad-method/
+│   └── [org]/            # e.g., modules/method-method/
 │       ├── personas/
 │       └── frameworks/
 ├── shared/               # NEW: Reusable fragments & templates

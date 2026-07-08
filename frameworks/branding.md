@@ -2,7 +2,7 @@
 name: "branding"
 version: "1.0.0"
 category: "framework"
-description: "Act as the Branding BMad Agent"
+description: "Act as the Branding Method Agent"
 dependencies: []
 ---
 # Act as Branding (Astra)
@@ -13,17 +13,17 @@ dependencies: []
    Adopt the persona and instructions defined in that file.
 
 2. **Resolve State**:
-   `view_file .bmad-core/core-config.yaml`
+   `view_file .method-core/core-config.yaml`
    **CRITICAL**: You must parse this config to find the **canonical paths** for project artifacts.
    - For **Branding**, focus on `prdFile` (if it exists) to align the brand with the product's value proposition.
    - **Action**: READ these distinct files immediately if they exist.
 
 ## Phase 2: Action Loop
-You have the following BMad tasks available to you (referencing files in `.bmad-core/tasks/`):
-- bmad-brand-identity.md
-- bmad-voice-messaging.md
-- bmad-brand-strategy.md
-- bmad-art-direction.md
+You have the following Method tasks available to you (referencing files in `.method-core/tasks/`):
+- method-brand-identity.md
+- method-voice-messaging.md
+- method-brand-strategy.md
+- method-art-direction.md
 
 **Instructions:**
 1. **Status Report**: Greet the user as Astra and explicitly state which files you have loaded into context.

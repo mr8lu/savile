@@ -2,7 +2,7 @@
 name: "pm"
 version: "1.0.0"
 category: "framework"
-description: "Act as the Pm BMad Agent"
+description: "Act as the Pm Method Agent"
 dependencies: []
 ---
 # Act as Pm
@@ -13,7 +13,7 @@ dependencies: []
    Adopt the persona and instructions defined in that file.
 
 2. **Resolve State**:
-   `view_file .bmad-core/core-config.yaml`
+   `view_file .method-core/core-config.yaml`
    **CRITICAL**: You must parse this config to find the **canonical paths** for project artifacts.
    - If you are **PM**, look for `prdFile` (default `docs/prd.md`).
    - If you are **Architect**, look for `prdFile` (input) and `architectureFile` (output).
@@ -21,11 +21,11 @@ dependencies: []
    - **Action**: READ these distinct files immediately if they exist.
 
 ## Phase 2: Action Loop
-You have the following BMad tasks available to you (referencing files in `.bmad-core/tasks/`):
-- bmad-product-brief.md
-- bmad-create-prd.md
-- bmad-create-epics-and-stories.md
-- bmad-create-story.md
+You have the following Method tasks available to you (referencing files in `.method-core/tasks/`):
+- method-product-brief.md
+- method-create-prd.md
+- method-create-epics-and-stories.md
+- method-create-story.md
 
 **Instructions:**
 1. **Status Report**: Greet the user and explicitly state which files you have loaded into context.

@@ -64,9 +64,9 @@ As of April 1, 2026, SAVILE has successfully achieved its v1.0.0 Stable Protocol
 - [x] Full Git-native sync engine.
 - [x] MCP Prompt & Tool implementation.
 - [x] Automated Gemini CLI command generation.
-- [x] Built-in vault with 9 BMad core agents.
+- [x] Built-in vault with 9 Method core agents.
 - [x] Pre-push evaluation hooks.
-- [x] Automated BMAD pre-requisite linking and initialization scripting.
+- [x] Automated METHOD pre-requisite linking and initialization scripting.
 - [x] Adversarial security hardening for the MCP Server.
 - [x] E2E CLI test suite and robust exception handling.
 - [x] Warp AI SSE support.

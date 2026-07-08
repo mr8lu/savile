@@ -4,29 +4,29 @@ Welcome to **SAVILE**! This guide will help you set up your local logic vault an
 
 ---
 
-## 🚦 Phase 0: The Prerequisite (BMAD-METHOD)
+## 🚦 Phase 0: The Prerequisite (METHOD-METHOD)
 
 > **Note:** SAVILE is currently tested and supported only on **macOS** and **Linux** platforms. Windows is not officially supported.
 
-SAVILE's built-in personas (like the Architect, Product Manager, or Developer) and workflows rely on the **BMAD Method** ([bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)) as their core multi-agent orchestrated framework.
+SAVILE's built-in personas (like the Architect, Product Manager, or Developer) and workflows rely on the **METHOD Method** ([method-code-org/METHOD-METHOD](https://github.com/method-code-org/METHOD-METHOD)) as their core multi-agent orchestrated framework.
 
 ### Option A: Automate (Recommended)
 You can automate the installation and linking by running our setup script:
 ```bash
-./scripts/setup-bmad.sh
+./scripts/setup-method.sh
 ```
 
 ---
 
 ### Option B: Manual Install
-Before using SAVILE, you need a local BMad installation.
+Before using SAVILE, you need a local Method installation.
 
-1.  Choose a directory on your machine for your primary BMad project workspace.
+1.  Choose a directory on your machine for your primary Method project workspace.
 2.  Install the framework in that directory:
     ```bash
-    npx bmad-method install
+    npx method-method install
     ```
-3.  This creates a `.bmad-core/` directory containing the base agent identities and tasks. *Remember the path to this directory*, as SAVILE will ask for it during initialization (Step 2). SAVILE will link to this directory during setup.
+3.  This creates a `.method-core/` directory containing the base agent identities and tasks. *Remember the path to this directory*, as SAVILE will ask for it during initialization (Step 2). SAVILE will link to this directory during setup.
 
 ---
 
@@ -54,7 +54,7 @@ uv run savile --help
 
 A **Logic Vault** is just a directory (backed by Git) that stores your personas, frameworks, and evaluation matrices. You can start fresh or sync from an existing repository.
 
-During initialization, SAVILE will interactively prompt you for the path to your BMAD installation (from Phase 0). It will create a local symbolic link to connect your vault to the BMAD core logic.
+During initialization, SAVILE will interactively prompt you for the path to your METHOD installation (from Phase 0). It will create a local symbolic link to connect your vault to the METHOD core logic.
 
 ### Option A: Start Fresh
 Initialize a brand new local vault with the required folder structure:
@@ -69,7 +69,7 @@ uv run savile init --source git+ssh://github.com/user/my-logic-vault.git
 ```
 
 ### Need to re-configure later?
-If you skipped the prompt or moved your BMAD installation, simply run:
+If you skipped the prompt or moved your METHOD installation, simply run:
 ```bash
 savile setup
 ```

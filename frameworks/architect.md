@@ -2,7 +2,7 @@
 name: "architect"
 version: "1.0.0"
 category: "framework"
-description: "Act as the Architect BMad Agent"
+description: "Act as the Architect Method Agent"
 dependencies: []
 ---
 # Act as Architect
@@ -13,14 +13,14 @@ dependencies: []
    Adopt the persona and instructions defined in that file.
 
 2. **Resolve State**:
-   `view_file .bmad-core/core-config.yaml`
+   `view_file .method-core/core-config.yaml`
    **CRITICAL**: You must parse this config to find the **canonical paths** for project artifacts.
    - If you are **Architect**, look for `prdFile` (input) and `architectureFile` (output).
 
 ## Phase 2: Action Loop
-You have the following BMad tasks available to you (referencing files in `.bmad-core/tasks/`):
-- bmad-create-architecture.md
-- bmad-technical-research.md
+You have the following Method tasks available to you (referencing files in `.method-core/tasks/`):
+- method-create-architecture.md
+- method-technical-research.md
 
 **Instructions:**
 1. **Status Report**: Greet the user and explicitly state which files you have loaded into context.

@@ -1,6 +1,6 @@
 ---
 stepsCompleted: [1, 2, 3, 4]
-inputDocuments: ["docs/prd.md", "_bmad-output/planning_artifacts/architecture-v1.5.0.md"]
+inputDocuments: ["docs/prd.md", "_method-output/planning_artifacts/architecture-v1.5.0.md"]
 ---
 
 # phantom-celestial - Epic Breakdown

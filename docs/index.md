@@ -78,18 +78,18 @@ graph TD
 
 > **Note:** SAVILE is currently tested and supported only on **macOS** and **Linux** platforms. Windows is not officially supported.
 
-SAVILE's built-in personas and workflows rely on the **BMAD Method** ([bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)) as its underlying multi-agent orchestrated framework.
+SAVILE's built-in personas and workflows rely on the **METHOD Method** ([method-code-org/METHOD-METHOD](https://github.com/method-code-org/METHOD-METHOD)) as its underlying multi-agent orchestrated framework.
 
 You can automate this installation and linkage by running:
 ```bash
-./scripts/setup-bmad.sh
+./scripts/setup-method.sh
 ```
 
 **OR (Manual Install)**
-You will need a local BMad installation to serve as the core intelligence engine:
+You will need a local Method installation to serve as the core intelligence engine:
 ```bash
 # In your main development workspace or a dedicated directory
-npx bmad-method install
+npx method-method install
 ```
 
 ### 1. Installation
