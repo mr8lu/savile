@@ -26,13 +26,15 @@ var/
 Thumbs.db
 
 # Project-specific ignore
+_method-output/
 _bmad-output/
 .savile/
 *.log
 
-# Agentic Tools (Gemini, BMAD, etc.)
+# Agentic Tools (Gemini, Method, etc.)
 .agent/
 .gemini/
+.method/
 .bmad/
 implementation-artifacts/
 .knowledge/
@@ -40,10 +42,12 @@ GEMINI.md
 
 
 # Other Agentic & AI Tools
+.method-core/
+.method-core
 .bmad-core/
 .bmad-core
 .cline/
 .cursor/
 .aider/
 .mcp/
-\n.savile_board.json
+.savile_board.json
