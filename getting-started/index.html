@@ -455,15 +455,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#phase-0-the-prerequisite-bmad-method" class="md-nav__link">
+  <a href="#phase-0-the-prerequisite-method-method" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🚦 Phase 0: The Prerequisite (BMAD-METHOD)
+        🚦 Phase 0: The Prerequisite (METHOD-METHOD)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="🚦 Phase 0: The Prerequisite (BMAD-METHOD)">
+    <nav class="md-nav" aria-label="🚦 Phase 0: The Prerequisite (METHOD-METHOD)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -742,15 +742,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#phase-0-the-prerequisite-bmad-method" class="md-nav__link">
+  <a href="#phase-0-the-prerequisite-method-method" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🚦 Phase 0: The Prerequisite (BMAD-METHOD)
+        🚦 Phase 0: The Prerequisite (METHOD-METHOD)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="🚦 Phase 0: The Prerequisite (BMAD-METHOD)">
+    <nav class="md-nav" aria-label="🚦 Phase 0: The Prerequisite (METHOD-METHOD)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -936,24 +936,24 @@
 <h1 id="getting-started-with-savile">Getting Started with SAVILE</h1>
 <p>Welcome to <strong>SAVILE</strong>! This guide will help you set up your local logic vault and connect it to your favorite AI tools like Antigravity, Cursor, and Gemini CLI.</p>
 <hr />
-<h2 id="phase-0-the-prerequisite-bmad-method">🚦 Phase 0: The Prerequisite (BMAD-METHOD)</h2>
+<h2 id="phase-0-the-prerequisite-method-method">🚦 Phase 0: The Prerequisite (METHOD-METHOD)</h2>
 <blockquote>
 <p><strong>Note:</strong> SAVILE is currently tested and supported only on <strong>macOS</strong> and <strong>Linux</strong> platforms. Windows is not officially supported.</p>
 </blockquote>
-<p>SAVILE's built-in personas (like the Architect, Product Manager, or Developer) and workflows rely on the <strong>BMAD Method</strong> (<a href="https://github.com/bmad-code-org/BMAD-METHOD">bmad-code-org/BMAD-METHOD</a>) as their core multi-agent orchestrated framework.</p>
+<p>SAVILE's built-in personas (like the Architect, Product Manager, or Developer) and workflows rely on the <strong>METHOD Method</strong> (<a href="https://github.com/method-code-org/METHOD-METHOD">method-code-org/METHOD-METHOD</a>) as their core multi-agent orchestrated framework.</p>
 <h3 id="option-a-automate-recommended">Option A: Automate (Recommended)</h3>
 <p>You can automate the installation and linking by running our setup script:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./scripts/setup-bmad.sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./scripts/setup-method.sh
 </code></pre></div></p>
 <hr />
 <h3 id="option-b-manual-install">Option B: Manual Install</h3>
-<p>Before using SAVILE, you need a local BMad installation.</p>
+<p>Before using SAVILE, you need a local Method installation.</p>
 <ol>
-<li>Choose a directory on your machine for your primary BMad project workspace.</li>
+<li>Choose a directory on your machine for your primary Method project workspace.</li>
 <li>Install the framework in that directory:
-    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>npx<span class="w"> </span>bmad-method<span class="w"> </span>install
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>npx<span class="w"> </span>method-method<span class="w"> </span>install
 </code></pre></div></li>
-<li>This creates a <code>.bmad-core/</code> directory containing the base agent identities and tasks. <em>Remember the path to this directory</em>, as SAVILE will ask for it during initialization (Step 2). SAVILE will link to this directory during setup.</li>
+<li>This creates a <code>.method-core/</code> directory containing the base agent identities and tasks. <em>Remember the path to this directory</em>, as SAVILE will ask for it during initialization (Step 2). SAVILE will link to this directory during setup.</li>
 </ol>
 <hr />
 <h2 id="step-1-installation">🏗️ Step 1: Installation</h2>
@@ -971,7 +971,7 @@
 <hr />
 <h2 id="step-2-initialize-your-logic-vault">🗄️ Step 2: Initialize Your Logic Vault</h2>
 <p>A <strong>Logic Vault</strong> is just a directory (backed by Git) that stores your personas, frameworks, and evaluation matrices. You can start fresh or sync from an existing repository.</p>
-<p>During initialization, SAVILE will interactively prompt you for the path to your BMAD installation (from Phase 0). It will create a local symbolic link to connect your vault to the BMAD core logic.</p>
+<p>During initialization, SAVILE will interactively prompt you for the path to your METHOD installation (from Phase 0). It will create a local symbolic link to connect your vault to the METHOD core logic.</p>
 <h3 id="option-a-start-fresh">Option A: Start Fresh</h3>
 <p>Initialize a brand new local vault with the required folder structure:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>uv<span class="w"> </span>run<span class="w"> </span>savile<span class="w"> </span>init
@@ -981,7 +981,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>uv<span class="w"> </span>run<span class="w"> </span>savile<span class="w"> </span>init<span class="w"> </span>--source<span class="w"> </span>git+ssh://github.com/user/my-logic-vault.git
 </code></pre></div></p>
 <h3 id="need-to-re-configure-later">Need to re-configure later?</h3>
-<p>If you skipped the prompt or moved your BMAD installation, simply run:
+<p>If you skipped the prompt or moved your METHOD installation, simply run:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>savile<span class="w"> </span>setup
 </code></pre></div></p>
 <hr />
