@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Centralized Agentic Instructions**: Added workspace-wide instruction configurations (`.cursorrules`, `.clinerules`, `.windsurfrules`, `.copilotinstructions`) to ensure any agentic tools (Cursor, Cline, Windsurf, Copilot, Aider, etc.) operating in the repository strictly adhere to BMad Framework rules and general guidelines in `GEMINI.md`.
+- **Environment Setup Script**: Created a robust, cross-platform onboarding and environment standardization script (`setup.sh`) to perform prerequisite validation, virtual environment provisioning, full dependency synchronization via `uv`, execution of unit tests, and interactive linking of the BMAD-METHOD framework.
 
 ## [1.2.1] - 2026-07-07
 
