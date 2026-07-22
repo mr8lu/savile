@@ -48,6 +48,13 @@ uv run savile bootstrap --source git+ssh://github.com/user/my-logic-vault.git
 uv run savile import git+ssh://github.com/user/remote-logic.git
 ```
 
+**`import-system`**: Import a custom skill/agent from the system-wide directory (`~/.gemini` or `~/.agents`) or a custom directory into your local vault.
+```bash
+uv run savile import-system sprint-status
+# Or specify a custom source directory
+uv run savile import-system custom-skill --dir /path/to/custom_agents
+```
+
 **`create`**: Scaffold a new functional agent persona. (Savile strictly enforces non-human, functional naming conventions).
 ```bash
 uv run savile create ux-designer --desc "Analyzes wireframes and user flows"
