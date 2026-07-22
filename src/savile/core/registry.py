@@ -128,6 +128,9 @@ def import_from_system(vault_path: Path, name: str, alias: str = None, source_di
     Imports a skill or agent from the system-wide ~/.gemini or ~/.agents directory
     (or a specified custom source directory) into the local vault's personas/ and frameworks/ folders.
     """
+    if "/" in name or "\\" in name or ".." in name:
+        raise ValueError(f"Invalid name '{name}': Path traversal sequences are not allowed.")
+
     if source_dir:
         possible_paths = [
             source_dir / name / "SKILL.md",
@@ -224,13 +227,16 @@ def import_from_system(vault_path: Path, name: str, alias: str = None, source_di
     p_ver = metadata.get("version", "1.0.0")
     p_cat = "persona"
     
-    p_frontmatter = f"---\nname: \"{import_name}\"\nversion: \"{p_ver}\"\ncategory: \"{p_cat}\"\ndescription: \"{p_desc}\"\n---\n\n"
+    p_meta = {"name": import_name, "version": p_ver, "category": p_cat, "description": p_desc}
+    p_frontmatter = "---\n" + yaml.safe_dump(p_meta, sort_keys=False) + "---\n\n"
     p_file.write_text(p_frontmatter + persona_content + "\n")
     
     # Construct YAML frontmatter for framework
     f_ver = metadata.get("version", "1.0.0")
     f_cat = "framework"
-    f_frontmatter = f"---\nname: \"{import_name}\"\nversion: \"{f_ver}\"\ncategory: \"{f_cat}\"\n---\n\n"
+    
+    f_meta = {"name": import_name, "version": f_ver, "category": f_cat}
+    f_frontmatter = "---\n" + yaml.safe_dump(f_meta, sort_keys=False) + "---\n\n"
     
     if framework_content:
         f_file.write_text(f_frontmatter + framework_content + "\n")

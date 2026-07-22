@@ -57,12 +57,12 @@ This is the framework or methodology section.
     p_content = p_file.read_text()
     f_content = f_file.read_text()
     
-    assert "name: \"test-skill\"" in p_content
-    assert "description: \"A mock skill for testing\"" in p_content
+    assert "name: test-skill" in p_content
+    assert "description: 'A mock skill for testing'" in p_content or "description: A mock skill for testing" in p_content
     assert "This is the body of the test persona." in p_content
     assert "This is the framework or methodology section." not in p_content
     
-    assert "name: \"test-skill\"" in f_content
+    assert "name: test-skill" in f_content
     assert "This is the framework or methodology section." in f_content
     assert "This is the body of the test persona." not in f_content
 
@@ -101,7 +101,7 @@ Framework here.
     assert p_file.exists()
     assert f_file.exists()
     
-    assert "version: \"2.1.0\"" in p_file.read_text()
+    assert "version: '2.1.0'" in p_file.read_text() or "version: 2.1.0" in p_file.read_text()
     assert "Custom Persona" in p_file.read_text()
     assert "Framework" in f_file.read_text()
 
