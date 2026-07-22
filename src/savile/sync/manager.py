@@ -2,7 +2,6 @@ import os
 import time
 from pathlib import Path
 from git import Repo, exc
-from savile.core import registry
 
 
 def install_pre_push_hook(vault_path: Path):

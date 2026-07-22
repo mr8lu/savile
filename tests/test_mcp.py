@@ -1,9 +1,6 @@
 import pytest
-from pathlib import Path
 import os
-import shutil
 from savile.mcp.server import (
-    create_mcp_server,
     list_prompts_handler,
     get_prompt_handler,
     call_tool_handler,

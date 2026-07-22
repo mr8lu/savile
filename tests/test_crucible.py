@@ -1,4 +1,3 @@
-import pytest
 import shutil
 from pathlib import Path
 from savile.evals import crucible
@@ -17,4 +16,4 @@ def test_crucible_evaluations(tmp_path):
 
     # Run eval
     success = crucible.run_evaluations(vault_dir)
-    assert success == True
+    assert success

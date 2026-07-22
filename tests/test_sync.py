@@ -1,6 +1,4 @@
-import pytest
 import os
-from pathlib import Path
 from git import Repo
 from savile.sync import manager
 from savile.core import registry

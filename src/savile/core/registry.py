@@ -1,4 +1,3 @@
-import os
 import re
 import shutil
 import yaml
@@ -122,3 +121,121 @@ def export_skills(vault_path: Path, out: Path, force: bool) -> list[Path]:
             exported_files.append(skill_file)
 
     return exported_files
+
+
+def import_from_system(vault_path: Path, name: str, alias: str = None, source_dir: Path = None) -> tuple[Path, Path]:
+    """
+    Imports a skill or agent from the system-wide ~/.gemini or ~/.agents directory
+    (or a specified custom source directory) into the local vault's personas/ and frameworks/ folders.
+    """
+    if source_dir:
+        possible_paths = [
+            source_dir / name / "SKILL.md",
+            source_dir / f"{name}.md",
+            source_dir / "skills" / name / "SKILL.md",
+            source_dir / "agents" / f"{name}.md",
+        ]
+    else:
+        home = Path.home()
+        possible_paths = [
+            home / ".gemini" / "skills" / name / "SKILL.md",
+            home / ".agents" / "skills" / name / "SKILL.md",
+            home / ".gemini" / "agents" / f"{name}.md",
+        ]
+
+    source_file = None
+    for path in possible_paths:
+        if path.exists():
+            source_file = path
+            break
+
+    if not source_file:
+        search_locations = (
+            str(source_dir) if source_dir else "~/.gemini/skills, ~/.agents/skills, ~/.gemini/agents"
+        )
+        raise ValueError(
+            f"System skill or agent '{name}' not found in search paths ({search_locations})."
+        )
+
+    content = source_file.read_text()
+    
+    # Extract name and description from frontmatter
+    from savile.core.protocol import extract_frontmatter
+    metadata = extract_frontmatter(content) or {}
+    
+    import_name = alias or metadata.get("name") or name
+    import_name = import_name.lower().strip()
+    
+    # Validate de-anthropomorphized naming
+    prohibited_names = [
+        "david",
+        "john",
+        "quinn",
+        "alice",
+        "bob",
+        "paige",
+        "sally",
+        "pete",
+        "winston",
+    ]
+    if import_name in prohibited_names or not re.match(r"^[a-z0-9-]+$", import_name):
+        raise ValueError(
+            f"Invalid target name '{import_name}'. Names must be functional and de-anthropomorphized."
+        )
+
+    # Strip existing frontmatter from the main content for splitting
+    main_content = content
+    if content.startswith("---"):
+        parts = content.split("---", 2)
+        if len(parts) >= 3:
+            main_content = parts[2].strip()
+
+    # Split into Persona and Framework sections if a framework header is found
+    # Commonly: "# Framework", "# Methodologies", "# Methodology", "# Method"
+    framework_patterns = [
+        r"(^|\n)#+\s+Framework\b",
+        r"(^|\n)#+\s+Methodologies\b",
+        r"(^|\n)#+\s+Methodology\b",
+        r"(^|\n)#+\s+Method\b"
+    ]
+    
+    persona_content = main_content
+    framework_content = ""
+    
+    for pattern in framework_patterns:
+        match = re.search(pattern, main_content, re.IGNORECASE)
+        if match:
+            split_idx = match.start()
+            persona_content = main_content[:split_idx].strip()
+            framework_content = main_content[split_idx:].strip()
+            break
+
+    personas_dir = vault_path / "personas"
+    frameworks_dir = vault_path / "frameworks"
+    
+    personas_dir.mkdir(parents=True, exist_ok=True)
+    frameworks_dir.mkdir(parents=True, exist_ok=True)
+    
+    p_file = personas_dir / f"{import_name}.md"
+    f_file = frameworks_dir / f"{import_name}.md"
+    
+    # Construct YAML frontmatter for persona
+    p_desc = metadata.get("description", f"Imported {import_name} persona")
+    p_ver = metadata.get("version", "1.0.0")
+    p_cat = "persona"
+    
+    p_frontmatter = f"---\nname: \"{import_name}\"\nversion: \"{p_ver}\"\ncategory: \"{p_cat}\"\ndescription: \"{p_desc}\"\n---\n\n"
+    p_file.write_text(p_frontmatter + persona_content + "\n")
+    
+    # Construct YAML frontmatter for framework
+    f_ver = metadata.get("version", "1.0.0")
+    f_cat = "framework"
+    f_frontmatter = f"---\nname: \"{import_name}\"\nversion: \"{f_ver}\"\ncategory: \"{f_cat}\"\n---\n\n"
+    
+    if framework_content:
+        f_file.write_text(f_frontmatter + framework_content + "\n")
+    else:
+        # Scaffold an empty framework if none existed
+        f_file.write_text(f_frontmatter + f"# Framework\n\nMethodologies for {import_name}.\n")
+
+    return p_file, f_file
