@@ -1,5 +1,4 @@
 import pytest
-from pathlib import Path
 from starlette.testclient import TestClient
 from starlette.applications import Starlette
 from starlette.routing import Route

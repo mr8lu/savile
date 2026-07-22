@@ -1,7 +1,5 @@
 import os
 import sys
-import re
-import shutil
 from pathlib import Path
 import typer
 import anyio
@@ -157,6 +155,29 @@ def import_cmd(
 @app.command(name="add", hidden=True)
 def add_alias(source: str, alias: str = None):
     import_cmd(source, alias)
+
+
+@app.command(name="import-system")
+def import_system_cmd(
+    name: str = typer.Argument(..., help="Name of the system skill or agent to import (e.g. 'sprint-status')"),
+    alias: str = typer.Option(
+        None, "--alias", "-a", help="Alias to rename the imported persona/framework file"
+    ),
+    source_dir: Path = typer.Option(
+        None, "--dir", "-d", help="Custom local system directory to look for the skill/agent instead of default ~/.gemini or ~/.agents"
+    ),
+):
+    """Import a custom skill/agent from the system-wide ~/.gemini or ~/.agents directory into the local vault."""
+    vault_path = Path(os.getcwd())
+    typer.echo(f"Importing system module '{name}' into local vault...")
+    try:
+        p_file, f_file = registry.import_from_system(vault_path, name, alias, source_dir)
+        typer.echo(f"✅ Imported persona -> {p_file}")
+        typer.echo(f"✅ Imported framework -> {f_file}")
+        typer.echo("Successfully imported system module.")
+    except Exception as e:
+        print_error(str(e))
+        raise typer.Exit(code=1)
 
 
 @app.command()

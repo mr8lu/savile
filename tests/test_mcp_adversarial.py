@@ -1,7 +1,5 @@
 import pytest
 import os
-from pathlib import Path
-import shutil
 from savile.mcp.server import call_tool_handler, get_prompt_handler
 
 
@@ -78,7 +76,7 @@ async def test_vulnerability_implicit_cwd_pollution(mock_vault, tmp_path):
     os.chdir(random_dir)
 
     try:
-        results = await call_tool_handler(
+        await call_tool_handler(
             mock_vault,
             "install_logic_module",
             {
@@ -119,7 +117,7 @@ async def test_vulnerability_silent_overwrite(mock_vault, tmp_path):
     os.chdir(project_dir)
 
     try:
-        results = await call_tool_handler(
+        await call_tool_handler(
             mock_vault,
             "install_logic_module",
             {
