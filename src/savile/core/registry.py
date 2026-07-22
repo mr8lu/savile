@@ -123,13 +123,17 @@ def export_skills(vault_path: Path, out: Path, force: bool) -> list[Path]:
     return exported_files
 
 
-def import_from_system(vault_path: Path, name: str, alias: str = None, source_dir: Path = None) -> tuple[Path, Path]:
+def import_from_system(
+    vault_path: Path, name: str, alias: str = None, source_dir: Path = None
+) -> tuple[Path, Path]:
     """
     Imports a skill or agent from the system-wide ~/.gemini or ~/.agents directory
     (or a specified custom source directory) into the local vault's personas/ and frameworks/ folders.
     """
     if "/" in name or "\\" in name or ".." in name:
-        raise ValueError(f"Invalid name '{name}': Path traversal sequences are not allowed.")
+        raise ValueError(
+            f"Invalid name '{name}': Path traversal sequences are not allowed."
+        )
 
     if source_dir:
         source_dir = Path(source_dir).expanduser()
@@ -155,23 +159,26 @@ def import_from_system(vault_path: Path, name: str, alias: str = None, source_di
 
     if not source_file:
         search_locations = (
-            str(source_dir) if source_dir else "~/.gemini/skills, ~/.agents/skills, ~/.gemini/agents"
+            str(source_dir)
+            if source_dir
+            else "~/.gemini/skills, ~/.agents/skills, ~/.gemini/agents"
         )
         raise ValueError(
             f"System skill or agent '{name}' not found in search paths ({search_locations})."
         )
 
     content = source_file.read_text()
-    
+
     # Extract name and description from frontmatter
     from savile.core.protocol import extract_frontmatter
+
     metadata = extract_frontmatter(content) or {}
     if not isinstance(metadata, dict):
         metadata = {}
-    
+
     import_name = alias or metadata.get("name") or name
     import_name = str(import_name).lower().strip()
-    
+
     # Validate de-anthropomorphized naming
     prohibited_names = [
         "david",
@@ -202,12 +209,12 @@ def import_from_system(vault_path: Path, name: str, alias: str = None, source_di
         r"(^|\n)#+\s+Framework\b",
         r"(^|\n)#+\s+Methodologies\b",
         r"(^|\n)#+\s+Methodology\b",
-        r"(^|\n)#+\s+Method\b"
+        r"(^|\n)#+\s+Method\b",
     ]
-    
+
     persona_content = main_content
     framework_content = ""
-    
+
     for pattern in framework_patterns:
         match = re.search(pattern, main_content, re.IGNORECASE)
         if match:
@@ -218,33 +225,40 @@ def import_from_system(vault_path: Path, name: str, alias: str = None, source_di
 
     personas_dir = vault_path / "personas"
     frameworks_dir = vault_path / "frameworks"
-    
+
     personas_dir.mkdir(parents=True, exist_ok=True)
     frameworks_dir.mkdir(parents=True, exist_ok=True)
-    
+
     p_file = personas_dir / f"{import_name}.md"
     f_file = frameworks_dir / f"{import_name}.md"
-    
+
     # Construct YAML frontmatter for persona
     p_desc = metadata.get("description", f"Imported {import_name} persona")
     p_ver = metadata.get("version", "1.0.0")
     p_cat = "persona"
-    
-    p_meta = {"name": import_name, "version": p_ver, "category": p_cat, "description": p_desc}
+
+    p_meta = {
+        "name": import_name,
+        "version": p_ver,
+        "category": p_cat,
+        "description": p_desc,
+    }
     p_frontmatter = "---\n" + yaml.safe_dump(p_meta, sort_keys=False) + "---\n\n"
     p_file.write_text(p_frontmatter + persona_content + "\n")
-    
+
     # Construct YAML frontmatter for framework
     f_ver = metadata.get("version", "1.0.0")
     f_cat = "framework"
-    
+
     f_meta = {"name": import_name, "version": f_ver, "category": f_cat}
     f_frontmatter = "---\n" + yaml.safe_dump(f_meta, sort_keys=False) + "---\n\n"
-    
+
     if framework_content:
         f_file.write_text(f_frontmatter + framework_content + "\n")
     else:
         # Scaffold an empty framework if none existed
-        f_file.write_text(f_frontmatter + f"# Framework\n\nMethodologies for {import_name}.\n")
+        f_file.write_text(
+            f_frontmatter + f"# Framework\n\nMethodologies for {import_name}.\n"
+        )
 
     return p_file, f_file
