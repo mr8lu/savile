@@ -149,7 +149,7 @@ def import_from_system(vault_path: Path, name: str, alias: str = None, source_di
 
     source_file = None
     for path in possible_paths:
-        if path.exists():
+        if path.is_file():
             source_file = path
             break
 
