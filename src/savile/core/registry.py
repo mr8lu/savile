@@ -132,6 +132,7 @@ def import_from_system(vault_path: Path, name: str, alias: str = None, source_di
         raise ValueError(f"Invalid name '{name}': Path traversal sequences are not allowed.")
 
     if source_dir:
+        source_dir = Path(source_dir).expanduser()
         possible_paths = [
             source_dir / name / "SKILL.md",
             source_dir / f"{name}.md",
@@ -165,9 +166,11 @@ def import_from_system(vault_path: Path, name: str, alias: str = None, source_di
     # Extract name and description from frontmatter
     from savile.core.protocol import extract_frontmatter
     metadata = extract_frontmatter(content) or {}
+    if not isinstance(metadata, dict):
+        metadata = {}
     
     import_name = alias or metadata.get("name") or name
-    import_name = import_name.lower().strip()
+    import_name = str(import_name).lower().strip()
     
     # Validate de-anthropomorphized naming
     prohibited_names = [
