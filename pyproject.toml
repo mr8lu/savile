@@ -28,5 +28,5 @@ savile = "savile.cli:app"
 [dependency-groups]
 dev = [
     "mkdocs>=1.6.1",
-    "ruff>=0.4.0",
+    "ruff>=0.16.1",
 ]
