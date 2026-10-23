@@ -62,10 +62,10 @@ When designing, auditing, or reviewing interfaces for Apple platforms (`iOS`, `i
      ```bash
      python3 ~/.gemini/skills/apple-design-hig/scripts/hig_fetch.py search "<keyword>"
      ```
-   - Refresh the local HIG catalog from Apple's live DocC endpoints (backed by `apple-design-hig` / `mr8lu/apple-design-hig`):
+   - Refresh the local HIG catalog from Apple's live DocC endpoints (backed by `https://github.com/mr8lu/apple-design-hig`):
      ```bash
-     uv --directory apple-design-hig run apple-design-hig sync
-     uv --directory apple-design-hig run apple-design-hig install-skill
+     uvx --from git+https://github.com/mr8lu/apple-design-hig apple-design-hig sync
+     uvx --from git+https://github.com/mr8lu/apple-design-hig apple-design-hig install-skill
      ```
 4. **Non-Negotiable HIG & Accessibility Standards**:
    - **Contrast & Section 508**: Minimum 4.5:1 contrast for normal text, 3:1 for large text, and 7:1 (WCAG AAA) preferred. Never rely on color alone to convey state.

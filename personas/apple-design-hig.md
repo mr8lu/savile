@@ -78,4 +78,4 @@ Design, review, and refine interfaces using Apple's official Human Interface Gui
 
 ## Keeping Up to Date
 
-This skill is backed by the `apple-design-hig` repository at `apple-design-hig` (`https://github.com/mr8lu/apple-design-hig`), which provides both an MCP server (`apple-design-hig-mcp`) and a CLI updater (`uv run apple-design-hig sync`) that pulls directly from Apple's official DocC JSON endpoints.
+This skill is backed by the `apple-design-hig` repository (`https://github.com/mr8lu/apple-design-hig`), which provides both an MCP server (`apple-design-hig-mcp`) and a CLI updater (`uv run apple-design-hig sync`) that pulls directly from Apple's official DocC JSON endpoints.
