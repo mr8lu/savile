@@ -1,9 +1,11 @@
 import os
 import shutil
 from pathlib import Path
-from typer.testing import CliRunner
-from savile.cli import app
+
 from git import Repo
+from typer.testing import CliRunner
+
+from savile.cli import app
 
 runner = CliRunner()
 
@@ -209,6 +211,19 @@ def test_update_persona(tmp_path):
         result = runner.invoke(app, ["update", "dev-ops"])
         assert result.exit_code == 0
         assert "Refreshed metadata for persona: dev-ops" in result.stdout
+    finally:
+        os.chdir(original_cwd)
+
+
+def test_update_persona_path_traversal(tmp_path):
+    """Test that updating a persona with path traversal fails."""
+    original_cwd = os.getcwd()
+    os.chdir(tmp_path)
+    try:
+        runner.invoke(app, ["bootstrap"], input="\n")
+        result = runner.invoke(app, ["update", "../../outside"])
+        assert result.exit_code == 1
+        assert "Path traversal" in result.stdout
     finally:
         os.chdir(original_cwd)
 

@@ -1,8 +1,9 @@
 import pytest
-from starlette.testclient import TestClient
+from mcp.server.sse import SseServerTransport
 from starlette.applications import Starlette
 from starlette.routing import Route
-from mcp.server.sse import SseServerTransport
+from starlette.testclient import TestClient
+
 from savile.mcp.server import create_mcp_server
 
 
@@ -22,9 +23,10 @@ def mock_vault(tmp_path):
 
 def test_sse_endpoint_exists(mock_vault):
     """Test that the SSE and messages endpoints are correctly set up and reachable."""
+    from unittest.mock import AsyncMock, MagicMock
+
     from starlette.responses import Response
     from starlette.routing import Mount
-    from unittest.mock import AsyncMock, MagicMock
 
     server = create_mcp_server(mock_vault)
     server.run = AsyncMock()  # Mock server.run to return immediately and prevent hangs

@@ -1,7 +1,8 @@
 import shutil
 import tempfile
-import yaml
 from pathlib import Path
+
+import yaml
 from git import Repo, exc
 
 
@@ -22,7 +23,7 @@ def extract_frontmatter(content: str):
 
 def validate_module(file_path: Path):
     """Validates that a module follows the Winston Metadata Schema v1.0.0."""
-    if not file_path.suffix == ".md":
+    if file_path.suffix != ".md":
         return False, "Module must be a Markdown file (.md)"
 
     with open(file_path, "r") as f:
@@ -55,13 +56,13 @@ def validate_module(file_path: Path):
     return True, metadata
 
 
-def add_remote_module(vault_path: Path, source_uri: str, alias: str = None):
+def add_remote_module(vault_path: Path, source_uri: str, alias: str | None = None):
     """Pulls logic from a remote repository and merges it into the local vault."""
     with tempfile.TemporaryDirectory() as tmpdir:
         try:
             Repo.clone_from(source_uri, tmpdir)
         except exc.GitCommandError as e:
-            raise Exception(f"Failed to clone remote module: {str(e)}")
+            raise RuntimeError(f"Failed to clone remote module: {e!s}") from e
 
         tmp_path = Path(tmpdir)
         modules_added = []
@@ -79,7 +80,14 @@ def add_remote_module(vault_path: Path, source_uri: str, alias: str = None):
                     continue
 
                 target_name = alias if alias and md_file.stem == alias else md_file.name
-                target_path = vault_path / category_dir / target_name
+                if not target_name.endswith(".md"):
+                    target_name = f"{target_name}.md"
+                category_root = (vault_path / category_dir).resolve()
+                target_path = (category_root / target_name).resolve()
+                if not target_path.is_relative_to(category_root):
+                    raise ValueError(
+                        f"Invalid module target path '{target_name}': Path traversal is not allowed."
+                    )
 
                 if target_path.exists():
                     # Simple conflict resolution: warn and skip or overwrite?

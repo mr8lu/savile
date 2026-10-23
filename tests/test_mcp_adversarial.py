@@ -1,5 +1,7 @@
-import pytest
 import os
+
+import pytest
+
 from savile.mcp.server import call_tool_handler, get_prompt_handler
 
 
@@ -169,3 +171,36 @@ async def test_vulnerability_duplicate_names(mock_vault):
     assert "Framework Dup" in result.messages[0].content.text, (
         "Vulnerability: Cannot access framework if persona shares the same name (Namespace Shadowing)"
     )
+
+
+@pytest.mark.asyncio
+async def test_vulnerability_agent_tool_path_traversal(mock_vault, tmp_path):
+    """V11: Path Traversal in agent_<persona> dynamic tool handler"""
+    secret_md = tmp_path / "secret.md"
+    secret_md.write_text("TOP_SECRET_AGENT_PAYLOAD")
+
+    results = await call_tool_handler(
+        mock_vault,
+        "agent_../../secret",
+        {"task": "Execute task"},
+    )
+    assert len(results) == 1
+    assert "TOP_SECRET_AGENT_PAYLOAD" not in results[0].text
+    assert "Error:" in results[0].text
+
+
+@pytest.mark.asyncio
+async def test_vulnerability_sibling_prefix_path_traversal(mock_vault, tmp_path):
+    """V12: Sibling directory prefix bypass (personas_evil vs personas)"""
+    sibling_dir = mock_vault / "personas_evil"
+    sibling_dir.mkdir()
+    (sibling_dir / "leak.md").write_text("SIBLING_SECRET")
+
+    results = await call_tool_handler(
+        mock_vault,
+        "read_logic_module",
+        {"category": "personas", "name": "../personas_evil/leak.md"},
+    )
+    assert len(results) == 1
+    assert "SIBLING_SECRET" not in results[0].text
+    assert "Error:" in results[0].text

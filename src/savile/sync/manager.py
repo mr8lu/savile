@@ -1,6 +1,7 @@
 import os
 import time
 from pathlib import Path
+
 from git import Repo, exc
 
 
@@ -47,33 +48,33 @@ def install_pre_push_hook(vault_path: Path):
 def init_local(vault_path: Path):
     """Initialize a local logic vault."""
     if (vault_path / ".git").exists():
-        raise Exception("Vault is already initialized as a Git repository.")
+        raise RuntimeError("Vault is already initialized as a Git repository.")
     try:
         Repo.init(str(vault_path))
         install_pre_push_hook(vault_path)
     except exc.GitCommandError as e:
-        raise Exception(f"Failed to initialize repository: {str(e)}")
+        raise RuntimeError(f"Failed to initialize repository: {e!s}") from e
 
 
 def init_remote(vault_path: Path, source_uri: str):
     """Clone a logic vault from a remote origin."""
     if (vault_path / ".git").exists():
-        raise Exception("Vault is already initialized as a Git repository.")
+        raise RuntimeError("Vault is already initialized as a Git repository.")
     try:
         Repo.clone_from(source_uri, str(vault_path))
         install_pre_push_hook(vault_path)
     except exc.GitCommandError as e:
-        raise Exception(f"Failed to clone repository: {str(e)}")
+        raise RuntimeError(f"Failed to clone repository: {e!s}") from e
 
 
 def sync_vault(vault_path: Path):
     """Commit local changes and push/pull to keep the vault up to date."""
     try:
         repo = Repo(str(vault_path))
-    except exc.InvalidGitRepositoryError:
-        raise Exception(
+    except exc.InvalidGitRepositoryError as e:
+        raise RuntimeError(
             "Current directory is not a Git repository. Run savile init first."
-        )
+        ) from e
 
     # Add all changes
     repo.git.add(all=True)
@@ -94,4 +95,4 @@ def sync_vault(vault_path: Path):
         # Push our commits
         origin.push()
     except exc.GitCommandError as e:
-        raise Exception(f"Sync failed during network operation: {str(e)}")
+        raise RuntimeError(f"Sync failed during network operation: {e!s}") from e

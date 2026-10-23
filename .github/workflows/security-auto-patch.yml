@@ -1,0 +1,106 @@
+name: Security Auto-Patch & Auto-Merge
+
+on:
+  schedule:
+    # Run daily at 06:00 UTC to proactively patch lockfile vulnerabilities
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches: [master, main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot-auto-merge:
+    name: Auto-Approve & Merge Dependabot PRs
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]'
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Approve and enable auto-merge for patch/minor or security updates
+        if: >-
+          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
+          steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
+          steps.metadata.outputs.alert-state != ''
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  auto-patch-lockfile:
+    name: Auto-Patch & Verify uv.lock
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Upgrade lockfile dependencies
+        run: |
+          uv lock --upgrade
+          uv sync --all-extras --all-groups
+
+      - name: Check for lockfile changes
+        id: diff
+        run: |
+          if git diff --quiet uv.lock; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Ruff & Pytest verification
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run pytest tests/
+
+      - name: Create Pull Request and Enable Auto-Merge
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME="chore/auto-patch-lockfile-$(date +%Y%m%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH_NAME"
+          git add uv.lock
+          git commit -m "chore(security): auto-patch uv.lock dependencies"
+          git push -u origin "$BRANCH_NAME" --force
+
+          BASE_BRANCH="${{ github.ref_name }}"
+          EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --base "$BASE_BRANCH" --json url --jq '.[0].url')
+          if [ -z "$EXISTING_PR" ]; then
+            PR_URL=$(gh pr create \
+              --title "chore(security): auto-patch uv.lock dependencies" \
+              --body "Automated dependency security upgrade verified with Ruff and Pytest." \
+              --base "$BASE_BRANCH" \
+              --head "$BRANCH_NAME")
+          else
+            PR_URL="$EXISTING_PR"
+          fi
+
+          gh pr merge --auto --squash "$PR_URL" || gh pr merge --squash --delete-branch "$PR_URL"

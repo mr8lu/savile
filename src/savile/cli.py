@@ -1,11 +1,13 @@
 import os
 import sys
 from pathlib import Path
-import typer
+
 import anyio
-from savile.core import registry, protocol
-from savile.sync import manager
+import typer
+
+from savile.core import protocol, registry
 from savile.mcp import server as mcp_server
+from savile.sync import manager
 
 app = typer.Typer(
     help="SAVILE: Single Source of Truth Engine for Agent Prompts & Skills",
@@ -13,14 +15,14 @@ app = typer.Typer(
 )
 
 
-def print_error(message: str, help_text: str = None):
+def print_error(message: str, help_text: str | None = None):
     """Prints a structured error message to stdout per AXI Standard 6."""
     typer.echo(f"error: {message}")
     if help_text:
         typer.echo(f"help: {help_text}")
 
 
-def run_setup(vault_path: Path, method_path: str = None):
+def run_setup(vault_path: Path, method_path: str | None = None):
     """Run the setup for pre-requisites like the Method core framework."""
     method_link = vault_path / ".method-core"
     if method_link.exists() or method_link.is_symlink():
@@ -64,7 +66,7 @@ def run_setup(vault_path: Path, method_path: str = None):
     try:
         os.symlink(core_path, method_link)
         typer.echo(f"✅ Successfully linked Method core to {core_path}")
-    except Exception as e:
+    except OSError as e:
         print_error(f"Failed to create symlink: {e}")
 
 
@@ -97,7 +99,7 @@ def bootstrap(
         try:
             manager.init_remote(vault_path, source)
             typer.echo("Remote vault cloned successfully.")
-        except Exception as e:
+        except (OSError, RuntimeError, ValueError) as e:
             print_error(str(e), "Verify the source Git URL or network connection")
             raise typer.Exit(code=1)
     else:
@@ -106,7 +108,7 @@ def bootstrap(
             registry.scaffold_local_vault(vault_path)
             manager.init_local(vault_path)
             typer.echo("Local vault scaffolded and initialized successfully.")
-        except Exception as e:
+        except (OSError, RuntimeError, ValueError) as e:
             print_error(str(e))
             raise typer.Exit(code=1)
 
@@ -146,14 +148,14 @@ def import_cmd(
         for m in modules:
             typer.echo(f"✅ Imported module: {m}")
         typer.echo("Successfully imported all logic modules.")
-    except Exception as e:
+    except (OSError, RuntimeError, ValueError) as e:
         print_error(str(e))
         raise typer.Exit(code=1)
 
 
 # Alias add to import
 @app.command(name="add", hidden=True)
-def add_alias(source: str, alias: str = None):
+def add_alias(source: str, alias: str | None = None):
     import_cmd(source, alias)
 
 
@@ -185,7 +187,7 @@ def import_system_cmd(
         typer.echo(f"✅ Imported persona -> {p_file}")
         typer.echo(f"✅ Imported framework -> {f_file}")
         typer.echo("Successfully imported system module.")
-    except Exception as e:
+    except (OSError, RuntimeError, ValueError) as e:
         print_error(str(e))
         raise typer.Exit(code=1)
 
@@ -216,7 +218,14 @@ def update(
 ):
     """Update an existing persona/function/skill (refreshes metadata)."""
     vault_path = Path(os.getcwd())
-    p_file = vault_path / "personas" / f"{name}.md"
+    personas_root = (vault_path / "personas").resolve()
+    p_file = (personas_root / f"{name}.md").resolve()
+
+    if not p_file.is_relative_to(personas_root):
+        print_error(
+            f"Invalid persona name '{name}': Path traversal sequences are not allowed."
+        )
+        raise typer.Exit(code=1)
 
     if not p_file.exists():
         print_error(
@@ -254,8 +263,8 @@ def export(
 
 @app.command()
 def serve(
-    vault: Path = typer.Option(
-        Path(os.getcwd()), "--vault", "-v", help="Path to the logic vault"
+    vault: Path | None = typer.Option(
+        None, "--vault", "-v", help="Path to the logic vault"
     ),
     sse: bool = typer.Option(
         False, "--sse", help="Run the server over HTTP SSE instead of stdio"
@@ -265,13 +274,14 @@ def serve(
     ),
 ):
     """Start the local MCP server to dynamically supply skills to IDEs."""
+    resolved_vault = vault if vault is not None else Path(os.getcwd())
     if sse:
         typer.echo(
             f"Starting MCP server over SSE at http://127.0.0.1:{port}/sse", err=True
         )
-        anyio.run(mcp_server.run_sse_server, vault, port)
+        anyio.run(mcp_server.run_sse_server, resolved_vault, port)
     else:
-        anyio.run(mcp_server.run_stdio_server, vault)
+        anyio.run(mcp_server.run_stdio_server, resolved_vault)
 
 
 @app.command()
@@ -306,7 +316,7 @@ def install_hook():
     try:
         manager.install_pre_push_hook(vault_path)
         typer.echo("Pre-push hook installed successfully.")
-    except Exception as e:
+    except (OSError, RuntimeError, ValueError) as e:
         print_error(str(e))
         raise typer.Exit(code=1)
 
@@ -321,7 +331,7 @@ def sync():
         if res:
             typer.echo(res)
         typer.echo("Sync complete.")
-    except Exception as e:
+    except (OSError, RuntimeError, ValueError) as e:
         print_error(str(e))
 
 

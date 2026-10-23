@@ -1,5 +1,6 @@
-import yaml
 from pathlib import Path
+
+import yaml
 
 
 def run_evaluations(vault_path: Path) -> bool:
@@ -30,8 +31,8 @@ def run_evaluations(vault_path: Path) -> bool:
             target = data.get("target_model", "unknown")
             eval_results.append((name, target, "PASS"))
 
-        except Exception as e:
-            eval_results.append((eval_file.name, "unknown", f"FAIL ({str(e)})"))
+        except (OSError, yaml.YAMLError, AttributeError) as e:
+            eval_results.append((eval_file.name, "unknown", f"FAIL ({e!s})"))
             success = False
 
     if eval_results:

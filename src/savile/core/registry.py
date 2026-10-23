@@ -1,7 +1,8 @@
 import re
 import shutil
-import yaml
 from pathlib import Path
+
+import yaml
 
 SAVILE_CONFIG_DIR = Path.home() / ".savile"
 SAVILE_CONFIG_PATH = SAVILE_CONFIG_DIR / "config.yaml"
@@ -124,7 +125,10 @@ def export_skills(vault_path: Path, out: Path, force: bool) -> list[Path]:
 
 
 def import_from_system(
-    vault_path: Path, name: str, alias: str = None, source_dir: Path = None
+    vault_path: Path,
+    name: str,
+    alias: str | None = None,
+    source_dir: Path | None = None,
 ) -> tuple[Path, Path]:
     """
     Imports a skill or agent from the system-wide ~/.gemini or ~/.agents directory

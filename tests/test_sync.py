@@ -1,7 +1,9 @@
 import os
+
 from git import Repo
-from savile.sync import manager
+
 from savile.core import registry
+from savile.sync import manager
 
 
 def test_manager_sync_vault_local(tmp_path):

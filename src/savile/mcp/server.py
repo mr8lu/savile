@@ -2,9 +2,22 @@ import json
 import shutil
 import uuid
 from pathlib import Path
-from mcp.server import Server
-from mcp.types import Tool, TextContent, Prompt, GetPromptResult, PromptMessage
+
 import mcp.server.stdio
+from mcp.server import Server
+from mcp.types import (
+    CallToolRequestParams,
+    CallToolResult,
+    GetPromptRequestParams,
+    GetPromptResult,
+    ListPromptsResult,
+    ListToolsResult,
+    PaginatedRequestParams,
+    Prompt,
+    PromptMessage,
+    TextContent,
+    Tool,
+)
 
 
 def get_state_file(vault_path: Path) -> Path:
@@ -58,12 +71,14 @@ async def get_prompt_handler(
 
     # Try to find the file in personas then frameworks
     for category in categories:
-        cat_path = vault_path / category
+        cat_path = (vault_path / category).resolve()
         if cat_path.exists():
             for f in cat_path.iterdir():
                 if f.is_file() and f.stem == name:
-                    with open(f, "r") as file_handle:
-                        content = file_handle.read()
+                    resolved_f = f.resolve()
+                    if not resolved_f.is_relative_to(cat_path):
+                        raise ValueError(f"Invalid prompt path: {name}")
+                    content = resolved_f.read_text(encoding="utf-8")
                     return GetPromptResult(
                         description=f"Content of {f.name}",
                         messages=[
@@ -138,19 +153,18 @@ async def list_tools_handler(vault_path: Path) -> list[Tool]:
                 description = f"Delegate a task to the {name} persona agent."
 
                 # Attempt to extract frontmatter description
-                try:
-                    with open(f, "r") as file_handle:
-                        content = file_handle.read()
-                    if content.startswith("---"):
-                        import yaml
+                import yaml
 
+                try:
+                    content = f.read_text(encoding="utf-8")
+                    if content.startswith("---"):
                         parts = content.split("---", 2)
                         if len(parts) >= 3:
                             meta = yaml.safe_load(parts[1])
                             if isinstance(meta, dict) and "description" in meta:
                                 description = meta["description"]
-                except Exception:
-                    pass
+                except (OSError, yaml.YAMLError):
+                    description = f"Delegate a task to the {name} persona agent."
 
                 tools.append(
                     Tool(
@@ -262,9 +276,10 @@ async def call_tool_handler(
                 )
             ]
 
-        target = (vault_path / category / module_name).resolve()
+        category_root = (vault_path / category).resolve()
+        target = (category_root / module_name).resolve()
         # Path traversal protection
-        if not str(target).startswith(str((vault_path / category).resolve())):
+        if not target.is_relative_to(category_root):
             return [TextContent(type="text", text="Error: Invalid path.")]
 
         if not target.exists() or not target.is_file():
@@ -274,8 +289,7 @@ async def call_tool_handler(
                 )
             ]
 
-        with open(target, "r") as f:
-            content = f.read()
+        content = target.read_text(encoding="utf-8")
         return [TextContent(type="text", text=content)]
 
     elif name == "install_logic_module":
@@ -299,8 +313,9 @@ async def call_tool_handler(
                 )
             ]
 
-        source_file = (vault_path / category / module_name).resolve()
-        if not str(source_file).startswith(str((vault_path / category).resolve())):
+        category_root = (vault_path / category).resolve()
+        source_file = (category_root / module_name).resolve()
+        if not source_file.is_relative_to(category_root):
             return [TextContent(type="text", text="Error: Invalid source path.")]
 
         if not source_file.exists() or not source_file.is_file():
@@ -309,8 +324,7 @@ async def call_tool_handler(
             ]
 
         # Read source to extract description for Gemini CLI
-        with open(source_file, "r") as f:
-            content = f.read()
+        content = source_file.read_text(encoding="utf-8")
 
         description = f"Act as the {module_name.split('.')[0]} agent"
         # Simple frontmatter description extractor
@@ -329,9 +343,11 @@ async def call_tool_handler(
         base_dir = Path(project_path_str).resolve() if project_path_str else Path.cwd()
 
         # 1. Install to .agent/
-        target_dir = base_dir / ".agent" / f"{target_type}s"
+        target_dir = (base_dir / ".agent" / f"{target_type}s").resolve()
         target_dir.mkdir(parents=True, exist_ok=True)
-        target_file = target_dir / module_name
+        target_file = (target_dir / source_file.name).resolve()
+        if not target_file.is_relative_to(target_dir):
+            return [TextContent(type="text", text="Error: Invalid target path.")]
 
         if target_file.exists():
             return [
@@ -344,17 +360,18 @@ async def call_tool_handler(
         shutil.copy2(source_file, target_file)
 
         # 2. Generate Gemini CLI TOML command
-        gemini_cmd_dir = base_dir / ".gemini" / "commands"
+        gemini_cmd_dir = (base_dir / ".gemini" / "commands").resolve()
         gemini_cmd_dir.mkdir(parents=True, exist_ok=True)
-        stem = Path(module_name).stem
-        toml_file = gemini_cmd_dir / f"{stem}.toml"
+        stem = source_file.stem
+        toml_file = (gemini_cmd_dir / f"{stem}.toml").resolve()
+        if not toml_file.is_relative_to(gemini_cmd_dir):
+            return [TextContent(type="text", text="Error: Invalid command path.")]
 
         if not toml_file.exists():
             toml_content = (
                 f'description = "{description}"\nprompt = "/{stem} {{{{args}}}}"\n'
             )
-            with open(toml_file, "w") as f:
-                f.write(toml_content)
+            toml_file.write_text(toml_content, encoding="utf-8")
 
         msg = (
             f"Successfully installed {module_name} to {target_file.relative_to(base_dir)}\n"
@@ -373,7 +390,15 @@ async def call_tool_handler(
                 )
             ]
 
-        target = (vault_path / "personas" / f"{persona_name}.md").resolve()
+        personas_root = (vault_path / "personas").resolve()
+        target = (personas_root / f"{persona_name}.md").resolve()
+        if not target.is_relative_to(personas_root):
+            return [
+                TextContent(
+                    type="text",
+                    text="Error: Invalid agent persona path.",
+                )
+            ]
 
         if not target.exists() or not target.is_file():
             return [
@@ -383,8 +408,7 @@ async def call_tool_handler(
                 )
             ]
 
-        with open(target, "r") as f:
-            content = f.read()
+        content = target.read_text(encoding="utf-8")
 
         formatted_response = (
             f'<activated_agent_persona name="{persona_name}">\n'
@@ -445,25 +469,31 @@ async def call_tool_handler(
 
 
 def create_mcp_server(vault_path: Path) -> Server:
-    server = Server("savile")
+    async def handle_list_prompts(
+        ctx, params: PaginatedRequestParams | None = None
+    ) -> ListPromptsResult:
+        return ListPromptsResult(prompts=await list_prompts_handler(vault_path))
 
-    @server.list_prompts()
-    async def handle_list_prompts() -> list[Prompt]:
-        return await list_prompts_handler(vault_path)
+    async def handle_get_prompt(ctx, params: GetPromptRequestParams) -> GetPromptResult:
+        return await get_prompt_handler(vault_path, params.name, params.arguments)
 
-    @server.get_prompt()
-    async def handle_get_prompt(name: str, arguments: dict | None) -> GetPromptResult:
-        return await get_prompt_handler(vault_path, name, arguments)
+    async def handle_list_tools(
+        ctx, params: PaginatedRequestParams | None = None
+    ) -> ListToolsResult:
+        return ListToolsResult(tools=await list_tools_handler(vault_path))
 
-    @server.list_tools()
-    async def handle_list_tools() -> list[Tool]:
-        return await list_tools_handler(vault_path)
+    async def handle_call_tool(ctx, params: CallToolRequestParams) -> CallToolResult:
+        return CallToolResult(
+            content=await call_tool_handler(vault_path, params.name, params.arguments)
+        )
 
-    @server.call_tool()
-    async def handle_call_tool(name: str, arguments: dict) -> list[TextContent]:
-        return await call_tool_handler(vault_path, name, arguments)
-
-    return server
+    return Server(
+        "savile",
+        on_list_prompts=handle_list_prompts,
+        on_get_prompt=handle_get_prompt,
+        on_list_tools=handle_list_tools,
+        on_call_tool=handle_call_tool,
+    )
 
 
 async def run_stdio_server(vault_path: Path):
@@ -477,11 +507,11 @@ async def run_stdio_server(vault_path: Path):
 
 
 async def run_sse_server(vault_path: Path, port: int = 8000):
+    import uvicorn
     from mcp.server.sse import SseServerTransport
     from starlette.applications import Starlette
-    from starlette.routing import Route, Mount
     from starlette.responses import Response
-    import uvicorn
+    from starlette.routing import Mount, Route
 
     server = create_mcp_server(vault_path)
     sse = SseServerTransport("/messages")
@@ -496,7 +526,7 @@ async def run_sse_server(vault_path: Path, port: int = 8000):
         return Response()
 
     starlette_app = Starlette(
-        debug=True,
+        debug=False,
         routes=[
             Route("/sse", endpoint=handle_sse),
             Mount("/messages", app=sse.handle_post_message),
