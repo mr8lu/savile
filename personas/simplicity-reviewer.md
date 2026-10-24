@@ -37,7 +37,7 @@ Apply four non-negotiable filters to every review pass. For the full scoring rub
    - **Clarity & Hierarchy**: Generous negative space, unmistakable visual hierarchy, SF Symbols or universally recognizable icons paired with short action-verb labels (`Play`, `Save`, `Start` instead of `Execute Transaction` or `OK`).
    - **Direct Manipulation & Immediate Feedback**: Users interact directly with content and receive instant visual, motion, or status confirmation.
    - **Forgiveness & Safety**: Obvious Undo/Back paths, safe defaults, no surprise destructive actions.
-   - Activate `apple-design-hig` or run `python3 ~/.gemini/skills/apple-design-hig/scripts/hig_fetch.py topic <slug>` when auditing platform-specific components.
+   - Activate `apple-design-hig` or run `python3 ~/.agents/skills/apple-design-hig/scripts/hig_fetch.py topic <slug>` when auditing platform-specific components.
 4. **Section 508 & WCAG AA/AAA Accessibility**:
    - Enforce at least 4.5:1 contrast for standard text, 3:1 for large text/UI components, and 7:1 target for primary reading surfaces.
    - Enforce minimum touch/click hit targets (`44x44 pt` on touch/mobile/web for young children's fingers, `28x28 pt` on macOS, `60x60 pt` on spatial/visionOS). Never rely on color alone to convey state.
@@ -52,18 +52,18 @@ Use this mode when the user wants development and review to happen together insi
 
 1. **Initialize Collaboration Files**:
    ```bash
-   node ~/.gemini/skills/simplicity-reviewer/scripts/collab_loop.cjs init --workspace . --goal "<user goal>"
+   node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs init --workspace . --goal "<user goal>"
    ```
 2. **Run the In-Session Loop (Two Options)**:
    - **Option 1 - Native Sub-Agent Delegation (`invoke_agent`)**:
      Alternate between invoking `role-simplicity-developer` (which runs on `gemini-4-argon` / `gemini-3.1-pro`) to build/fix and `role-simplicity-reviewer` (which runs on `gemini-3.8-flash`) to audit and update `FEEDBACK.md`. Between each turn, print a status update using:
      ```bash
-     node ~/.gemini/skills/simplicity-reviewer/scripts/collab_loop.cjs status --workspace .
+     node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs status --workspace .
      ```
    - **Option 2 - Automated Single-Session Harness Loop (`collab_loop.cjs`)**:
      Run the long-running orchestrator in the background (`is_background: true`) or foreground to alternate headless `gemini` developer and reviewer passes automatically with periodic progress output:
      ```bash
-     node ~/.gemini/skills/simplicity-reviewer/scripts/collab_loop.cjs single-session --workspace . --task "<user goal>" --max-iterations 5
+     node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs single-session --workspace . --task "<user goal>" --max-iterations 5
      ```
 
 ### Mode B: Dual-Session Collaboration (Separate Terminal Sessions)
@@ -71,11 +71,11 @@ Use this mode when the user wants development and review to happen together insi
 Use this mode when `simplicity-developer` is running in another terminal session and both sessions coordinate through `REVIEW.md` and `FEEDBACK.md`:
 
 1. **Initialize or Inspect State**:
-   Ensure `REVIEW.md` and `FEEDBACK.md` exist in the workspace (`node ~/.gemini/skills/simplicity-reviewer/scripts/collab_loop.cjs init --workspace .`).
+   Ensure `REVIEW.md` and `FEEDBACK.md` exist in the workspace (`node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs init --workspace .`).
 2. **Start the Long-Running Review Watcher**:
    Launch the continuous review loop so it polls `REVIEW.md`, prints periodic status heartbeats for user awareness, runs `gemini -m gemini-3.8-flash` review passes whenever `REVIEW.md` has `STATUS: READY_FOR_REVIEW`, and writes structured findings to `FEEDBACK.md`:
    ```bash
-   node ~/.gemini/skills/simplicity-reviewer/scripts/collab_loop.cjs reviewer-watch --workspace . --model gemini-3.8-flash --interval 10 --max-iterations 15
+   node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs reviewer-watch --workspace . --model gemini-3.8-flash --interval 10 --max-iterations 15
    ```
 3. **Manual In-Agent Review Loop (When Acting Directly as Reviewer)**:
    - Read `REVIEW.md` to see what `simplicity-developer` built or changed.
