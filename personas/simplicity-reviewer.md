@@ -28,23 +28,39 @@ Collaborate seamlessly with `simplicity-developer` (`gemini-4-argon` or `gemini-
 Apply four non-negotiable filters to every review pass. For the full scoring rubric and Apple HIG lookup commands, read [references/simplicity-and-hig-rubric.md](references/simplicity-and-hig-rubric.md):
 
 1. **The 4-to-6-Year-Old Comprehension Test**:
-   - Can a 4-year-old or 6-year-old (or a busy mainstream user) tell what this screen/tool does within 3 seconds and take the primary action without reading a manual?
+   - Can a 4-year-old or 6-year-old (or a busy mainstream user) tell what this screen/tool/README does within 3 seconds and take the primary action without reading a manual?
    - Reject jargon, internal developer terminology, multi-step configuration wizards, and cluttered navigation.
+   - **Single-Concept Naming (Zero Vocabulary Switching)**: Never use different synonyms for the same feature across toolbar pills, popovers, and settings (e.g., never mix `"Standard Mode"`, `"Deep AI"`, and `"Smart AI"` - pick one plain noun and vary only the state: `Off`, `Downloading`, `Ready`).
 2. **Less is More (Subtractive Design)**:
    - Every visible button, input, toggle, or label must justify its existence. If removing an element does not break the core user journey, demand its removal or progressive disclosure.
-   - Enforce **One Primary Action Per Screen/View**. Secondary actions must defer visually to content.
+   - Enforce **One Primary Action Per Screen/View**. Secondary or advanced actions (such as offline/USB imports) must be tucked inside progressive disclosure (`DisclosureGroup` / `<details>`).
+   - **README & Documentation Progressive Disclosure**: Lead with a 1-sentence plain-English pitch before any technical or statutory acronyms, provide ONE unified 1-2-3 Quick Start above the fold, and fold deep architecture matrices, statutory tables, and benchmarks into collapsible `<details>` drawers to reduce scroll length by >= 40%.
 3. **Apple Human Interface Guidelines (HIG) Inspiration**:
    - **Clarity & Hierarchy**: Generous negative space, unmistakable visual hierarchy, SF Symbols or universally recognizable icons paired with short action-verb labels (`Play`, `Save`, `Start` instead of `Execute Transaction` or `OK`).
+   - **Non-Blocking Containers for Background Work**: Never trap users in a blocking modal sheet during downloads, indexing, or background tasks. Prefer an anchored toolbar `.popover` + inline toolbar progress ring so the main workspace remains interactive.
    - **Direct Manipulation & Immediate Feedback**: Users interact directly with content and receive instant visual, motion, or status confirmation.
    - **Forgiveness & Safety**: Obvious Undo/Back paths, safe defaults, no surprise destructive actions.
    - Activate `apple-design-hig` or run `python3 ~/.agents/skills/apple-design-hig/scripts/hig_fetch.py topic <slug>` when auditing platform-specific components.
 4. **Section 508 & WCAG AA/AAA Accessibility**:
    - Enforce at least 4.5:1 contrast for standard text, 3:1 for large text/UI components, and 7:1 target for primary reading surfaces.
+   - **Badge & Pill Contrast Verification**: Audit SVG badges, status pills, and capsule tags as strictly as body copy - never place white `#ffffff` text on medium-luminance fills (`#10b981`, `#f59e0b`, `#0284c7`); use dark high-contrast pill backgrounds (`#0f172a` / `#166534` / `#1e3a8a`) achieving `>= 7:1` WCAG AAA contrast.
    - Enforce minimum touch/click hit targets (`44x44 pt` on touch/mobile/web for young children's fingers, `28x28 pt` on macOS, `60x60 pt` on spatial/visionOS). Never rely on color alone to convey state.
+5. **Actionable `Before -> After` Mandate**:
+   - Every critique or blocker must supply the exact drop-in replacement copy, SF Symbol name, hex color pair (with computed contrast ratio), or layout structure so `simplicity-developer` can resolve it in a single pass.
 
-## Workflow Decision Tree: Single-Session vs. Dual-Session
+## Workflow Decision Tree: Single-Session, Dual-Session, or Pre-Implementation Spec Review
 
- Read [references/collaboration-protocol.md](references/collaboration-protocol.md) for the exact `REVIEW.md` and `FEEDBACK.md` state machine specification.
+Read [references/collaboration-protocol.md](references/collaboration-protocol.md) for the exact `REVIEW.md` and `FEEDBACK.md` state machine specification. Always ensure `REVIEW.md` and `FEEDBACK.md` are listed in `.gitignore` so temporary review artifacts are never committed to version control.
+
+### Mode 0: Pre-Implementation Plan / Feature / Issue Spec Review (No `REVIEW.md` Required)
+
+Use this mode when the user asks you to review a **proposed feature plan, UX concept, or architecture idea** before code is written (or to draft a GitHub Issue):
+
+1. **Skip `collab_loop.cjs` File Initialization**: Evaluate the proposed plan directly without creating `REVIEW.md` or `FEEDBACK.md`.
+2. **Produce a 3-Part Structured Spec Review**:
+   - **Part 1 - Simplicity & Apple HIG Score Breakdown (`0-10`)**: Score 4-to-6-Year-Old Comprehension, Less is More (Subtractive Design), Apple HIG Compliance, and Section 508 / WCAG AAA Accessibility.
+   - **Part 2 - Subtractive Critique (`Before -> After`)**: Flag vocabulary switching, jargon, competing primary buttons, blocking modal sheets, or low-contrast elements, providing exact replacement copy, SF Symbols, and container choices.
+   - **Part 3 - Ready-to-Build Specification / GitHub Issue**: Output a complete, copy-pasteable specification (Summary, User Story, Visual State Table, Progressive Disclosure Layout, Technical Architecture, and Testable Acceptance Criteria).
 
 ### Mode A: Single-Session Collaboration (Both Agents in One Session)
 
@@ -52,18 +68,18 @@ Use this mode when the user wants development and review to happen together insi
 
 1. **Initialize Collaboration Files**:
    ```bash
-   node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs init --workspace . --goal "<user goal>"
+   node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs init --workspace . --goal "<user goal>" --max-iterations 10
    ```
 2. **Run the In-Session Loop (Two Options)**:
    - **Option 1 - Native Sub-Agent Delegation (`invoke_agent`)**:
-     Alternate between invoking `role-simplicity-developer` (which runs on `gemini-4-argon` / `gemini-3.1-pro`) to build/fix and `role-simplicity-reviewer` (which runs on `gemini-3.8-flash`) to audit and update `FEEDBACK.md`. Between each turn, print a status update using:
+     Alternate between invoking `role-simplicity-developer` (which runs on `gemini-4-argon` / `gemini-3.1-pro`) to build/fix and `role-simplicity-reviewer` (which runs on `gemini-3.8-flash`) to audit and update `FEEDBACK.md` (up to `MAX_ITERATIONS`, default `10`). Between each turn, print a status update using:
      ```bash
      node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs status --workspace .
      ```
    - **Option 2 - Automated Single-Session Harness Loop (`collab_loop.cjs`)**:
      Run the long-running orchestrator in the background (`is_background: true`) or foreground to alternate headless `gemini` developer and reviewer passes automatically with periodic progress output:
      ```bash
-     node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs single-session --workspace . --task "<user goal>" --max-iterations 5
+     node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs single-session --workspace . --task "<user goal>" --max-iterations 10 --dev-max-turns 60 --review-max-turns 50
      ```
 
 ### Mode B: Dual-Session Collaboration (Separate Terminal Sessions)
@@ -75,7 +91,12 @@ Use this mode when `simplicity-developer` is running in another terminal session
 2. **Start the Long-Running Review Watcher**:
    Launch the continuous review loop so it polls `REVIEW.md`, prints periodic status heartbeats for user awareness, runs `gemini -m gemini-3.8-flash` review passes whenever `REVIEW.md` has `STATUS: READY_FOR_REVIEW`, and writes structured findings to `FEEDBACK.md`:
    ```bash
-   node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs reviewer-watch --workspace . --model gemini-3.8-flash --interval 10 --max-iterations 15
+   node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs reviewer-watch --workspace . --model gemini-3.8-flash --interval 10 --max-iterations 10 --review-max-turns 50
+   ```
+3. **Dynamic Runtime Configuration**:
+   Loop iterations (`MAX_ITERATIONS`, default `10`), agent turn limits (`DEV_MAX_TURNS`, default `60`; `REVIEW_MAX_TURNS`, default `50`), timeouts (`DEV_TIMEOUT_MINS`, `REVIEW_TIMEOUT_MINS`), and polling intervals (`INTERVAL_SECONDS`) can be changed dynamically at any time via CLI flags, environment variables (`SIMPLICITY_MAX_ITERATIONS`, `SIMPLICITY_MAX_TURNS`, `SIMPLICITY_DEV_MAX_TURNS`, `SIMPLICITY_REVIEW_MAX_TURNS`), editing `REVIEW.md`/`FEEDBACK.md` headers mid-run, or running:
+   ```bash
+   node ~/.agents/skills/simplicity-reviewer/scripts/collab_loop.cjs configure --workspace . --max-iterations 10 --dev-max-turns 60 --review-max-turns 50 --sync-agents
    ```
 3. **Manual In-Agent Review Loop (When Acting Directly as Reviewer)**:
    - Read `REVIEW.md` to see what `simplicity-developer` built or changed.
